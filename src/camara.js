@@ -16,7 +16,7 @@ function Camara(ancho, alto)
     this._ancho = ancho;
     this._alto = alto;
     
-    this.pos = new vec3.fromValues(0,0,20);
+    this.pos = new vec3.fromValues(0,0,3);
     this.look = new vec3.fromValues(0,0,-1);
     this.up = new vec3.fromValues(0,1,0);
     this.modo = "persp";
