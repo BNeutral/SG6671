@@ -1,0 +1,227 @@
+<html>
+
+<head>
+<title>SG6671 - TP1</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<script type="text/javascript" src="lib/gl-matrix.js"></script>
+<script type="text/javascript" src="lib/webgl-utils.js"></script>
+<script type="text/javascript" src="src/malla.js"></script>
+<script type="text/javascript" src="src/textura.js"></script>
+<script type="text/javascript" src="src/objeto.js"></script>
+<script type="text/javascript" src="src/camara.js"></script>
+<script type="text/javascript" src="src/escena.js"></script>
+<script type="text/javascript" src="src/objFactory.js"></script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    uniform sampler2D uSampler;
+
+    void main(void) 
+    {
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+    }
+</script>
+
+<script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uViewMatrix;
+    uniform mat4 uModelMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat3 uNMatrix;
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Variables uniformes involucradas en la iluminación de la escena
+    // 
+    // uAmbientColor - representa una intensidad de luz constante que
+    // ilumina a todos los objetos sin provenir de una dirección o fuente de luz determinada
+    // Es un nivel de intensidad de luz omni-presente
+    //
+    // uLightPosition - Representa la posición en coordenadas de la escena o mundo donde
+    // donde se ubica una luz puntual. Este tipo de luz irradia en todas direcciones.
+    // Las superficies (triángulos) cuya normal apunte a esta posición será las que recibirán
+    // la máxima intensidad y por lo tanto serán las más iluminadas.
+    // A medida que la normal se aparte de esta dirección la intensidad disminuye y en caso que se
+    // ubique de manera ortogonal la intensidad será nula
+    //
+    // uDirectionalColor - Representa el color de la luz puntual
+    //
+    // uUseLighting - Variable booleana que activa / descativa el cálculo de la iluminación
+    uniform vec3 uAmbientColor;
+    uniform vec3 uLightPosition;
+    uniform vec3 uDirectionalColor;
+    uniform bool uUseLighting;
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    void main(void) 
+    {
+	
+            // Transformamos al vértice al espacio de la cámara
+            vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+            // Transformamos al vértice al espacio de la proyección
+            gl_Position = uPMatrix * pos_camera_view;
+            // Coordenada de textura sin modifiaciones
+            vTextureCoord = aTextureCoord;
+
+            ////////////////////////////////////////////
+            // Calculos de la iluminación
+            vec3 light_dir_normalized =  normalize(uLightPosition - vec3( pos_camera_view ) );
+            if (!uUseLighting) 
+            {
+                vLightWeighting = vec3(1.0, 1.0, 1.0);
+            }
+            else 
+            {
+                vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
+                float directionalLightWeighting = max(dot(transformedNormal, light_dir_normalized), 0.0);
+                vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+            }
+		////////////////////////////////////////////
+    }
+</script>
+
+<script type="text/javascript">
+
+    var gl;
+    var escena;
+    var shaderProgram;
+    
+    function initGL(canvas) {
+        try {
+            gl = canvas.getContext("experimental-webgl");
+            gl.viewportWidth = canvas.width;
+            gl.viewportHeight = canvas.height;
+        } catch (e) {
+        }
+        if (!gl) {
+            alert("Could not initialise WebGL, sorry :-(");
+        }
+    }
+
+
+    function getShader(gl, id) {
+        var shaderScript = document.getElementById(id);
+        if (!shaderScript) {
+            return null;
+        }
+
+        var str = "";
+        var k = shaderScript.firstChild;
+        while (k) {
+            if (k.nodeType == 3) {
+                str += k.textContent;
+            }
+            k = k.nextSibling;
+        }
+
+        var shader;
+        if (shaderScript.type == "x-shader/x-fragment") {
+            shader = gl.createShader(gl.FRAGMENT_SHADER);
+        } else if (shaderScript.type == "x-shader/x-vertex") {
+            shader = gl.createShader(gl.VERTEX_SHADER);
+        } else {
+            return null;
+        }
+
+        gl.shaderSource(shader, str);
+        gl.compileShader(shader);
+
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            alert(gl.getShaderInfoLog(shader));
+            return null;
+        }
+
+        return shader;
+    }
+
+
+   
+
+
+    function initShaders()
+    {
+        var fragmentShader = getShader(gl, "shader-fs");
+        var vertexShader = getShader(gl, "shader-vs");
+
+        shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+
+        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+            alert("Could not initialise shaders");
+        }
+
+        gl.useProgram(shaderProgram);
+
+        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+
+        shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+        gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+
+        shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
+        gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+
+        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+        shaderProgram.ViewMatrixUniform = gl.getUniformLocation(shaderProgram, "uViewMatrix");
+        shaderProgram.ModelMatrixUniform = gl.getUniformLocation(shaderProgram, "uModelMatrix");
+        shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
+        shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+        shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, "uUseLighting");
+        shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
+        shaderProgram.lightingDirectionUniform = gl.getUniformLocation(shaderProgram, "uLightPosition");
+        shaderProgram.directionalColorUniform = gl.getUniformLocation(shaderProgram, "uDirectionalColor");
+    }
+    
+    function update() 
+    {
+        requestAnimFrame(update);
+        escena.dibujar();
+    }
+
+    function webGLStart()
+    {
+        var canvas = document.getElementById("TP1-SistemasGraficos");
+        initGL(canvas);
+        initShaders();
+        
+        var camara = new Camara(canvas.width, canvas.height);
+        camara.pos.z = 10;
+        
+        escena = new Escena(camara);
+        escena.agregarObjeto(new Objeto(null,null));
+        
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.enable(gl.DEPTH_TEST);
+
+        update();
+    }
+
+</script>
+
+</head>
+
+<body onload="webGLStart();">
+    <center>
+        <h1>Sistemas Gráficos - 66.71</h1>
+        <canvas id="TP1-SistemasGraficos" style="border: none;" width="1280" height="720">
+        Your browser does not support the HTML5 canvas element.
+        </canvas>
+    </center>
+</body>
+</html>
