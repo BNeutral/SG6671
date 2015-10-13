@@ -91,15 +91,12 @@ Escena.prototype.dibujar = function()
     vec3.transformMat4(lightPosition, lightPosition, this.vMatrix());
     gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);       	
 
+    this.camaras[this.camaraActual].dibujar();
+
     // Dibujar
     // Configuramos la iluminación
     gl.uniform3f(shaderProgram.ambientColorUniform, 0.2, 0.2, 0.2 );
     gl.uniform3f(shaderProgram.directionalColorUniform, 0.8, 0.8, 0.8);
-    
-    var matrizMV = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-    gl.uniformMatrix4fv(matrizMV, false, this.vMatrix());
-
-    this.camaras[this.camaraActual].dibujar();
 
     for (i = 0; i < this.hijos.length; i++)
     {

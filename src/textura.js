@@ -30,15 +30,15 @@ Textura.prototype.initTexture = function(path)
     var aux_texture = gl.createTexture();
     this.txImage = aux_texture;
     this.txImage.image = new Image();
-    this.txImage.image.onload = this.handleLoadedTexture();
     this.txImage.image.src = path;
+    this.txImage.image.onload = this.handleLoadedTexture;
 };
 
 Textura.prototype.handleLoadedTexture = function() 
 {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.bindTexture(gl.TEXTURE_2D, this.txImage.texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.txImage.image);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.txImage.texture.image);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
     gl.generateMipmap(gl.TEXTURE_2D);

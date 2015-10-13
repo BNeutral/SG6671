@@ -63,7 +63,7 @@ Objeto.prototype.setUpGL = function()
  */
 Objeto.prototype.update = function() 
 {
-    mat4.rotate(matrices, 1, [0,1,0]);
+    mat4.rotate(this.matrices, 1, [0,1,0]);
     for (i = 0; i < this.hijos.legth; ++i)
     {
         this.hijos[i].update();
@@ -94,19 +94,16 @@ Objeto.prototype.dibujar = function(matrizPadre)
     gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
     gl.uniform1i(shaderProgram.samplerUniform, 0);
 
-    gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, this.matrices);
-    
+    gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, matrizModelado);
     var normalMatrix = mat3.create();
-    //mat4.toInverseMat3(this.matrices, normalMatrix);
-    //mat3.transpose(normalMatrix);
+    mat3.normalFromMat4(normalMatrix, matrizModelado);
     gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
 
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
     //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_SHORT, 0);
-    //gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
     
     for (i = 0; i < this.hijos.length; ++i)
     {
