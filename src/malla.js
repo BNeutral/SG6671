@@ -27,9 +27,7 @@ function Malla(vertices, coloresVertices, indices)
         this.coloresVertices = [];
         for (var j = 0.0; j < this.indices.length; ++j) 
         {
-            this.coloresVertices.push(1.0);
-            this.coloresVertices.push(1.0);
-            this.coloresVertices.push(1.0);
+            this.coloresVertices.push([1.0,1.0,1.0,1.0]);
             /*this.coloresVertices.push(j/this.indices.length);
             this.coloresVertices.push(j/this.indices.length);
             this.coloresVertices.push(j/this.indices.length);*/

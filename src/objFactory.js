@@ -13,7 +13,7 @@ function normalesRadiales(vert)
 function Cubo()
 {
     var vert = [-1,-1,-1, -1,1,-1, 1,1,-1, 1,-1,-1, -1,-1,1, -1,1,1, 1,1,1, 1,-1,1];
-    var ind = [0,1,3,2,6,1,5,0,4,3,7,6,5,4];  
+    var ind = [0,1,3,2,6,1,5,0,4,3,7,6,4,5];  
     var vNorm = normalesRadiales(vert);
     var uv = [0,0, 0,1, 1,1, 1,0, 0,0, 0,1, 1,0, 1,1];
     return new Objeto(new Malla(vert, null, ind), new Textura(vNorm, uv));

@@ -42,11 +42,11 @@ Escena.prototype.agregarCamara = function(camara)
  */
 Escena.prototype.update = function() 
 {
-    for (i = 0; i < this.hijos.legth; ++i)
+    for (i = 0; i < this.hijos.length; ++i)
     {
         this.hijos[i].update();
     }
-    for (i = 0; i < this.camaras.legth; ++i)
+    for (i = 0; i < this.camaras.length; ++i)
     {
         this.camaras[i].update();
     }
@@ -101,8 +101,8 @@ Escena.prototype.dibujar = function()
 
     this.camaras[this.camaraActual].dibujar();
 
-    for (i = 0; i < this.hijos.legth; ++i)
+    for (i = 0; i < this.hijos.length; i++)
     {
-        this.hijos[i].dibujar();
+        this.hijos[i].dibujar(null);
     }
 };

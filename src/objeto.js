@@ -18,6 +18,11 @@ function Objeto(malla, textura)
     mat4.identity(this.matrices);
     this.hijos = [];
     
+    this.webgl_normal_buffer;
+    this.webgl_texture_coord_buffer;
+    this.webgl_position_buffer;
+    this.webgl_index_buffer;
+    
     this.setUpGL();
 }
 
@@ -58,18 +63,24 @@ Objeto.prototype.setUpGL = function()
  */
 Objeto.prototype.update = function() 
 {
+    mat4.rotate(matrices, 1, [0,1,0]);
     for (i = 0; i < this.hijos.legth; ++i)
     {
         this.hijos[i].update();
-    }
+    }    
 };
 
 /**
  * Dibujar
+ * @param {type} matrizPadre        Matriz para multiplicar y tener cosas relativas
  * @returns {undefined}
  */
-Objeto.prototype.dibujar = function() 
-{
+Objeto.prototype.dibujar = function(matrizPadre) 
+{    
+    var matrizModelado;
+    if (matrizPadre === null) matrizModelado = this.matrices;
+    else mat4.multiply(matrizModelado, this.matrices, matrizPadre); 
+    
     gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
@@ -80,23 +91,25 @@ Objeto.prototype.dibujar = function()
     gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
     gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
     gl.uniform1i(shaderProgram.samplerUniform, 0);
 
     gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, this.matrices);
+    
     var normalMatrix = mat3.create();
-    mat4.toInverseMat3(modelMatrix, normalMatrix);
-    mat3.transpose(normalMatrix);
+    //mat4.toInverseMat3(this.matrices, normalMatrix);
+    //mat3.transpose(normalMatrix);
     gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
 
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
     //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
-    gl.drawElements(gl.TRIANGLES, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_SHORT, 0);
+    //gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
     
-    for (i = 0; i < this.hijos.legth; ++i)
+    for (i = 0; i < this.hijos.length; ++i)
     {
-        this.hijos[i].dibujar();
+        this.hijos[i].dibujar(matrizModelado);
     }
 };
