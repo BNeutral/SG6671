@@ -11,7 +11,7 @@ function Objeto(malla, textura)
     if (malla === null) this.malla = new Malla(null, null, null);
     else this.malla = malla;
     
-    if (textura === null) this.textura = new Textura(null, null, "texturas/debug.jpg");
+    if (textura === null) this.textura = new Textura(null, null, "texturas/pasto.jpg");
     else this.textura = textura;
     
     this.matrices = mat4.create();

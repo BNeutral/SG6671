@@ -22,7 +22,23 @@ function Camara(ancho, alto)
     this.modo = "persp";
     
     this.activa = false;
+    
+    this.pitch = 0;
+    this.yaw = 0;
+    this.xPos = 0;
+    this.yPos = 0;
+    this.zPos = 0;
 }
+
+Camara.prototype.setVariables = function(p,y,x,y,z) 
+{
+    this.pitch = p;
+    this.yaw = y;
+    this.xPos = x;
+    this.yPos = y;
+    this.zPos = z;
+
+};
 
 /**
  * Prepara cosas de webgl con las matrices
@@ -42,7 +58,13 @@ Camara.prototype.recalcView = function()
 {
     this.viewM = mat4.create();
     mat4.identity(this.viewM);
+
     mat4.lookAt(this.viewM, this.pos, this.look, this.up) 
+    
+    mat4.rotate(this.viewM,this.viewM, degToRad(-pitch), [1, 0, 0]);
+    mat4.rotate(this.viewM,this.viewM, degToRad(-yaw), [0, 1, 0]);
+    mat4.translate(this.viewM,this.viewM, [-xPos, -yPos, -zPos]);
+
 };
 
 /**
@@ -54,7 +76,7 @@ Camara.prototype.recalcProj = function()
     mat4.identity(this.projM);
     if (this.modo === "persp")
     {
-        mat4.perspective(this.projM, Math.PI/2, this._ancho/this._alto, 0.1, 1000.0);
+       mat4.perspective(this.projM, Math.PI/2, this._ancho/this._alto, 0.1, 1000.0);
     }
     if (this.modo === "ortog")
     {
@@ -72,11 +94,15 @@ Camara.prototype.dibujar = function()
     gl.uniformMatrix4fv(shaderProgram.ViewMatrixUniform, false, this.viewM); 
 }; 
 
+function degToRad(degrees) {
+        return degrees * Math.PI / 180;
+    }
+
 /**
  * Metodo para heredar y agregarle comportamiento a distintos tipos de camara
  * @returns {undefined}
  */
 Camara.prototype.update = function() 
 {
-
+	this.setUp();
 };

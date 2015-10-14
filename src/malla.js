@@ -6,7 +6,7 @@ function Malla(vertices, coloresVertices, indices)
     
     if (vertices === null) 
     {
-        this.vertices = [-1.0,-1.0,0.0, -1.0,1.0,0.0, 1.0,1.0,0.0, 1.0,-1.0,0.0];
+          this.vertices = [30.0, 0.0, 30.0, 30.0, 0.0, -30.0, -30.0 , 0.0 , -30.0, -30.0, 0.0 ,30.0];
     }
     else 
     {
@@ -15,7 +15,7 @@ function Malla(vertices, coloresVertices, indices)
         
     if (indices === null) 
     {
-        this.indices = [1,0,2,3];
+        this.indices = [0,1,2,2,0,3];
     }
     else 
     {

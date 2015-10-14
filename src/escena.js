@@ -9,6 +9,7 @@ function Escena(camara)
     this.camaras = [];
     this.camaraActual = 0;
     this.agregarCamara(camara);
+
 }
 
 /**
@@ -51,6 +52,16 @@ Escena.prototype.update = function()
         this.camaras[i].update();
     }
 };
+
+
+Escena.prototype.setVariables = function(p,y,x,y,z) 
+{
+    for (i = 0; i < this.camaras.length; ++i)
+    {
+        this.camaras[i].setVariables(p,y,x,y,z);
+    }
+};
+
 
 /**
  * Devuelve la matriz de proyección de la camara actual
