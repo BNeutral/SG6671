@@ -1,3 +1,10 @@
+/**
+ * Crea un objeto con toda la informacion requerida para texturar.
+ * @param {type} vNormals       Normales correspondientes a cada vertice de la malla
+ * @param {type} uvCoord        Coordenadas uv correspondientes a cada vertice de la malla
+ * @param {type} path           String con el camino hacia la imagen
+ * @returns {Textura}
+ */
 function Textura(vNormals, uvCoord, path)
 {
     this.vNormals;

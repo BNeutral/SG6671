@@ -7,13 +7,16 @@
 
 <script type="text/javascript" src="lib/gl-matrix.js"></script>
 <script type="text/javascript" src="lib/webgl-utils.js"></script>
+<script type="text/javascript" src="src/herencia.js"></script>
+<script type="text/javascript" src="src/glSetup.js"></script>
 <script type="text/javascript" src="src/malla.js"></script>
 <script type="text/javascript" src="src/textura.js"></script>
 <script type="text/javascript" src="src/objeto.js"></script>
 <script type="text/javascript" src="src/camara.js"></script>
+<script type="text/javascript" src="src/grilla.js"></script>
 <script type="text/javascript" src="src/piso.js"></script>
 <script type="text/javascript" src="src/escena.js"></script>
-<script type="text/javascript" src="src/objFactory.js"></script>
+<script type="text/javascript" src="src/objUtil.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
@@ -99,100 +102,12 @@
 <script type="text/javascript">
 
     var gl;
-    var escena;
     var shaderProgram;
-    
-    function initGL(canvas) {
-        try {
-            gl = canvas.getContext("experimental-webgl");
-            gl.viewportWidth = canvas.width;
-            gl.viewportHeight = canvas.height;
-        } catch (e) {
-        }
-        if (!gl) {
-            alert("Could not initialise WebGL, sorry :-(");
-        }
-    }
-
-
-    function getShader(gl, id) {
-        var shaderScript = document.getElementById(id);
-        if (!shaderScript) {
-            return null;
-        }
-
-        var str = "";
-        var k = shaderScript.firstChild;
-        while (k) {
-            if (k.nodeType == 3) {
-                str += k.textContent;
-            }
-            k = k.nextSibling;
-        }
-
-        var shader;
-        if (shaderScript.type == "x-shader/x-fragment") {
-            shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (shaderScript.type == "x-shader/x-vertex") {
-            shader = gl.createShader(gl.VERTEX_SHADER);
-        } else {
-            return null;
-        }
-
-        gl.shaderSource(shader, str);
-        gl.compileShader(shader);
-
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            alert(gl.getShaderInfoLog(shader));
-            return null;
-        }
-
-        return shader;
-    }
-
-
-   
-
-
-    function initShaders()
-    {
-        var fragmentShader = getShader(gl, "shader-fs");
-        var vertexShader = getShader(gl, "shader-vs");
-
-        shaderProgram = gl.createProgram();
-        gl.attachShader(shaderProgram, vertexShader);
-        gl.attachShader(shaderProgram, fragmentShader);
-        gl.linkProgram(shaderProgram);
-
-        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-            alert("Could not initialise shaders");
-        }
-
-        gl.useProgram(shaderProgram);
-
-        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-
-        shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-        gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-
-        shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
-        gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
-
-        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-        shaderProgram.ViewMatrixUniform = gl.getUniformLocation(shaderProgram, "uViewMatrix");
-        shaderProgram.ModelMatrixUniform = gl.getUniformLocation(shaderProgram, "uModelMatrix");
-        shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
-        shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
-        shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, "uUseLighting");
-        shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
-        shaderProgram.lightingDirectionUniform = gl.getUniformLocation(shaderProgram, "uLightPosition");
-        shaderProgram.directionalColorUniform = gl.getUniformLocation(shaderProgram, "uDirectionalColor");
-    }
-    
+    var escena;    
+    var renderizarLineas = 0;  // Si se debe renderear como lineas en vez de superficies
     
     var currentlyPressedKeys = {};
-
+    
     function handleKeyDown(event) {
         currentlyPressedKeys[event.keyCode] = true;
     }
@@ -271,6 +186,9 @@
             speed = 0;
         }
 
+        // Aprete ESC para renderear como lineas
+        if (currentlyPressedKeys[27]) renderizarLineas = 1;
+        else renderizarLineas = 0;
     }
     
     function update() 
@@ -283,21 +201,10 @@
         escena.dibujar();
     }
 
-    function agregarObjetos() {
-    
-	var listaObjetos = [];
-	var factory = new ObjectFactory();
-	
-	var piso = factory.createObject( {
-	  type : 'piso',
-	} );
-
-	listaObjetos.push(piso);
-	
-	 for (var i = 0, len = listaObjetos.length; i < len; i++) {
-	    escena.agregarObjeto(listaObjetos[i]);
-	 }
-    
+    function agregarObjetos() 
+    {
+        escena.agregarObjeto(new Grilla(10,10,[1.0,1.0,1.0,1.0],"texturas/debug.jpg",1.0,1.0));
+        escena.agregarObjeto(new Piso());
     }
     
     function webGLStart()
@@ -307,11 +214,9 @@
         initShaders();
         
         var camara = new Camara(canvas.width, canvas.height);
-
         escena = new Escena(camara);
         agregarObjetos();
         
-
         document.onkeydown = handleKeyDown;
         document.onkeyup = handleKeyUp;
         

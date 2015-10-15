@@ -43,11 +43,11 @@ Escena.prototype.agregarCamara = function(camara)
  */
 Escena.prototype.update = function() 
 {
-    for (i = 0; i < this.hijos.length; ++i)
+    for (var i = 0, count = this.hijos.length; i < count; ++i)
     {
         this.hijos[i].update();
     }
-    for (i = 0; i < this.camaras.length; ++i)
+    for (var i = 0, count = this.camaras.length; i < count; ++i)
     {
         this.camaras[i].update();
     }
@@ -56,7 +56,7 @@ Escena.prototype.update = function()
 
 Escena.prototype.setVariables = function(p,y,x,y,z) 
 {
-    for (i = 0; i < this.camaras.length; ++i)
+    for (var i = 0, count = this.camaras.length; i < count; ++i)
     {
         this.camaras[i].setVariables(p,y,x,y,z);
     }
@@ -109,7 +109,7 @@ Escena.prototype.dibujar = function()
     gl.uniform3f(shaderProgram.ambientColorUniform, 0.2, 0.2, 0.2 );
     gl.uniform3f(shaderProgram.directionalColorUniform, 0.8, 0.8, 0.8);
 
-    for (i = 0; i < this.hijos.length; i++)
+    for (var i = 0, count = this.hijos.length; i < count; ++i)
     {
         this.hijos[i].dibujar(null);
     }

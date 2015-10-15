@@ -5,12 +5,27 @@
  * @constructor
  * @abstract
  */
-function Objeto()
+function Objeto(malla, textura)
 {
-    if (this.constructor === Objeto ) {
-      throw new Error("Can't instantiate abstract class!");
-    }
+    this.malla;
+    this.textura;
     
+    if (malla === null) this.malla = new Malla(null, null, null);
+    else this.malla = malla;
+    
+    if (textura === null) this.textura = new Textura(null, null, "texturas/debug.jpg");
+    else this.textura = textura;
+    
+    this.matrices = mat4.create();
+    mat4.identity(this.matrices);
+    this.hijos = [];
+    
+    this.webgl_normal_buffer;
+    this.webgl_texture_coord_buffer;
+    this.webgl_position_buffer;
+    this.webgl_index_buffer;
+    
+    this.setUpGL();
 }
 
 /**
@@ -50,7 +65,7 @@ Objeto.prototype.setUpGL = function()
  */
 Objeto.prototype.update = function() 
 {
-    for (i = 0; i < this.hijos.legth; ++i)
+    for (var i = 0, count = this.hijos.length; i < count; ++i)
     {
         this.hijos[i].update();
     }    
@@ -88,10 +103,10 @@ Objeto.prototype.dibujar = function(matrizPadre)
     gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
-    //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
-    gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+    if (renderizarLineas === 0) gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+    else gl.drawElements(gl.LINE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
     
-    for (i = 0; i < this.hijos.length; ++i)
+    for (var i = 0, count = this.hijos.length; i < count; ++i)
     {
         this.hijos[i].dibujar(matrizModelado);
     }

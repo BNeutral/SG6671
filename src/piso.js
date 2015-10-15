@@ -1,35 +1,8 @@
- 
-var Piso = function() {
-    Objeto.apply(this, arguments);
-    
-    this.malla;
-    this.textura;
-    
-    if (this.constructor === Objeto ) {
-      throw new Error("Can't instantiate abstract class!");
-    }
-    
-    this.malla = new Malla(null, null, null);
-    
-    this.textura = new Textura(null, null, "texturas/pasto.jpg");
-    
-    this.matrices = mat4.create();
-    mat4.identity(this.matrices);
-    this.hijos = [];
-    
-    this.webgl_normal_buffer;
-    this.webgl_texture_coord_buffer;
-    this.webgl_position_buffer;
-    this.webgl_index_buffer;
-    
-    this.setUpGL();
-    
+var Piso = function() 
+{
+    Grilla.call(this, 0, 0, [1.0,1.0,1.0,1.0], "texturas/pasto.jpg", 10.0, 10.0);
+    mat4.rotate(this.matrices,this.matrices, Math.PI/2, [1, 0, 0]);
+    mat4.scale(this.matrices, this.matrices, [30,30,0]);
 };
 
-Piso.prototype = Object.create(Objeto.prototype);
-Piso.prototype.constructor = Piso;
-
-/* TODO: Borrar despues. */
-Piso.prototype.logg = function() {
-    console.log('pruebas');
-}
+heredarPrototype(Piso, Grilla);

@@ -1,0 +1,28 @@
+// ---- ARCHIVOS NETAMENTE FUNCIONALES ---------------------
+
+herencia,js		: Define una funcion usada para hacer herencia
+glSetup.js		: Setup de cosas de webgl
+objUtil.js		: Funciones utiles para crear arrays y demas cosas para mallas y textuas
+
+// ---- HERENCIA ---------------------
+
+Escena
+
+Camara
+
+Malla
+
+Textura
+
+Objeto	-> Grilla		-> Piso
+		-> Cubo
+		-> Cilindro
+		-> Esfera
+
+// ---- COMPOSICION ---------------------
+
+Escena 	1 --------> N Objetos
+		1 --------> N Camaras
+
+Objeto 	1 -------->	1 Malla 
+		1 -------->	1 Textura

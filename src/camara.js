@@ -16,7 +16,7 @@ function Camara(ancho, alto)
     this._ancho = ancho;
     this._alto = alto;
     
-    this.pos = new vec3.fromValues(0,0,3);
+    this.pos = new vec3.fromValues(0,1,3);
     this.look = new vec3.fromValues(0,0,-1);
     this.up = new vec3.fromValues(0,1,0);
     this.modo = "persp";
@@ -58,15 +58,12 @@ Camara.prototype.setUp = function()
  */
 Camara.prototype.recalcView = function()
 {
-    //this.viewM = mat4.create();
     mat4.identity(this.viewM);
-
     mat4.lookAt(this.viewM, this.pos, this.look, this.up) 
     
     mat4.rotate(this.viewM,this.viewM, degToRad(-pitch), [1, 0, 0]);
     mat4.rotate(this.viewM,this.viewM, degToRad(-yaw), [0, 1, 0]);
     mat4.translate(this.viewM,this.viewM, [-xPos, -yPos, -zPos]);
-
 };
 
 /**
@@ -78,11 +75,11 @@ Camara.prototype.recalcProj = function()
     mat4.identity(this.projM);
     if (this.modo === "persp")
     {
-       mat4.perspective(this.projM, Math.PI/2, this._ancho/this._alto, 0.1, 1000.0);
+       mat4.perspective(this.projM, Math.PI/2, this._ancho/this._alto, 0.1, 10000.0);
     }
     if (this.modo === "ortog")
     {
-        mat4.ortho(this.projM, -ancho/2, ancho/2, altura/2, -altura/2, 0.1, 1000.0);
+        mat4.ortho(this.projM, -ancho/2, ancho/2, altura/2, -altura/2, 0.1, 10000.0);
     }
 };
 
