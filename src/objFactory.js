@@ -1,3 +1,23 @@
+/**
+ * Factory para crear objetos.
+ * @param {type} options
+ * @returns {Object}
+ */
+function ObjectFactory() {}
+ObjectFactory.prototype.createObject = function createObject( options ) {
+  
+  var parentClass = null;
+ 
+  if( options.type === 'piso' ) {
+    parentClass = Piso;
+  }
+  if( parentClass === null ) {
+    return false;
+  }
+  return new parentClass( options );
+}
+
+
 function normalesRadiales(vert)
 {
     var vNorm = [];

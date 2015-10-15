@@ -11,6 +11,7 @@
 <script type="text/javascript" src="src/textura.js"></script>
 <script type="text/javascript" src="src/objeto.js"></script>
 <script type="text/javascript" src="src/camara.js"></script>
+<script type="text/javascript" src="src/piso.js"></script>
 <script type="text/javascript" src="src/escena.js"></script>
 <script type="text/javascript" src="src/objFactory.js"></script>
 
@@ -206,15 +207,18 @@
 
     var yaw = 0;
     var yawRate = 0;
-
-    var xPos = 0;
-    var yPos = 0;
-    var zPos = 0;
-
+    var joggingAngle = 0;
     var speed = 0;
     
+    
+    var xPos = 0;
+    var yPos = 0.5;
+    var zPos = 0;
+
+    
+    
     var lastTime = 0;
-    var joggingAngle = 0;
+    
     function animate() {
         var timeNow = new Date().getTime();
         if (lastTime != 0) {
@@ -225,7 +229,7 @@
                 zPos -= Math.cos(degToRad(yaw)) * speed * elapsed;
 
                 joggingAngle += elapsed * 0.6; // 0.6 "fiddle factor" - makes it feel more realistic :-)
-                yPos = Math.sin(degToRad(joggingAngle)) / 20 + 0.4
+                yPos = Math.sin(degToRad(joggingAngle)) / 20 + 0.4;
             }
 
             yaw += yawRate * elapsed;
@@ -279,6 +283,22 @@
         escena.dibujar();
     }
 
+    function agregarObjetos() {
+    
+	var listaObjetos = [];
+	var factory = new ObjectFactory();
+	
+	var piso = factory.createObject( {
+	  type : 'piso',
+	} );
+
+	listaObjetos.push(piso);
+	
+	 for (var i = 0, len = listaObjetos.length; i < len; i++) {
+	    escena.agregarObjeto(listaObjetos[i]);
+	 }
+    
+    }
     
     function webGLStart()
     {
@@ -287,10 +307,10 @@
         initShaders();
         
         var camara = new Camara(canvas.width, canvas.height);
-        camara.pos.z = 10;
-        
+
         escena = new Escena(camara);
-        escena.agregarObjeto(new Objeto(null,null));
+        agregarObjetos();
+        
 
         document.onkeydown = handleKeyDown;
         document.onkeyup = handleKeyUp;

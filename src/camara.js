@@ -28,6 +28,8 @@ function Camara(ancho, alto)
     this.xPos = 0;
     this.yPos = 0;
     this.zPos = 0;
+
+
 }
 
 Camara.prototype.setVariables = function(p,y,x,y,z) 
@@ -56,7 +58,7 @@ Camara.prototype.setUp = function()
  */
 Camara.prototype.recalcView = function()
 {
-    this.viewM = mat4.create();
+    //this.viewM = mat4.create();
     mat4.identity(this.viewM);
 
     mat4.lookAt(this.viewM, this.pos, this.look, this.up) 

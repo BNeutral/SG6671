@@ -2,28 +2,15 @@
  * Construye un "objeto 3D" que consta de una malla, transformaciones, hijo, texturas, etc
  * @param {type} gl     Contexto gl
  * @returns {Objeto}
+ * @constructor
+ * @abstract
  */
-function Objeto(malla, textura)
+function Objeto()
 {
-    this.malla;
-    this.textura;
+    if (this.constructor === Objeto ) {
+      throw new Error("Can't instantiate abstract class!");
+    }
     
-    if (malla === null) this.malla = new Malla(null, null, null);
-    else this.malla = malla;
-    
-    if (textura === null) this.textura = new Textura(null, null, "texturas/pasto.jpg");
-    else this.textura = textura;
-    
-    this.matrices = mat4.create();
-    mat4.identity(this.matrices);
-    this.hijos = [];
-    
-    this.webgl_normal_buffer;
-    this.webgl_texture_coord_buffer;
-    this.webgl_position_buffer;
-    this.webgl_index_buffer;
-    
-    this.setUpGL();
 }
 
 /**
