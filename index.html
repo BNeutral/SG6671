@@ -15,6 +15,7 @@
 <script type="text/javascript" src="src/camara.js"></script>
 <script type="text/javascript" src="src/grilla.js"></script>
 <script type="text/javascript" src="src/piso.js"></script>
+<script type="text/javascript" src="src/cubo.js"></script>
 <script type="text/javascript" src="src/escena.js"></script>
 <script type="text/javascript" src="src/objUtil.js"></script>
 
@@ -203,7 +204,8 @@
 
     function agregarObjetos() 
     {
-        escena.agregarObjeto(new Grilla(10,10,[1.0,1.0,1.0,1.0],"texturas/debug.jpg",1.0,1.0));
+        //escena.agregarObjeto(new Grilla(10,10,[1.0,1.0,1.0,1.0],"texturas/debug.jpg",1.0,1.0));
+        escena.agregarObjeto(new Cubo());
         escena.agregarObjeto(new Piso());
     }
     

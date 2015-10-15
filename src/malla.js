@@ -32,7 +32,7 @@ function Malla(vertices, coloresVertices, indices)
     if (coloresVertices === null)
     {
         this.coloresVertices = [];
-        for (var j = 0.0; j < this.indices.length; ++j) 
+        for (var j = 0.0; j < this.vertices.length/3; ++j) 
         {
             this.coloresVertices.push([1.0,1.0,1.0,1.0]);
         }

@@ -8,7 +8,8 @@ objUtil.js		: Funciones utiles para crear arrays y demas cosas para mallas y tex
 
 Escena
 
-Camara
+Camara	-> Primera persona
+		-> Orbital
 
 Malla
 
@@ -16,8 +17,8 @@ Textura
 
 Objeto	-> Grilla		-> Piso
 		-> Cubo
-		-> Cilindro
-		-> Esfera
+		-> Cilindro (falta implementar)
+		-> Esfera	(falta implementar)
 
 // ---- COMPOSICION ---------------------
 
