@@ -79,7 +79,7 @@ Camara.prototype.recalcProj = function()
     }
     if (this.modo === "ortog")
     {
-        mat4.ortho(this.projM, -ancho/2, ancho/2, altura/2, -altura/2, 0.1, 10000.0);
+        mat4.ortho(this.projM, 0,10,0,10, 0.1, 10000.0);
     }
 };
 

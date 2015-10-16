@@ -10,6 +10,8 @@ function Textura(vNormals, uvCoord, path)
     this.vNormals;
     this.uvCoord;
     this.txImage;
+    this.colorAmbiente = vec3.fromValues(0.2,0.2,0.2);
+    this.colorIluminado = vec3.fromValues(0.8,0.8,0.8);
         
     if (vNormals === null) 
     {
@@ -28,8 +30,8 @@ function Textura(vNormals, uvCoord, path)
     {
         this.uvCoord = uvCoord;
     }
-    
-    this.initTexture(path);
+
+    if (path != null) this.initTexture(path);
 }
 
 Textura.prototype.initTexture = function(path)

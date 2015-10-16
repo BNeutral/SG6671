@@ -10,22 +10,21 @@ function Objeto(malla, textura)
     this.malla;
     this.textura;
     
-    if (malla === null) this.malla = new Malla(null, null, null);
-    else this.malla = malla;
-    
-    if (textura === null) this.textura = new Textura(null, null, "texturas/debug.jpg");
-    else this.textura = textura;
+    this.malla = malla;
+    this.textura = textura;
+    this.hijos = [];
     
     this.matrices = mat4.create();
-    mat4.identity(this.matrices);
-    this.hijos = [];
+    mat4.identity(this.matrices);    
     
     this.webgl_normal_buffer;
     this.webgl_texture_coord_buffer;
     this.webgl_position_buffer;
     this.webgl_index_buffer;
     
-    this.setUpGL();
+    if (this.malla != null) this.setUpGL();
+    
+    this.modoRenderizado = gl.TRIANGLE_STRIP;
 }
 
 /**
@@ -78,33 +77,40 @@ Objeto.prototype.update = function()
  */
 Objeto.prototype.dibujar = function(matrizPadre) 
 {    
-    var matrizModelado;
+    var matrizModelado = mat4.create();
     if (matrizPadre === null) matrizModelado = this.matrices;
     else mat4.multiply(matrizModelado, this.matrices, matrizPadre); 
-    
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
+        
+    if (this.malla != null)
+    {
+        gl.uniform3f(shaderProgram.ambientColorUniform, this.textura.colorAmbiente[0], this.textura.colorAmbiente[1], this.textura.colorAmbiente[2] );
+        gl.uniform3f(shaderProgram.directionalColorUniform, this.textura.colorIluminado[0], this.textura.colorIluminado[1], this.textura.colorIluminado[2]);     
+        
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_texture_coord_buffer);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.webgl_texture_coord_buffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_texture_coord_buffer);
+        gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.webgl_texture_coord_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
-    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+        gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
+        gl.uniform1i(shaderProgram.samplerUniform, 0);
 
-    gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, matrizModelado);
-    var normalMatrix = mat3.create();
-    mat3.normalFromMat4(normalMatrix, matrizModelado);
-    gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
+        gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, matrizModelado);
+        var normalMatrix = mat3.create();
+        mat3.normalFromMat4(normalMatrix, matrizModelado);
+        gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
 
-    gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
+        gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
 
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
-    if (renderizarLineas === 0) gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
-    else gl.drawElements(gl.LINE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
+
+        if (renderizarLineas === 0) gl.drawElements(this.modoRenderizado, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+        else gl.drawElements(gl.LINE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+    }
     
     for (var i = 0, count = this.hijos.length; i < count; ++i)
     {

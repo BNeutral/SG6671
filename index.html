@@ -16,6 +16,7 @@
 <script type="text/javascript" src="src/grilla.js"></script>
 <script type="text/javascript" src="src/piso.js"></script>
 <script type="text/javascript" src="src/cubo.js"></script>
+<script type="text/javascript" src="src/ejes.js"></script>
 <script type="text/javascript" src="src/escena.js"></script>
 <script type="text/javascript" src="src/objUtil.js"></script>
 
@@ -204,8 +205,12 @@
 
     function agregarObjetos() 
     {
+        //escena.agregarObjeto(new Objeto(null, null));
         //escena.agregarObjeto(new Grilla(10,10,[1.0,1.0,1.0,1.0],"texturas/debug.jpg",1.0,1.0));
-        escena.agregarObjeto(new Cubo());
+        escena.agregarObjeto(new Ejes());
+        var cubo = new Cubo("texturas/debug.jpg");
+        mat4.translate(cubo.matrices, cubo.matrices, [2,1,0]);
+        escena.agregarObjeto(cubo);
         escena.agregarObjeto(new Piso());
     }
     

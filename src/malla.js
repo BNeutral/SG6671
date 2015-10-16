@@ -5,10 +5,9 @@
  * @param {type} indices            Indices, vector de enteros de largo arbitrario. Considerar si el objeto se dibuja con triangle strips o no
  * @returns {Malla}
  */
-function Malla(vertices, coloresVertices, indices)
+function Malla(vertices, indices)
 {
     this.vertices; 
-    this.coloresVertices;
     this.indices;
     
     if (vertices === null) 
@@ -28,14 +27,4 @@ function Malla(vertices, coloresVertices, indices)
     {
         this.indices = indices;
     }
-
-    if (coloresVertices === null)
-    {
-        this.coloresVertices = [];
-        for (var j = 0.0; j < this.vertices.length/3; ++j) 
-        {
-            this.coloresVertices.push([1.0,1.0,1.0,1.0]);
-        }
-    }
-    else this.coloresVertices = coloresVertices;
 }

@@ -9,6 +9,7 @@ function Escena(camara)
     this.camaras = [];
     this.camaraActual = 0;
     this.agregarCamara(camara);
+    this.luz = vec3.fromValues(5.0, 5.0, 10.0);
 
 }
 
@@ -98,16 +99,11 @@ Escena.prototype.dibujar = function()
     var lighting;
     lighting = true;
     gl.uniform1i(shaderProgram.useLightingUniform, lighting);       
-    var lightPosition = [1.0, 1.0, 12.0];
+    var lightPosition = vec3.clone(this.luz);
     vec3.transformMat4(lightPosition, lightPosition, this.vMatrix());
     gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);       	
 
     this.camaras[this.camaraActual].dibujar();
-
-    // Dibujar
-    // Configuramos la iluminación
-    gl.uniform3f(shaderProgram.ambientColorUniform, 0.2, 0.2, 0.2 );
-    gl.uniform3f(shaderProgram.directionalColorUniform, 0.8, 0.8, 0.8);
 
     for (var i = 0, count = this.hijos.length; i < count; ++i)
     {

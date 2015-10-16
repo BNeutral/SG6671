@@ -8,7 +8,7 @@
  * @param {type} uvEscalaY                        Para multiplicar por las coord UV para crear tiling
  * @returns {undefined}
  */
-function Grilla(divisionesHorizontales, divisionesVerticales, color, textura, uvEscalaX, uvEscalaY)
+function Grilla(divisionesHorizontales, divisionesVerticales, textura, uvEscalaX, uvEscalaY)
 {
     var vert = [];
     var uvCoord = [];
@@ -31,7 +31,6 @@ function Grilla(divisionesHorizontales, divisionesVerticales, color, textura, uv
         }
     }
     
-    var vCol = vectorRepetitivo(vert.length/3, color);
     var vNorm = vectorRepetitivo(vert.length/3, [0, 0, 1]);
     
     divisionesVerticales += 1;
@@ -53,7 +52,7 @@ function Grilla(divisionesHorizontales, divisionesVerticales, color, textura, uv
         i += agregar;
     }
 
-    Objeto.call(this, new Malla(vert, vCol, indices), new Textura(vNorm, uvCoord, textura));
+    Objeto.call(this, new Malla(vert, indices), new Textura(vNorm, uvCoord, textura));
 }
 
 heredarPrototype(Grilla, Objeto);
