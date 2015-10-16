@@ -3,14 +3,13 @@
  * La textura en este cubo queda mal mapeada por tener vertices compartidos, las normales tampoco son las esperadas
  * @returns {Objeto}
  */
-function CuboMalTexturado()
+function CuboMalTexturado(txPath)
 {
     var vert = [-1.0,-1.0,-1.0, -1.0,1.0,-1.0, 1.0,1.0,-1.0, 1.0,-1.0,-1.0, -1.0,-1.0,1.0, -1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,-1.0,1.0];
     var ind = [0,1,3,2,6,1,5,0,4,3,7,6,4,5];   
     var vNorm = normalesRadiales(vert);
     var uv = [0.0,0.0, 0.0,1.0, 1.0,1.0, 1.0,0.0, 1.0,1.0, 1.0,0.0, 0.0,0.0, 0.0,1.0];
-    Objeto.call(this,new Malla(vert, ind), new Textura(vNorm, uv, "texturas/debug.jpg"));
-    mat4.translate(this.matrices, this.matrices, [0,1,0]);
+    Objeto.call(this,new Malla(vert, ind), new Textura(vNorm, uv, txPath));
 }
 
 heredarPrototype(CuboMalTexturado, Objeto);

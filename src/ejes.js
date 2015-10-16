@@ -1,9 +1,9 @@
 function Ejes()
 {
     Objeto.call(this, null, null);
-    this.hijos.push(new Cubo("texturas/pixel.png")); // X
-    this.hijos.push(new Cubo("texturas/pixel.png")); // Y
-    this.hijos.push(new Cubo("texturas/pixel.png")); // Z
+    this.hijos.push(new CuboMalTexturado("texturas/pixel.png")); // X
+    this.hijos.push(new CuboMalTexturado("texturas/pixel.png")); // Y
+    this.hijos.push(new CuboMalTexturado("texturas/pixel.png")); // Z
     
     mat4.scale(this.hijos[0].matrices, this.hijos[0].matrices, [0.5, 0.01, 0.01]);
     mat4.translate(this.hijos[0].matrices, this.hijos[0].matrices, [1.0, 0.0, 0.0]);
