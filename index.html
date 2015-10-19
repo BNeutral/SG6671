@@ -230,10 +230,10 @@
         initShaders();
         
         var camaraPrimera = new CamaraPrimeraPersona(canvas.width, canvas.height);
-        //var camaraOrbital = new CamaraOrbital(canvas.width, canvas.height);
+        var camaraOrbital = new CamaraOrbital(canvas.width, canvas.height);
 
         escena = new Escena(camaraPrimera);
-        //escena.agregarCamara(camaraPrimera);
+        escena.agregarCamara(camaraOrbital);
         agregarObjetos();
         
         document.onkeydown = handleKeyDown;

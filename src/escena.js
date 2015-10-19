@@ -44,7 +44,7 @@ Escena.prototype.agregarCamara = function(camara)
 Escena.prototype.cambiarCamara = function()
 {
   
-  if (this.camaraActual > (this.camaras.length-1)) {
+  if (this.camaraActual >= (this.camaras.length-1)) {
     this.camaraActual = 0;
   }
   else {
