@@ -52,3 +52,11 @@ Textura.prototype.handleLoadedTexture = function()
     gl.generateMipmap(gl.TEXTURE_2D);
     gl.bindTexture(gl.TEXTURE_2D, null);
 };
+
+Textura.prototype.flipNormales = function()
+{
+    for (var i = 0; i < this.vNormals.length; ++i)
+    {
+        this.vNormals[i] = -this.vNormals[i];
+    }
+}

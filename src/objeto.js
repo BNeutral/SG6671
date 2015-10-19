@@ -79,7 +79,7 @@ Objeto.prototype.dibujar = function(matrizPadre)
 {    
     var matrizModelado = mat4.create();
     if (matrizPadre === null) matrizModelado = this.matrices;
-    else mat4.multiply(matrizModelado, this.matrices, matrizPadre); 
+    else mat4.multiply(matrizModelado, matrizPadre, this.matrices); 
         
     if (this.malla != null)
     {
