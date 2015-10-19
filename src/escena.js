@@ -39,6 +39,22 @@ Escena.prototype.agregarCamara = function(camara)
 };
 
 /**
+ * Cambia la camara actual a la proxima en la lista.
+ */
+Escena.prototype.cambiarCamara = function()
+{
+  
+  if (this.camaraActual > (this.camaras.length-1)) {
+    this.camaraActual = 0;
+  }
+  else {
+    this.camaraActual = this.camaraActual + 1;
+  }
+  camara = this.camaras[this.camaraActual];
+  camara.setUp();
+};
+
+/**
  * Actualizar
  * @returns {undefined}
  */

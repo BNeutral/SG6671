@@ -13,6 +13,8 @@
 <script type="text/javascript" src="src/textura.js"></script>
 <script type="text/javascript" src="src/objeto.js"></script>
 <script type="text/javascript" src="src/camara.js"></script>
+<script type="text/javascript" src="src/camaraPrimeraPersona.js"></script>
+<script type="text/javascript" src="src/camaraOrbital.js"></script>
 <script type="text/javascript" src="src/grilla.js"></script>
 <script type="text/javascript" src="src/piso.js"></script>
 <script type="text/javascript" src="src/cubo.js"></script>
@@ -145,7 +147,7 @@
                 xPos -= Math.sin(degToRad(yaw)) * speed * elapsed;
                 zPos -= Math.cos(degToRad(yaw)) * speed * elapsed;
 
-                joggingAngle += elapsed * 0.6; // 0.6 "fiddle factor" - makes it feel more realistic :-)
+                joggingAngle += elapsed * 0.6;
                 yPos = Math.sin(degToRad(joggingAngle)) / 20 + 0.4;
             }
 
@@ -167,7 +169,7 @@
         } else {
             pitchRate = 0;
         }
-
+        
         if (currentlyPressedKeys[37] || currentlyPressedKeys[65]) {
             // Left cursor key or A
             yawRate = 0.1;
@@ -185,8 +187,14 @@
             // Down cursor key
             speed = -0.003;
         } else {
-            speed = 0;
+           speed = 0;
         }
+        
+        if (currentlyPressedKeys[69] ) {
+            // Letra e, cambiar camara
+            escena.cambiarCamara();
+            console.log("apretada la e");
+        } 
 
         // Aprete ESC para renderear como lineas
         if (currentlyPressedKeys[27]) renderizarLineas = 1;
@@ -202,6 +210,7 @@
         escena.update();
         escena.dibujar();
     }
+
 
     function agregarObjetos() 
     {
@@ -220,8 +229,11 @@
         initGL(canvas);
         initShaders();
         
-        var camara = new Camara(canvas.width, canvas.height);
-        escena = new Escena(camara);
+        var camaraPrimera = new CamaraPrimeraPersona(canvas.width, canvas.height);
+        //var camaraOrbital = new CamaraOrbital(canvas.width, canvas.height);
+
+        escena = new Escena(camaraPrimera);
+        //escena.agregarCamara(camaraPrimera);
         agregarObjetos();
         
         document.onkeydown = handleKeyDown;
@@ -230,7 +242,7 @@
         gl.clearColor(0.8, 0.8, 1.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
 
-        update();
+	update();
     }
 
 </script>

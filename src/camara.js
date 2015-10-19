@@ -53,20 +53,6 @@ Camara.prototype.setUp = function()
 };
 
 /**
- * Recalcula la view matrix
- * @returns {undefined}
- */
-Camara.prototype.recalcView = function()
-{
-    mat4.identity(this.viewM);
-    mat4.lookAt(this.viewM, this.pos, this.look, this.up) 
-    
-    mat4.rotate(this.viewM,this.viewM, degToRad(-pitch), [1, 0, 0]);
-    mat4.rotate(this.viewM,this.viewM, degToRad(-yaw), [0, 1, 0]);
-    mat4.translate(this.viewM,this.viewM, [-xPos, -yPos, -zPos]);
-};
-
-/**
  * Recacula la projection matrix
  * @returns {undefined}
  */
@@ -91,11 +77,7 @@ Camara.prototype.dibujar = function()
 {
     gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, this.projM);
     gl.uniformMatrix4fv(shaderProgram.ViewMatrixUniform, false, this.viewM); 
-}; 
-
-function degToRad(degrees) {
-        return degrees * Math.PI / 180;
-    }
+};
 
 /**
  * Metodo para heredar y agregarle comportamiento a distintos tipos de camara
