@@ -28,18 +28,20 @@ function Camara(ancho, alto)
     this.xPos = 0;
     this.yPos = 0;
     this.zPos = 0;
-
+    this.deltaX = 0;
+    this.deltaY = 0;
 
 }
 
-Camara.prototype.setVariables = function(p,y,x,y,z) 
+Camara.prototype.setVariables = function(p,y,x,y,z,dX,dY) 
 {
     this.pitch = p;
     this.yaw = y;
     this.xPos = x;
     this.yPos = y;
     this.zPos = z;
-
+    this.deltaX = dX;
+    this.deltaY = dY;
 };
 
 /**
