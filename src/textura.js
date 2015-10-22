@@ -59,4 +59,49 @@ Textura.prototype.flipNormales = function()
     {
         this.vNormals[i] = -this.vNormals[i];
     }
-}
+};
+
+/**
+ * Setea un tono rgb a los colores de ambiente y de iluminación en base a un parametro
+ * @param {type} param          Numero entre 0 y 1, recorre tonos
+ * @param {type} pAmbiente      Para multiplicar por luz ambiente, entre 0 y 1
+ * @param {type} pIluminado     Para multiplicar por luz directa, entre 0 y 1
+ * @returns {undefined}
+ */
+Textura.prototype.hueRamp = function(param, pAmbiente, pIluminado)
+{ 
+    var color = [0,0,0];
+    var x = (1 - Math.abs((param*6)%2 - 1));
+    var sixth = 1/6;
+    
+    if (param < sixth)
+    {
+        color = [1,x,0];
+    }
+    else if (param < sixth*2)
+    {
+        color = [x,1,0];
+    }
+    else if (param < sixth*3)
+    {
+        color = [0,1,x];
+    }
+    else if (param < sixth*4)
+    {
+        color = [0,x,1];
+    }
+    else if (param < sixth*5)
+    {
+        color = [x,0,1];
+    }
+    else
+    {
+        color = [1,0,x];
+    }
+    
+    for (var i = 0; i < 3; ++i)
+    {
+        this.colorAmbiente[i] = color[i]*pAmbiente;
+        this.colorIluminado[i] = color[i]*pIluminado;
+    }
+};

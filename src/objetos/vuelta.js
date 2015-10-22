@@ -50,8 +50,10 @@ function VuParante(radio, rotacion)
 }
 heredarPrototype(VuParante, Cubo);
 
+var velocidadAngular = 10 * 0.005 * Math.PI*2;
+        
 /**
- * El acoplado de ambas caras más el eje central
+ * El acoplado de ambas caras más el eje central y las cabinas
  * @param {type} divisiones
  * @param {type} radio
  * @returns {undefined}
@@ -65,7 +67,8 @@ function VuRueda(divisiones, radio)
     mat4.translate(this.hijos[1].matrices,this.hijos[1].matrices, [-1.1,0,0]);  
     this.hijos.push(new VuUniones(divisiones, radio));
     
-    this.vueltasPorSeg = 0.005 * Math.PI*2;
+    this.cabinas = new VuCabinas(divisiones, radio);
+    this.hijos.push(this.cabinas);
 }
 
 heredarPrototype(VuRueda, Objeto);
@@ -75,7 +78,7 @@ heredarPrototype(VuRueda, Objeto);
  */
 VuRueda.prototype.update = function(deltaT) 
 {
-    mat4.rotate(this.matrices, this.matrices, this.vueltasPorSeg*deltaT, [1.0,0.0,0.0]);
+    mat4.rotate(this.matrices, this.matrices, velocidadAngular*deltaT, [1.0,0.0,0.0]);
     Objeto.prototype.update.call(this,deltaT);
 };
 
@@ -167,3 +170,59 @@ function VuCirculo(divisiones, radio)
     }
 }
 heredarPrototype(VuCirculo, Objeto);
+
+/**
+ * Las cabinas
+ * @param {type} Numero         Cantidad de cabinas
+ * @param {type} radio          Radio de la rueda
+ * @returns {undefined}
+ */
+function VuCabinas(numero, radio)
+{
+    Objeto.call(this, null, null);
+    
+    this.numer = numero;
+    this.radio = radio;
+    
+    var angulo = Math.PI/numero;
+    for (var i = 0; i < numero/2; ++i)
+    {
+        this.hijos.push(new VuCabina(angulo*i*4, radio));
+    }
+}
+
+heredarPrototype(VuCabinas, Objeto);
+
+/**
+ * Una cabina. TODO: Un mejor modelo
+ * @param {type} angulo     Angulo respecto al centro del circulo
+ * @param {type} radio      Radio del circulo
+ * @returns {VuCabina}
+ */
+function VuCabina(angulo, radio)
+{
+    Cubo.call(this, "texturas/pixel.png");
+        
+    this.aTransformar = mat4.create();
+    this.contador = 0;
+    this.angulo = angulo;
+    this.radio = radio;
+    //mat4.translate(this.aTransformar ,this.aTransformar , [0,-1,0]);
+    mat4.rotate(this.aTransformar ,this.aTransformar, angulo, [1.0,0.0,0.0]);
+    mat4.translate(this.aTransformar ,this.aTransformar , [0,0,radio]);
+    mat4.rotate(this.aTransformar ,this.aTransformar , -angulo, [1.0,0.0,0.0]);
+    this.textura.hueRamp(angulo/(Math.PI*2), 0.2, 0.8);
+}
+heredarPrototype(VuCabina, Cubo);
+
+/**
+ * Rotacion de la rueda
+ */
+VuCabina.prototype.update = function(deltaT) 
+{
+    this.contador += deltaT;
+    mat4.identity(this.matrices);
+    mat4.mul(this.matrices, this.matrices, this.aTransformar);
+    mat4.rotate(this.matrices, this.matrices, -velocidadAngular*this.contador, [1.0,0.0,0.0]);
+    Objeto.prototype.update.call(this,deltaT);
+};
