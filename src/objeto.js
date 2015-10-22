@@ -59,14 +59,15 @@ Objeto.prototype.setUpGL = function()
 }
 
 /**
- * Para actualizar
+ * Actualiza
+ * @param {type} deltaT     Tiempo en milisegundos desde el ultimo update
  * @returns {undefined}
  */
-Objeto.prototype.update = function() 
+Objeto.prototype.update = function(deltaT) 
 {
     for (var i = 0, count = this.hijos.length; i < count; ++i)
     {
-        this.hijos[i].update();
+        this.hijos[i].update(deltaT);
     }    
 };
 

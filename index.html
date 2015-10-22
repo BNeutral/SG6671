@@ -12,17 +12,18 @@
 <script type="text/javascript" src="src/malla.js"></script>
 <script type="text/javascript" src="src/textura.js"></script>
 <script type="text/javascript" src="src/objeto.js"></script>
+<script type="text/javascript" src="src/escena.js"></script>
 <script type="text/javascript" src="src/camara.js"></script>
 <script type="text/javascript" src="src/camaraPrimeraPersona.js"></script>
 <script type="text/javascript" src="src/camaraOrbital.js"></script>
-<script type="text/javascript" src="src/grilla.js"></script>
-<script type="text/javascript" src="src/piso.js"></script>
-<script type="text/javascript" src="src/cubo.js"></script>
-<script type="text/javascript" src="src/disco.js"></script>
-<script type="text/javascript" src="src/cilindro.js"></script>
-<script type="text/javascript" src="src/ejes.js"></script>
-<script type="text/javascript" src="src/escena.js"></script>
-<script type="text/javascript" src="src/objUtil.js"></script>
+<script type="text/javascript" src="src/objetos/grilla.js"></script>
+<script type="text/javascript" src="src/objetos/piso.js"></script>
+<script type="text/javascript" src="src/objetos/cubo.js"></script>
+<script type="text/javascript" src="src/objetos/disco.js"></script>
+<script type="text/javascript" src="src/objetos/cilindro.js"></script>
+<script type="text/javascript" src="src/objetos/ejes.js"></script>
+<script type="text/javascript" src="src/objetos/vuelta.js"></script>
+<script type="text/javascript" src="src/objetos/objUtil.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
@@ -131,8 +132,9 @@
     var zPos = 0;
 
     var deltaX=0.1;
-
     var deltaY=0.1;
+    
+    var ultimoTiempo = 0;
   
   
     function handleMouseDown(event) {
@@ -236,11 +238,14 @@
     
     function update() 
     {
-        requestAnimFrame(update);
+        var tiempoActual = requestAnimFrame(update) / 25; // Interpretese como tiempo en milisegundos, aunque no sea
+        var deltaT = tiempoActual - ultimoTiempo;
+        ultimoTiempo = tiempoActual;        
+       
         handleKeys();
         animate();
         escena.setVariables(pitch,yaw,xPos,yPos,zPos,deltaX,deltaY);
-        escena.update();
+        escena.update(deltaT);
         escena.dibujar();
         
 	lastMouseX = newX
@@ -260,6 +265,7 @@
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
         escena.agregarObjeto(cilindro);
         escena.agregarObjeto(new Piso());
+        escena.agregarObjeto(new Vuelta(7, 8.0));
     }
     
     function webGLStart()

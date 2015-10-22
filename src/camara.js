@@ -85,7 +85,7 @@ Camara.prototype.dibujar = function()
  * Metodo para heredar y agregarle comportamiento a distintos tipos de camara
  * @returns {undefined}
  */
-Camara.prototype.update = function() 
+Camara.prototype.update = function(deltaT) 
 {
 	this.setUp();
 };

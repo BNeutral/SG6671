@@ -58,15 +58,15 @@ Escena.prototype.cambiarCamara = function()
  * Actualizar
  * @returns {undefined}
  */
-Escena.prototype.update = function() 
+Escena.prototype.update = function(deltaT) 
 {
     for (var i = 0, count = this.hijos.length; i < count; ++i)
     {
-        this.hijos[i].update();
+        this.hijos[i].update(deltaT);
     }
     for (var i = 0, count = this.camaras.length; i < count; ++i)
     {
-        this.camaras[i].update();
+        this.camaras[i].update(deltaT);
     }
 };
 

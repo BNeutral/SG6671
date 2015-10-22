@@ -34,9 +34,11 @@ function CilindroSinTapa(divisionesRadiales, divisionesVerticales, txPath)
     var vNorm = [];
     for (var i = 0, count = vert.length; i < count; i+=3)
     {
-        var v3 = vec3.fromValues(vert[i],0,vert[i+2]);
+        var v3 = vec3.fromValues(vert[i],vert[i+1],0);
         vec3.normalize(v3, v3);
-        vNorm.push(v3.x,v3.y, v3.z);
+        vNorm.push(v3[0]);
+        vNorm.push(v3[1]);
+        vNorm.push(v3[2]);
     }
     
     /*var indices = [];    
