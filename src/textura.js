@@ -70,7 +70,7 @@ Textura.prototype.flipNormales = function()
  */
 Textura.prototype.hueRamp = function(param, pAmbiente, pIluminado)
 { 
-    var color = [0,0,0];
+    var color = [0,0,0];    
     var x = (1 - Math.abs((param*6)%2 - 1));
     var sixth = 1/6;
     

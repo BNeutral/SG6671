@@ -263,9 +263,13 @@
         escena.agregarObjeto(cubo);
         var cilindro = new Cilindro(8, 2, "texturas/debug.jpg");
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
-        escena.agregarObjeto(cilindro);
+        escena.agregarObjeto(cilindro);    
+        var vuelta = new Vuelta(12, 8.0);
+        mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);
+        mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/4, [0,-1,0]);
+        escena.agregarObjeto(vuelta);
+        
         escena.agregarObjeto(new Piso());
-        escena.agregarObjeto(new Vuelta(7, 8.0));
     }
     
     function webGLStart()
