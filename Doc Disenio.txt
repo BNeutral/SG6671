@@ -16,9 +16,11 @@ Malla
 Textura
 
 Objeto	-> Grilla		-> Piso
+		-> CuboMalTexturado
 		-> Cubo
-		-> Cilindro (falta implementar)
-		-> Esfera	(falta implementar)
+		-> Disco
+		-> CilindroSinTapas
+		-> Cilindro
 
 // ---- COMPOSICION ---------------------
 
@@ -27,3 +29,14 @@ Escena 	1 --------> N Objetos
 
 Objeto 	1 -------->	1 Malla 
 		1 -------->	1 Textura
+
+Ejes 		1 --------> 3 Cubo
+
+Cilindro	1 -------->	2 Disco
+
+Vuelta	1 --------> 2 VuParante
+		  -------->	1 VuRueda	1 --------> 1 VuUniones		1 --------> N CilindroSinTapa
+						  --------> 1 Vu Cabinas	1 --------> N/2 VuCabina
+						  --------> 2 VuCara		1 --------> 1 VuEstrella		1 --------> N/2 CilindroSinTapa
+											1 --------> 2 VuCirculo			1 -------->	N CilindroSinTapa
+
