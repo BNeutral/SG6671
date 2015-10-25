@@ -5,7 +5,7 @@ var CamaraOrbital = function(ancho, alto)
     this._ancho = ancho;
     this._alto = alto;
     
-    this.pos = new vec3.fromValues(0,1,3);
+    this.pos = new vec3.fromValues(0,30,3);
     this.look = new vec3.fromValues(0,0,-1);
     this.up = new vec3.fromValues(0,1,0);
     this.modo = "persp";
@@ -14,11 +14,12 @@ var CamaraOrbital = function(ancho, alto)
     
     this.pitch = 0;
     this.yaw = 0;
-    this.xPos = 0;
-    this.yPos = 0;
-    this.zPos = 0;
 
 };
+
+
+heredarPrototype(CamaraOrbital, Camara); 
+
 
 /**
  * Recalcula la view matrix
@@ -27,8 +28,10 @@ var CamaraOrbital = function(ancho, alto)
 Camara.prototype.recalcView = function()
 {
     mat4.identity(this.viewM);
+    
     mat4.lookAt(this.viewM, this.pos, this.look, this.up);
-};
+    
+    mat4.rotate(this.viewM,this.viewM, degToRad(-pitch), [1, 0, 0]);
 
-heredarPrototype(CamaraOrbital, Camara); 
- 
+    mat4.rotate(this.viewM,this.viewM, degToRad(-yaw), [0, 1, 0]);
+};

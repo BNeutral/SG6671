@@ -3,9 +3,6 @@
  * @param {type} ancho      Ancho del display
  * @param {type} alto       Alto del display
  * @returns {Camara}
- * pos[x,y,z] : Position de la camara
- * look[x,y,z] : Hacia donde mira la camara
- * up[x,y,z] : Para el tilt de la camara
  * modo : Alguno de los siguientes : ortog / persp
  * Llamar a recalc para recalcular.
  */
@@ -16,18 +13,10 @@ function Camara(ancho, alto)
     this._ancho = ancho;
     this._alto = alto;
     
-    this.pos = new vec3.fromValues(0,1,3);
-    this.look = new vec3.fromValues(0,0,-1);
-    this.up = new vec3.fromValues(0,1,0);
-    this.modo = "persp";
-    
     this.activa = false;
     
     this.pitch = 0;
     this.yaw = 0;
-    this.xPos = 0;
-    this.yPos = 0;
-    this.zPos = 0;
     this.deltaX = 0;
     this.deltaY = 0;
 

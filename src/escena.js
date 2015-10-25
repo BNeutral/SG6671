@@ -54,6 +54,16 @@ Escena.prototype.cambiarCamara = function()
   camara.setUp();
 };
 
+
+
+/**
+ * Devuelve numero de camara
+ */
+Escena.prototype.numeroCamara = function()
+{
+  return this.camaraActual;
+}
+
 /**
  * Actualizar
  * @returns {undefined}
