@@ -34,23 +34,12 @@ CamaraPrimeraPersona.prototype.recalcView = function()
 {
     mat4.identity(this.viewM);
     
-    mat4.lookAt(this.viewM, this.pos, this.look, this.up) 
-    
-    var newRotationMatrix = mat4.create();
+    mat4.rotate(this.viewM,this.viewM, degToRad(-pitch), [1, 0, 0]);
 
-    mat4.identity(newRotationMatrix);
-    
-    //mat4.rotate(this.viewM,this.viewM, degToRad(-pitch), [1, 0, 0]);
-
-    mat4.rotate(newRotationMatrix,newRotationMatrix, degToRad(deltaX/10), [ 0,1,0]);
-
-    //mat4.rotate(this.viewM,this.viewM, degToRad(-yaw), [0, 1, 0]);
-    
-    mat4.rotate(newRotationMatrix,newRotationMatrix, degToRad(deltaY/10), [ 1,0, 0]);
-
-    mat4.multiply(this.viewM,newRotationMatrix,this.viewM);
+    mat4.rotate(this.viewM,this.viewM, degToRad(-yaw), [0, 1, 0]);
     
     mat4.translate(this.viewM,this.viewM, [-xPos, -yPos, -zPos]);
+    
 
 };
 

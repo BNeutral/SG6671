@@ -127,11 +127,12 @@
     var joggingAngle = 0;
     var speed = 0;    
     
+    var yPosInicial= 1;
     var xPos = 0;
-    var yPos = 0.5;
+    var yPos = yPosInicial;
     var zPos = 0;
 
-    var deltaX=0.1;
+    var deltaX=0;
     var deltaY=0.1;
     
     var ultimoTiempo = 0;
@@ -183,11 +184,13 @@
                 zPos -= Math.cos(degToRad(yaw)) * speed * elapsed;
 
                 joggingAngle += elapsed * 0.6;
-                yPos = Math.sin(degToRad(joggingAngle)) / 20 + 0.4;
+                yPos = Math.sin(degToRad(joggingAngle)) / 20 + yPosInicial;
             }
 
             yaw += yawRate * elapsed;
             pitch += pitchRate * elapsed;
+            pitch -= deltaY/30;
+            yaw -= deltaX/30 ;
 
         }
         lastTime = timeNow;
@@ -214,7 +217,7 @@
         } else {
             yawRate = 0;
         }
-
+	
         if (currentlyPressedKeys[38] || currentlyPressedKeys[87]) {
             // Up cursor key or W
             speed = 0.003;
@@ -244,6 +247,11 @@
        
         handleKeys();
         animate();
+        
+        if (!mouseDown) {
+	  deltaX=0;
+	  deltaY=0;
+	}
         escena.setVariables(pitch,yaw,xPos,yPos,zPos,deltaX,deltaY);
         escena.update(deltaT);
         escena.dibujar();
