@@ -19,6 +19,7 @@
 <script type="text/javascript" src="src/camaraOrbital.js"></script>
 <script type="text/javascript" src="src/objetos/grilla.js"></script>
 <script type="text/javascript" src="src/objetos/piso.js"></script>
+<script type="text/javascript" src="src/objetos/superficieRevolucion.js"></script>
 <script type="text/javascript" src="src/objetos/cubo.js"></script>
 <script type="text/javascript" src="src/objetos/disco.js"></script>
 <script type="text/javascript" src="src/objetos/cilindro.js"></script>
@@ -284,6 +285,13 @@
         var cilindro = new Cilindro(8, 2, "texturas/debug.jpg");
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
         escena.agregarObjeto(cilindro);    
+        
+        
+        var sup = new SuperficieRevolucion("texturas/debug.jpg",[0,4,2,4,0,2,2,0,0,0],100);
+        mat4.translate(sup.matrices, sup.matrices, [-8,1,0]);
+        escena.agregarObjeto(sup);    
+        
+        
         var vuelta = new Vuelta(12, 8.0);
         mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);
         mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/4, [0,-1,0]);
