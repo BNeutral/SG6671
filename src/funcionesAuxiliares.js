@@ -12,6 +12,11 @@ function degToRad(degrees) {
         return degrees * Math.PI / 180;
 }
 
+
+  
+function getMaxOfArray(numArray) {
+  return Math.max.apply(null, numArray);
+}
     
     
     

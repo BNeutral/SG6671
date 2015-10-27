@@ -6,9 +6,13 @@ function meterVertices(lista,dest)
     }    
 };
 
+
+
 /**
  * Retorna una superficie de revolucion
  * formada con los puntos pasados por parametro
+ * IMPORTANTE: Si divAngulo=0, se rompe
+ * si divAngulo es demasiado alto, empieza a dar 0 la division y dibuja mal
  * @returns {Objeto}
  */
 function SuperficieRevolucion(txPath,puntos,divAngulo)
@@ -16,7 +20,7 @@ function SuperficieRevolucion(txPath,puntos,divAngulo)
     var vert = [];
     
     var ind =  [];
-    
+   
     var largoarray = puntos.length;
     
     var pi=[0,0,0];
@@ -25,6 +29,10 @@ function SuperficieRevolucion(txPath,puntos,divAngulo)
     var pimasr=[0,0,0];
     var anguloNuevo=0;
     var anguloAnterior=0;
+
+    var uv=[];
+    
+    var maximo=getMaxOfArray(puntos);
     
     var posActual=0;
     
@@ -46,6 +54,20 @@ function SuperficieRevolucion(txPath,puntos,divAngulo)
 	  pir=[x*Math.cos(anguloNuevo),y,x*Math.sin(anguloNuevo)];
 	  pimas=[xmas*Math.cos(anguloAnterior),ymas,xmas*Math.sin(anguloAnterior)];
 	  pimasr=[xmas*Math.cos(anguloNuevo),ymas,xmas*Math.sin(anguloNuevo)];
+	  
+	  //Forma de calcular coordenadas uv?? http://www.cs.toronto.edu/~kyros/courses/418/Notes/TextureMapping.pdf
+	  //pi
+	  uv.push(parseFloat(x)/maximo);
+	  uv.push( (parseFloat(anguloAnterior))/(2*(Math.PI)) );
+	  //pir
+	  uv.push(parseFloat(x)/maximo);
+	  uv.push( (parseFloat(anguloNuevo))/(2*(Math.PI)) );
+	  //pimas
+	  uv.push(parseFloat(xmas)/maximo);
+	  uv.push( (parseFloat(anguloAnterior))/(2*(Math.PI)) );
+	  //pimasr
+	  uv.push(parseFloat(xmas)/maximo);
+	  uv.push( (parseFloat(anguloNuevo))/(2*(Math.PI)) );
 
 	  meterVertices(pi,vert);
 	  meterVertices(pir,vert);
@@ -63,11 +85,7 @@ function SuperficieRevolucion(txPath,puntos,divAngulo)
       anguloAnterior=anguloNuevo;
     }
     
-    console.log(vert.length);
-    console.log(ind[ind.length-1]);
-    
-    var vNorm = normalesAutomaticas(vert, 1);
-    var uv = vectorRepetitivo(vert.length, [0.0,0.0, 1.0,1.0]);
+    var vNorm = normalesRadiales(vert);
     
     this.modoRenderizado = gl.TRIANGLES;
                         
