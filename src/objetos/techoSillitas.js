@@ -2,13 +2,13 @@ var TechoSillitas = function()
 {  
     vertices=[0,0,0.8,0,5,0.5,5,1.4,0,1.4];
 
-    SuperficieRevolucion.call(this,"texturas/debug.jpg",vertices,200);
+    SuperficieRevolucion.call(this,"texturas/cales.png",vertices,200);
     
 };
 
 heredarPrototype(TechoSillitas,SuperficieRevolucion); 
  
-var TechoSillitasCompleto = function() 
+var TechoSillitasCompleto = function(numsillas) 
 {  
     Objeto.call(this, null, null);
     
@@ -17,7 +17,7 @@ var TechoSillitasCompleto = function()
     var anguloRot=Math.PI/4;
     
     //Cuantas sillitas voy a tener
-    var numSillitas=4;
+    var numSillitas=numsillas;
     
     this.hijos.push(techo);
 
