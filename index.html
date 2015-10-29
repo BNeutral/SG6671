@@ -21,11 +21,13 @@
 <script type="text/javascript" src="src/curvas/curva.js"></script>
 <script type="text/javascript" src="src/curvas/bezier.js"></script>
 
+
 <script type="text/javascript" src="src/objetos/grilla.js"></script>
 <script type="text/javascript" src="src/objetos/piso.js"></script>
 <script type="text/javascript" src="src/objetos/superficieRevolucion.js"></script>
 <script type="text/javascript" src="src/objetos/baseSillitas.js"></script>
 <script type="text/javascript" src="src/objetos/techoSillitas.js"></script>
+<script type="text/javascript" src="src/objetos/sillitas.js"></script>
 <script type="text/javascript" src="src/objetos/cubo.js"></script>
 <script type="text/javascript" src="src/objetos/disco.js"></script>
 <script type="text/javascript" src="src/objetos/cilindro.js"></script>
@@ -294,18 +296,12 @@
         
         
         var sup = new SuperficieRevolucion("texturas/debug.jpg",[0,4,2,4,0,2,2,0,0,0],500);
-        //var sup = new SuperficieRevolucion("texturas/debug.jpg",[0,0,1,0,1,2,0.9,2.6,0.9,3.6,0.8,3.8,0.8,7,0,7],1500);
         mat4.translate(sup.matrices, sup.matrices, [-8,0,0]);
         escena.agregarObjeto(sup);    
-        
-        var base = new BaseSillitas();
-        mat4.translate(base.matrices, base.matrices, [8,0,0]);
-        escena.agregarObjeto(base);    
-        
-        var techo = new TechoSillitas();
-        mat4.translate(techo.matrices, techo.matrices, [8,6,0]);
-        mat4.rotate(techo.matrices,techo.matrices, Math.PI/15, [1, 0, 0]);
-        escena.agregarObjeto(techo);   
+
+	var sillitas= new Sillitas();
+	mat4.translate(sillitas.matrices, sillitas.matrices, [8,0,0]);
+        escena.agregarObjeto(sillitas); 
         
         var vuelta = new Vuelta(12, 8.0);
         mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);
