@@ -168,9 +168,7 @@ Curva.prototype.supRepetida = function(puntos, origIdx, origUV, origNorm, pasos)
         }
         vNorm = vNorm.concat(origNorm);
         vUV = vUV.concat(origUV)
-    }
-    console.log(indices);
-    
+    }    
     var obj = new Objeto(new Malla(vert, indices), new Textura(vNorm, vUV, "texturas/pixel.png"));
     obj.modoRenderizado = gl.TRIANGLES;
     return obj;
