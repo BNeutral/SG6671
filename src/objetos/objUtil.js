@@ -6,11 +6,13 @@
 function normalesRadiales(vert)
 {
     var vNorm = [];
-    for (var i = 0, count = vert.length; i < count; i+=3)
+    for (var i = 0; i < vert.length; i+=3)
     {
         var v3 = vec3.fromValues(vert[i],vert[i+1],vert[i+2]);
         vec3.normalize(v3, v3);
-        vNorm.push(v3.x,v3.y, v3.z);
+        vNorm.push(v3[0]);
+        vNorm.push(v3[1]);
+        vNorm.push(v3[2]);
     }
     return vNorm;
 }

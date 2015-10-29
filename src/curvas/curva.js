@@ -32,7 +32,7 @@ Curva.prototype.objLinea = function(divisiones, txImage)
         vNorm.push(0);
         vNorm.push(1);
         uv.push(i/divisiones);
-        uv.push(i/divisiones);
+        uv.push(0);
         idx.push(i);
     }
     
@@ -58,10 +58,31 @@ Curva.prototype.evaluarDerivada = function(u) {}
 /**
  * Devuelve un objeto resultado de barrer con una serie de puntos por la curva
  * @param {Array} puntos         Array de puntos
- * @param {Int} divisiones       Numero de divisiones
+ * @param {Int} pasos            Numero de segmentos + 1
  * @returns {undefined}
  */
-Curva.prototype.supBarrido = function(puntos, paso)
+Curva.prototype.supBarrido = function(puntos, pasos)
 {
+    var vert = [];
+    var vNorm = [];
+    var vUV = [];
+    for (var i = 0; i <= pasos; ++i)
+    {
+        var puntoCurva = this.evaluar(i/pasos);
+        for (var j = 0; j < puntos.length/3; j+=3)
+        {
+            vert.push(puntos[j]+puntoCurva[0]);
+            vert.push(puntos[j+1]+puntoCurva[1]);
+            vert.push(puntos[j+2]+puntoCurva[2]);
+            vUV.push(j/puntos.length/3);
+            vUV.push(i/pasos);
+        }
+    }
+    for (var i = 0; i <= pasos; ++i)
+    {
+        vNorm.concat(normalesRadiales(puntos));
+    }
     
+    var indices = indicesGrilla(puntos.length/3, pasos+1);
+    return new Objeto(new Malla(vert, indices), new Textura(vNorm, vUV,"texturas/debug.jpg"));
 }

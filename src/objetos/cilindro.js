@@ -40,37 +40,8 @@ function CilindroSinTapa(divisionesRadiales, divisionesVerticales, txPath)
         vNorm.push(v3[1]);
         vNorm.push(v3[2]);
     }
-    
-    /*var indices = [];    
-    var agregar = 1;
-    var i = 0;
-    var long = divisionesRadiales*divisionesVerticales;
-    for (var i = 0; i < long; i += divisionesRadiales)
-    {
-        for (var j = 0; j < (divisionesRadiales+1); ++j)
-        {
-            indices.push(i+j);
-            indices.push(i+j+divisionesRadiales+1);
-        }
-        ndices.push(i);
-        indices.push(i+divisionesRadiales);
-    }*/
-    
-    var indices = [];    
-    var agregar = 1;
-    var i = 0;
-    var long = (divisionesRadiales*2*(divisionesVerticales-1))/2;
-    for (var contador = 0; contador < long; ++contador)
-    {
-        if ((contador != 0) && (contador % divisionesRadiales == 0))
-        {
-            i += divisionesRadiales - agregar;
-            agregar = -agregar;
-        }
-        indices.push(i);
-        indices.push(i+divisionesRadiales);
-        i += agregar;
-    }
+        
+    var indices = indicesGrilla(divisionesRadiales,divisionesVerticales);    
     
     Objeto.call(this, new Malla(vert, indices), new Textura(vNorm, uvCoord, txPath));
     this.setUpGL();

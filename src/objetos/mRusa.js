@@ -25,6 +25,32 @@ function MRusa()
         cil.hijos[2].textura.hueRamp(0.4,0.8,0.2);
         this.hijos.push(cil);
     }
+    
+    var pCirculo = Circulo(16, 1, [0,0,0]);
+    var riel = this.curva.supBarrido(pCirculo, 10);
+    this.hijos.push(riel);
 }
 
 heredarPrototype(MRusa, Objeto);
+
+/**
+ * Devuelve un array de vertices [x1,y1,z1,x2,y2,z2,...] con puntos que forman un criculo en el plano XY (repitiendo el ultimo)
+ * @param {type} radio
+ * @param {type} offset
+ * @returns {undefined}
+ */
+function Circulo(divisiones, radio, offset)
+{
+    if (!offset) offset = [0,0,0];
+    var vertices = [];
+      
+    for (var i = 0; i <= divisiones; ++i)
+    {
+        var angulo = 2*Math.PI*(i/divisiones);
+        vertices.push(radio*Math.cos(angulo)+offset[0]);
+        vertices.push(radio*Math.sin(angulo)+offset[1]);
+        vertices.push(0+offset[2]);
+    }
+    
+    return vertices;
+}

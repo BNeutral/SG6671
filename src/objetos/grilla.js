@@ -35,7 +35,16 @@ function Grilla(divisionesHorizontales, divisionesVerticales, txPath, uvEscalaX,
     divisionesVerticales += 1;
     divisionesHorizontales += 1;
     
-    var indices = [];    
+    var indices = indicesGrilla(divisionesHorizontales, divisionesVerticales);
+
+    Objeto.call(this, new Malla(vert, indices), new Textura(vNorm, uvCoord, txPath));
+}
+
+heredarPrototype(Grilla, Objeto);
+
+function indicesGrilla(divisionesHorizontales, divisionesVerticales)
+{
+    var indices = [];  
     var agregar = 1;
     var i = 0;
     var long = (divisionesHorizontales*2*(divisionesVerticales-1))/2;
@@ -50,8 +59,5 @@ function Grilla(divisionesHorizontales, divisionesVerticales, txPath, uvEscalaX,
         indices.push(i+divisionesHorizontales);
         i += agregar;
     }
-
-    Objeto.call(this, new Malla(vert, indices), new Textura(vNorm, uvCoord, txPath));
+    return indices;
 }
-
-heredarPrototype(Grilla, Objeto);

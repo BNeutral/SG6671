@@ -20,6 +20,7 @@
 
 <script type="text/javascript" src="src/curvas/curva.js"></script>
 <script type="text/javascript" src="src/curvas/bezier.js"></script>
+<script type="text/javascript" src="src/curvas/bezierConcat.js"></script>
 
 
 <script type="text/javascript" src="src/objetos/grilla.js"></script>
@@ -34,6 +35,8 @@
 <script type="text/javascript" src="src/objetos/silla.js"></script>
 <script type="text/javascript" src="src/objetos/ejes.js"></script>
 <script type="text/javascript" src="src/objetos/vuelta.js"></script>
+<script type="text/javascript" src="src/objetos/mRusa.js"></script>
+<script type="text/javascript" src="src/objetos/lago.js"></script>
 <script type="text/javascript" src="src/objetos/objUtil.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
@@ -285,15 +288,17 @@
 
     function agregarObjetos() 
     {
-        //escena.agregarObjeto(new Objeto(null, null));
-        //escena.agregarObjeto(new Grilla(10,10,[1.0,1.0,1.0,1.0],"texturas/debug.jpg",1.0,1.0));
         escena.agregarObjeto(new Ejes());
+        /*escena.agregarObjeto(new Objeto(null, null));
+        escena.agregarObjeto(new Grilla(10,10,[1.0,1.0,1.0,1.0],"texturas/debug.jpg",1.0,1.0));
         var cubo = new Cubo("texturas/debug.jpg");
         mat4.translate(cubo.matrices, cubo.matrices, [2,1,0]);
         escena.agregarObjeto(cubo);
         var cilindro = new Cilindro(8, 2, "texturas/debug.jpg");
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
-        escena.agregarObjeto(cilindro);    
+        escena.agregarObjeto(cilindro);    */
+        escena.agregarObjeto(new MRusa());
+        escena.agregarObjeto(new Lago());
 
         //el primer parametro es el numero de sillas
         // Si se ponen demasiadas, se va a amontonar...
@@ -306,7 +311,7 @@
         mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);
         mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/4, [0,-1,0]);
         escena.agregarObjeto(vuelta);
-        
+
         escena.agregarObjeto(new Piso());
     }
     

@@ -44,3 +44,15 @@ BezierConcat.prototype.evaluar = function(u)
     if (idx === this.segmentos) idx = this.segmentos-1;
     return this.curvas[idx].evaluar(u*this.segmentos-idx);
 }
+
+/**
+ * Devuelve el valor de la derivada de la curva en el punto como un vector [x,y,z]
+ * @param {type} u              Parametro para recorrer la curva, entre 0 y 1
+ * @returns {undefined}
+ */
+BezierConcat.prototype.evaluarDerivada = function(u)
+{
+    var idx = parseInt(u*this.segmentos);
+    if (idx === this.segmentos) idx = this.segmentos-1;
+    return this.curvas[idx].evaluarDerivada(u*this.segmentos-idx);
+}
