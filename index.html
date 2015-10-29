@@ -299,14 +299,18 @@
         var cilindro = new Cilindro(8, 2, "texturas/debug.jpg");
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
         escena.agregarObjeto(cilindro);    */
-        escena.agregarObjeto(new MRusa());
-        escena.agregarObjeto(new Lago());
+        var mRusa = new MRusa();
+        mat4.translate(mRusa.matrices, mRusa.matrices, [-10,0,10]);
+        escena.agregarObjeto(mRusa);
+        var lago = new Lago();
+        mat4.translate(lago.matrices, lago.matrices, [-3,0,11]);
+        escena.agregarObjeto(lago);
 
         //el primer parametro es el numero de sillas
         // Si se ponen demasiadas, se va a amontonar...
         //el segundo es la velocidad
 	var sillitas= new Sillitas(8,2);
-	mat4.translate(sillitas.matrices, sillitas.matrices, [8,0,10]);
+	mat4.translate(sillitas.matrices, sillitas.matrices, [12,0,0]);
         escena.agregarObjeto(sillitas); 
 
         var vuelta = new Vuelta(12, 8.0);

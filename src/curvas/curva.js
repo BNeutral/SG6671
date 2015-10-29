@@ -95,12 +95,12 @@ Curva.prototype.matrizLocal = function(u)
 }
 
 /**
- * Devuelve un objeto resultado de barrer con una serie de puntos por la curva. Se espera que los puntos sean planos en XY
+ * Devuelve un objeto resultado de barrer con una serie de puntos por la curva y conectarlos. Se espera que los puntos sean planos en YZ
  * @param {Array} puntos         Array de puntos
  * @param {Int} pasos            Numero de segmentos + 1
  * @returns {undefined}
  */
-Curva.prototype.supBarrido = function(puntos, pasos)
+Curva.prototype.supBarrido = function(puntos, pasos, normales)
 {
     var vert = [];
     var vNorm = [];
@@ -112,19 +112,66 @@ Curva.prototype.supBarrido = function(puntos, pasos)
         for (var j = 0; j < puntos.length; j+=3)
         {
             var punto = vec4.fromValues(puntos[j], puntos[j+1], puntos[j+2], 1);
+            var vNormal = vec4.fromValues(normales[j], normales[j+1], normales[j+2], 1);
             vec4.transformMat4(punto, punto, matriz);
+            vec4.transformMat4(vNormal, vNormal, matriz);
             vert.push(punto[0]+puntoCurva[0]);
             vert.push(punto[1]+puntoCurva[1]);
             vert.push(punto[2]+puntoCurva[2]);
+            var normal = vec3.fromValues(vNormal[0],vNormal[1],vNormal[2]);
+            vec3.normalize(normal, normal);
+            vNorm.push(normal[0]);
+            vNorm.push(normal[1]);
+            vNorm.push(normal[2]);
             vUV.push(j/puntos.length/3);
             vUV.push(i/pasos);
         }
     }
+        
+    var indices = indicesGrilla(puntos.length/3, pasos+1);
+    return new Objeto(new Malla(vert, indices), new Textura(vNorm, vUV,"texturas/pixel.png"));
+}
+
+/**
+ * Devuelve un objeto resultado de barrer con una serie de puntos por la curva y no conectarlos.
+ * Se espera que los puntos sean planos en YZ y se renderizen como TRIANGLES
+ * @param {Array} puntos         Array de puntos
+ * @param {Int} pasos            Numero de repeticiones
+ * @returns {undefined}
+ */
+Curva.prototype.supRepetida = function(puntos, origIdx, origUV, origNorm, pasos)
+{
+    var vert = [];
+    var vNorm = [];
+    var vUV = [];
+    var indices = [];
     for (var i = 0; i <= pasos; ++i)
     {
-        vNorm = normalesRadiales(vert);
+        var puntoCurva = this.evaluar(i/pasos);
+        var matriz = this.matrizLocal(i/pasos);
+        for (var j = 0; j < puntos.length; j+=3)
+        {
+            var punto = vec4.fromValues(puntos[j], puntos[j+1], puntos[j+2], 1);
+            vec4.transformMat4(punto, punto, matriz);
+            vert.push(punto[0]+puntoCurva[0]);
+            vert.push(punto[1]+puntoCurva[1]);
+            vert.push(punto[2]+puntoCurva[2]);
+        }
     }
+    var idxCount = origIdx.length;
+    for (var i = 0; i <= pasos; ++i)
+    {
+        var count = indices.length+idxCount;
+        for (j = indices.length; j < count; ++j)
+        {
+            indices.push(j);
+        }
+        vNorm = vNorm.concat(origNorm);
+        vUV = vUV.concat(origUV)
+    }
+    console.log(indices);
     
-    var indices = indicesGrilla(puntos.length/3, pasos+1);
-    return new Objeto(new Malla(vert, indices), new Textura(vNorm, vUV,"texturas/debug.jpg"));
+    var obj = new Objeto(new Malla(vert, indices), new Textura(vNorm, vUV, "texturas/pixel.png"));
+    obj.modoRenderizado = gl.TRIANGLES;
+    return obj;
 }

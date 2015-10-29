@@ -64,6 +64,7 @@ function Bezier(puntos)
     this.fx1 = this.calcF(px, this.grado, basesBezierDerivadas);
     this.fy1 = this.calcF(py, this.grado, basesBezierDerivadas);
     this.fz1 = this.calcF(pz, this.grado, basesBezierDerivadas);
+    
 }
 
 heredarPrototype(Bezier, Curva);

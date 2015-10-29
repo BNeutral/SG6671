@@ -10,11 +10,12 @@ function MRusa()
                         13,8,-3,   12,8,-5,   10,7,-5,
                         8,6,-5,   6,6,-4,   4,5,-3,
                         2,4,-2,   0,4,-2,  -1,4,0,
-                        -2,4,2,   -2,4,4,  -4,4,5,
-                        -6,4,5,   -8,1,4,  -9,1,2];
+                        -2,4,2,   -2,5,4,  -4,4,4,
+                        -6,3,4,   -10,1,4,  -9,1,2];
     this.curva = new BezierConcat(puntos,grado);
     this.hijos.push(this.curva.objLinea(128, null));
-    for (var i = 0; i < puntos.length; i += 3*grado)
+    
+    for (var i = 0; i < puntos.length; i += 3*grado) // Parantes
     {
         var cil = new Cilindro(8, 0, "texturas/pixel.png");
         mat4.translate(cil.matrices, cil.matrices, [puntos[i], puntos[i+1]/2, puntos[i+2]]);
@@ -26,23 +27,37 @@ function MRusa()
         this.hijos.push(cil);
     }
     
-    var pCirculoMedio = Circulo(4, 0.2, [0,0,0]);
-    var pCirculoChico1 = Circulo(4, 0.1, [0.3*Math.cos(Math.PI/4),0.1,0]);
-    var pCirculoChico2 = Circulo(4, 0.1, [-0.3*Math.cos(Math.PI/4),0.1,0]);
-    var riel = this.curva.supBarrido(pCirculoMedio, 64, [0,0,0]);
-    //this.hijos.push(riel);
-    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 64, [0,0,0]));
-    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 64, [0,0,0]));
+    var pCirculoMedio = Circulo(8, 0.25, [0,0,0]);
+    var pCirculoChico1 = Circulo(8, 0.1, [0,0.3,0.4]);
+    var pCirculoChico2 = Circulo(8, 0.1, [0,0.3,-0.4]);
+    var vNorm = normalesRadiales(pCirculoMedio);
+    this.hijos.push(this.curva.supBarrido(pCirculoMedio, 128, vNorm));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 128, vNorm));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 128, vNorm));
     
-    var carrito = new Ejes();
-    mat4.scale(carrito.matrices,carrito.matrices,[3,3,3]);
-    this.hijos.push(new SigueCurva(this.curva, 0.1, carrito));
+    var triDer = [0,0,0, 0,0.3,0, 0,0.3, 0.4];
+    var triIzq = [0,0,0, 0,0.3,0, 0,0.3, -0.4];
+    var tid = [0,1,2];
+    var tuv = [0,0,0,1,1,1];
+    var tnorm = [1,0,0,1,0,0,1,0,0];
+    this.hijos.push(this.curva.supRepetida(triDer, tid, tuv, tnorm,128));
+    this.hijos.push(this.curva.supRepetida(triIzq, tid, tuv, tnorm,128));
+    
+    var carrito = new Cubo("texturas/debug.jpg");
+    mat4.translate(carrito.matrices,carrito.matrices,[0,0.8,0]);
+    mat4.scale(carrito.matrices,carrito.matrices,[0.4,0.4,0.4]);
+    var recorredor = new SigueCurva(this.curva, 0.03, carrito);
+    this.hijos.push(recorredor);
+    
+    var ejes = new Ejes();
+    mat4.scale(ejes.matrices,ejes.matrices,[3,3,3]);
+    this.hijos.push(new SigueCurva(this.curva, 0.05, ejes));
 }
 
 heredarPrototype(MRusa, Objeto);
 
 /**
- * Devuelve un array de vertices [x1,y1,z1,x2,y2,z2,...] con puntos que forman un criculo en el plano XY (repitiendo el ultimo)
+ * Devuelve un array de vertices [x1,y1,z1,x2,y2,z2,...] con puntos que forman un criculo en el plano YZ (repitiendo el ultimo)
  * @param {type} radio
  * @param {type} offset
  * @returns {undefined}
@@ -55,9 +70,9 @@ function Circulo(divisiones, radio, offset)
     for (var i = 0; i <= divisiones; ++i)
     {
         var angulo = 2*Math.PI*(i/divisiones);
-        vertices.push(radio*Math.cos(angulo)+offset[0]);
-        vertices.push(radio*Math.sin(angulo)+offset[1]);
-        vertices.push(offset[2]);
+        vertices.push(offset[0]);
+        vertices.push(radio*Math.cos(angulo)+offset[1]);
+        vertices.push(radio*Math.sin(angulo)+offset[2]);           
     }
     
     return vertices;

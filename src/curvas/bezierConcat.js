@@ -41,7 +41,7 @@ BezierConcat.prototype.asegurarDerivadaContinua = function()
 BezierConcat.prototype.evaluar = function(u)
 {
     var idx = parseInt(u*this.segmentos);
-    if (idx === this.segmentos) idx = this.segmentos-1;
+    if (idx >= this.segmentos) idx = this.segmentos-1;
     return this.curvas[idx].evaluar(u*this.segmentos-idx);
 }
 
@@ -53,6 +53,6 @@ BezierConcat.prototype.evaluar = function(u)
 BezierConcat.prototype.evaluarDerivada = function(u)
 {
     var idx = parseInt(u*this.segmentos);
-    if (idx === this.segmentos) idx = this.segmentos-1;
+    if (idx >= this.segmentos) idx = this.segmentos-1;
     return this.curvas[idx].evaluarDerivada(u*this.segmentos-idx);
 }
