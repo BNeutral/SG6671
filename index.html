@@ -24,13 +24,14 @@
 
 <script type="text/javascript" src="src/objetos/grilla.js"></script>
 <script type="text/javascript" src="src/objetos/piso.js"></script>
+<script type="text/javascript" src="src/objetos/cubo.js"></script>
+<script type="text/javascript" src="src/objetos/disco.js"></script>
+<script type="text/javascript" src="src/objetos/cilindro.js"></script>
 <script type="text/javascript" src="src/objetos/superficieRevolucion.js"></script>
 <script type="text/javascript" src="src/objetos/baseSillitas.js"></script>
 <script type="text/javascript" src="src/objetos/techoSillitas.js"></script>
 <script type="text/javascript" src="src/objetos/sillitas.js"></script>
-<script type="text/javascript" src="src/objetos/cubo.js"></script>
-<script type="text/javascript" src="src/objetos/disco.js"></script>
-<script type="text/javascript" src="src/objetos/cilindro.js"></script>
+<script type="text/javascript" src="src/objetos/silla.js"></script>
 <script type="text/javascript" src="src/objetos/ejes.js"></script>
 <script type="text/javascript" src="src/objetos/vuelta.js"></script>
 <script type="text/javascript" src="src/objetos/objUtil.js"></script>
@@ -293,15 +294,15 @@
         var cilindro = new Cilindro(8, 2, "texturas/debug.jpg");
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
         escena.agregarObjeto(cilindro);    
-        
-        
-        var sup = new SuperficieRevolucion("texturas/debug.jpg",[0,4,2,4,0,2,2,0,0,0],500);
-        mat4.translate(sup.matrices, sup.matrices, [-8,0,0]);
-        escena.agregarObjeto(sup);    
 
 	var sillitas= new Sillitas();
 	mat4.translate(sillitas.matrices, sillitas.matrices, [8,0,0]);
         escena.agregarObjeto(sillitas); 
+        
+        var silla= new SistemaSillaSoga(1);
+	mat4.translate(silla.matrices, silla.matrices, [-8,5,0]);
+	mat4.rotate(silla.matrices, silla.matrices, Math.PI/2, [1,0,0]);
+        escena.agregarObjeto(silla); 
         
         var vuelta = new Vuelta(12, 8.0);
         mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);

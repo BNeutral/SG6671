@@ -17,7 +17,7 @@ var TechoSillitasCompleto = function()
     var anguloRot=Math.PI/4;
     
     //Cuantas sillitas voy a tener
-    var numSillitas=5;
+    var numSillitas=4;
     
     this.hijos.push(techo);
 
@@ -27,12 +27,15 @@ var TechoSillitasCompleto = function()
       
       var posicion=[Math.cos(angulo),Math.sin(angulo)];
      
-      var soga = new SillitasSoga();
+      var soga = new SistemaSillaSoga(angulo/(2*Math.PI));
       
       mat4.translate(soga.matrices, soga.matrices, [5*posicion[0],-1,5*posicion[1]]);
+      
       mat4.rotate(soga.matrices, soga.matrices, Math.PI/2, [1,0,0]);
       
       mat4.rotate(soga.matrices, soga.matrices, anguloRot, [-posicion[1],posicion[0],0]);
+      
+      mat4.rotate(soga.matrices, soga.matrices, angulo, [0,0,1]);
       
       this.hijos.push(soga);
     }
@@ -67,3 +70,26 @@ var SillitasSoga = function()
 
 
 heredarPrototype(SillitasSoga,Objeto); 
+
+
+var SistemaSillaSoga = function(color)
+{
+  Objeto.call(this, null, null);
+
+  var soga = new SillitasSoga();
+  var silla= new Silla(color);
+  
+  mat4.translate(silla.matrices,silla.matrices,[0,0,3.2]);
+  mat4.rotate(silla.matrices,silla.matrices,-Math.PI, [1,0,0]);
+  mat4.rotate(silla.matrices,silla.matrices,Math.PI, [0,0,1]);
+  mat4.scale(silla.matrices,silla.matrices,[0.7,0.7,0.7]);
+  
+  mat4.scale(soga.matrices,soga.matrices,[0.9,0.5,1]);
+  
+  this.hijos.push(soga);
+  this.hijos.push(silla);
+};
+
+
+heredarPrototype(SistemaSillaSoga,Objeto); 
+
