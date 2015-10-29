@@ -1,6 +1,11 @@
 var basesBezier = [];
 var basesBezierDerivadas = [];
 
+/**
+ * Una curva de bezier con la cantidad de puntos deseados
+ * @param {type} puntos         Array, 3 utens = 1 punto de control
+ * @returns {Bezier}
+ */
 function Bezier(puntos)
 {
     if (puntos.length <= 0) throw(new Error("Minimo esperado de 1 punto"));
@@ -24,6 +29,23 @@ function Bezier(puntos)
                 };
             })(this.grado,v);
         }
+        
+        if (!basesBezierDerivadas[this.grado]) basesBezierDerivadas[this.grado] = [];
+        if (!basesBezierDerivadas[this.grado][v]) 
+        {
+            basesBezierDerivadas[this.grado][v] = (function(n, v) 
+            {
+                var n = n;
+                var v = v; 
+                var comb = nComb(n,v);
+                return function(u)
+                {
+                   if (v === 0) return comb*-1*n*Math.pow(1-u,n-1); 
+                   if (v === n) return comb*n*Math.pow(u,n-1); 
+                   return comb*v*Math.pow(u,v-1)*-1*(n-v)*Math.pow(1-u,n-v-1); 
+                };
+            })(this.grado,v);
+        }
     }
     
     var px = [];
@@ -36,20 +58,40 @@ function Bezier(puntos)
         pz.push(puntos[i+2]);
     }
     
-    this.fx = this.calcF(px, this.grado);
-    this.fy = this.calcF(py, this.grado);
-    this.fz = this.calcF(pz, this.grado);
+    this.fx = this.calcF(px, this.grado, basesBezier);
+    this.fy = this.calcF(py, this.grado, basesBezier);
+    this.fz = this.calcF(pz, this.grado, basesBezier);
+    this.fx1 = this.calcF(px, this.grado, basesBezierDerivadas);
+    this.fy1 = this.calcF(py, this.grado, basesBezierDerivadas);
+    this.fz1 = this.calcF(pz, this.grado, basesBezierDerivadas);
 }
 
 heredarPrototype(Bezier, Curva);
 
 /**
+ * Ver curva.js
+ */
+Bezier.prototype.evaluar = function(u)
+{
+    return vec3.fromValues(this.fx(u), this.fy(u), this.fz(u));
+}
+
+/**
+ * Ver curva.js
+ */
+Bezier.prototype.evaluarDerivada = function(u)
+{
+    return vec3.fromValues(this.fx1(u), this.fy1(u), this.fz1(u));
+}
+
+/**
  * Calcula el resultado de base * puntos para una componente dada y devuelve una funcion f(u)
  * @param {type} grado          Grado de la curva que se esta calculando
  * @param {type} puntos         Puntos en una sola componente
- * @returns {undefined}
+ * @param {type} bases          Bases a utilizar
+ * @returns {Function}
  */
-Bezier.prototype.calcF = function(puntos, grado)
+Bezier.prototype.calcF = function(puntos, grado, bases)
 {
     var n = grado;
     var p = puntos;
@@ -58,7 +100,7 @@ Bezier.prototype.calcF = function(puntos, grado)
         var result = 0;
         for (var i = 0; i <= this.grado; ++i)
         {
-            result += basesBezier[n][i](u)*p[i];
+            result += bases[n][i](u)*p[i];
         }
         return result;
     }

@@ -6,21 +6,18 @@
  */
 function Curva(puntos, grado)
 {
-    this.fx; // Funcion para hallar los puntos de X
-    this.fy; // Idem y
-    this.fz; // Idem Z
-    this.fx1; // Funcion para hallar los puntos de X de la derivada
-    this.fy1; // Idem y
-    this.fz1; // Idem Z
+
 }
 
 /**
  * Retorna un objeto que es una linea, más que nada para visualizar las curvas
- * @param {type} divisiones     Numero de divisiones
- * @returns {undefined}
+ * @param {int} divisiones      Numero de divisiones
+ * @param {string} txImage      Path a la imagen si usa textura
+ * @returns {Objeto|Curva.prototype.objLinea.obj}
  */
-Curva.prototype.objLinea = function(divisiones)
+Curva.prototype.objLinea = function(divisiones, txImage)
 {
+    if (divisiones < 2) throw(new Error("Minimo esperado de 2 divisiones"));
     var vert = [];
     var idx = [];
     var vNorm = [];
@@ -39,7 +36,7 @@ Curva.prototype.objLinea = function(divisiones)
         idx.push(i);
     }
     
-    var obj = new Objeto(new Malla(vert, idx), new Textura(vNorm, uv, null));
+    var obj = new Objeto(new Malla(vert, idx), new Textura(vNorm, uv, txImage));
     obj.modoRenderizado = gl.LINE_STRIP;
     return obj;
 }
@@ -47,19 +44,24 @@ Curva.prototype.objLinea = function(divisiones)
 /**
  * Devuelve el valor de la curva en el punto como un vector [x,y,z]
  * @param {type} u              Parametro para recorrer la curva, entre 0 y 1
- * @returns {undefined}
+ * @returns {Vec3}
  */
-Curva.prototype.evaluar = function(u)
-{
-    return [this.fx(u), this.fy(u), this.fz(u)];
-}
+Curva.prototype.evaluar = function(u) {}
 
 /**
  * Devuelve el valor de la derivada a la curva en el punto como un vec3 (x,y,z)
- * @param {type} u
+ * @param {type} u              Parametro para recorrer la curva, entre 0 y 1
+ * @returns {Vec3}
+ */
+Curva.prototype.evaluarDerivada = function(u) {}
+
+/**
+ * Devuelve un objeto resultado de barrer con una serie de puntos por la curva
+ * @param {Array} puntos         Array de puntos
+ * @param {Int} divisiones       Numero de divisiones
  * @returns {undefined}
  */
-Curva.prototype.evaluarDerivada = function(u)
+Curva.prototype.supBarrido = function(puntos, paso)
 {
-   return [this.fx1(u), this.fy1(u), this.fz1(u)];
+    
 }
