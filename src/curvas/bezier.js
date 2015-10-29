@@ -42,7 +42,7 @@ function Bezier(puntos)
                 {
                    if (v === 0) return comb*-1*n*Math.pow(1-u,n-1); 
                    if (v === n) return comb*n*Math.pow(u,n-1); 
-                   return comb*v*Math.pow(u,v-1)*-1*(n-v)*Math.pow(1-u,n-v-1); 
+                   return comb*(v*Math.pow(u,v-1)*Math.pow(1-u,n-v)+Math.pow(u,v)*(-n+v)*Math.pow(1-u,n-v-1)); 
                 };
             })(this.grado,v);
         }

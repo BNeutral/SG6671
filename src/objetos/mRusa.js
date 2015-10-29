@@ -26,9 +26,17 @@ function MRusa()
         this.hijos.push(cil);
     }
     
-    var pCirculo = Circulo(16, 1, [0,0,0]);
-    var riel = this.curva.supBarrido(pCirculo, 10);
-    this.hijos.push(riel);
+    var pCirculoMedio = Circulo(4, 0.2, [0,0,0]);
+    var pCirculoChico1 = Circulo(4, 0.1, [0.3*Math.cos(Math.PI/4),0.1,0]);
+    var pCirculoChico2 = Circulo(4, 0.1, [-0.3*Math.cos(Math.PI/4),0.1,0]);
+    var riel = this.curva.supBarrido(pCirculoMedio, 64, [0,0,0]);
+    //this.hijos.push(riel);
+    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 64, [0,0,0]));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 64, [0,0,0]));
+    
+    var carrito = new Ejes();
+    mat4.scale(carrito.matrices,carrito.matrices,[3,3,3]);
+    this.hijos.push(new SigueCurva(this.curva, 0.1, carrito));
 }
 
 heredarPrototype(MRusa, Objeto);
@@ -49,7 +57,7 @@ function Circulo(divisiones, radio, offset)
         var angulo = 2*Math.PI*(i/divisiones);
         vertices.push(radio*Math.cos(angulo)+offset[0]);
         vertices.push(radio*Math.sin(angulo)+offset[1]);
-        vertices.push(0+offset[2]);
+        vertices.push(offset[2]);
     }
     
     return vertices;
