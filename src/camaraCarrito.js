@@ -29,9 +29,11 @@ CamaraCarrito.prototype.recalcView = function()
 {
   var inversa= mat4.create();
   mat4.identity(this.viewM);
-  mat4.invert(inversa,this.matriz);
-  mat4.mul(this.viewM,inversa,this.viewM);
   
   //Lo subo un poco para que no este en el piso del carrito
   mat4.translate(this.viewM,this.viewM,[0,-1.5,0]);
+    
+  mat4.invert(inversa,this.matriz);
+  mat4.mul(this.viewM,inversa,this.viewM);
+  
 };

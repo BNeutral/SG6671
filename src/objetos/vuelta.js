@@ -185,7 +185,7 @@ function VuCabinas(numero, circumRadio)
     var angulo = Math.PI/numero;
     for (var i = 0; i < numero/2; ++i)
     {
-        this.hijos.push(new VuCabina(angulo*i*4, circumRadio));
+        this.hijos.push(new VuCabinaM(angulo*i*4, circumRadio));
     }
 }
 
@@ -227,3 +227,92 @@ VuCabina.prototype.update = function(deltaT)
     mat4.rotate(this.matrices, this.matrices, -velocidadAngular*deltaT, [1.0,0.0,0.0]);
     Objeto.prototype.update.call(this,deltaT);
 };
+
+
+/**
+ * Una cabina. Segunda version
+ * @param {type} angulo         Angulo respecto al centro del circulo
+ * @param {type} circumRadio    Radio de la rueda hasta el punto superior de esta cabina
+ */
+function VuCabinaM(angulo, circumRadio)
+{
+    Objeto.call(this, null, null);
+    var adelante=new LadoCabina(angulo/(Math.PI*2));
+    var atras=new LadoCabina(angulo/(Math.PI*2));
+    var izq=new LadoCabina(angulo/(Math.PI*2));
+    var der=new LadoCabina(angulo/(Math.PI*2));
+    
+    mat4.rotate(izq.matrices, izq.matrices, Math.PI/2, [0,1,0.0]);
+    mat4.translate(izq.matrices,izq.matrices, [-0.95,0,-0.95]); 
+    
+    mat4.rotate(der.matrices, der.matrices, Math.PI/2, [0,1,0.0]);
+    mat4.translate(der.matrices,der.matrices, [-0.95,0,0.95]); 
+    
+    mat4.translate(atras.matrices,atras.matrices, [0,0,1.9]); 
+    
+    var arriba= new Cubo("texturas/pixel.png");
+    mat4.translate(arriba.matrices,arriba.matrices, [0,2.2,0.95]); 
+    mat4.scale(arriba.matrices, arriba.matrices, [1,0.05,1]); 
+    arriba.textura.hueRamp(angulo/(Math.PI*2), 0.2, 0.8);
+    
+    var abajo= new Cubo("texturas/pixel.png");
+    mat4.translate(abajo.matrices,abajo.matrices, [0,0,0.95]); 
+    mat4.scale(abajo.matrices, abajo.matrices, [1,0.05,1]); 
+    abajo.textura.hueRamp(angulo/(Math.PI*2), 0.2, 0.8);
+
+    this.hijos.push(adelante);
+    this.hijos.push(izq);
+    this.hijos.push(der);
+    this.hijos.push(atras);
+    this.hijos.push(arriba);
+    this.hijos.push(abajo);
+    
+    mat4.rotate(this.matrices ,this.matrices, angulo, [1.0,0.0,0.0]);
+    mat4.translate(this.matrices ,this.matrices , [0,0,circumRadio]);
+    mat4.rotate(this.matrices ,this.matrices , -angulo, [1.0,0.0,0.0]);
+    
+}
+heredarPrototype(VuCabinaM, Objeto);
+
+/**
+ * Antirotacion de las cabinas
+ * @param {type} deltaT
+ * @returns {undefined}
+ */
+VuCabinaM.prototype.update = function(deltaT) 
+{
+    this.contador += deltaT;
+    mat4.rotate(this.matrices, this.matrices, -velocidadAngular*deltaT, [1.0,0.0,0.0]);
+    Objeto.prototype.update.call(this,deltaT);
+};
+
+function LadoCabina(color)
+{
+    Objeto.call(this, null, null);
+    
+    var abajo= new Cubo("texturas/pixel.png");
+    mat4.translate(abajo.matrices,abajo.matrices, [0,0.5,0]); 
+    mat4.scale(abajo.matrices, abajo.matrices, [1,0.5,0.05]); 
+    abajo.textura.hueRamp(color, 0.2, 0.8);
+
+    var izq= new Cubo("texturas/pixel.png");
+    mat4.translate(izq.matrices,izq.matrices, [-0.9,1.1,0]); 
+    mat4.scale(izq.matrices, izq.matrices, [0.1,1,0.05]); 
+    izq.textura.hueRamp(color, 0.2, 0.8);
+    
+    var der= new Cubo("texturas/pixel.png");
+    mat4.translate(der.matrices,der.matrices, [0.9,1.1,0]); 
+    mat4.scale(der.matrices, der.matrices, [0.1,1,0.05]); 
+    der.textura.hueRamp(color, 0.2, 0.8);
+    
+    var arriba= new Cubo("texturas/pixel.png");
+    mat4.translate(arriba.matrices,arriba.matrices, [0,2,0]); 
+    mat4.scale(arriba.matrices, arriba.matrices, [1,0.25,0.05]); 
+    arriba.textura.hueRamp(color, 0.2, 0.8);
+    
+    this.hijos.push(abajo);
+    this.hijos.push(izq);
+    this.hijos.push(der);
+    this.hijos.push(arriba);
+}
+heredarPrototype(LadoCabina, Objeto);
