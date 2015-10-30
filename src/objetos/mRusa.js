@@ -46,11 +46,19 @@ function MRusa()
     var carro = new Carro();
     mat4.translate(carro.matrices,carro.matrices,[0,0.4,0]);
     mat4.scale(carro.matrices,carro.matrices,[0.4,0.4,0.4]);
-    var recorredor = new SigueCurva(this.curva, 0.03, carro);
-    this.hijos.push(recorredor);
+    this.recorredor = new SigueCurva(this.curva, 0.03, carro);
+    this.hijos.push(this.recorredor);
+    
 }
 
 heredarPrototype(MRusa, Objeto);
+
+MRusa.prototype.obtenerPosicionCarrito = function() 
+{
+    var matriz=mat4.create();
+    mat4.multiply(matriz, this.matrices, this.recorredor.obtenerPosicionCarrito()); 
+    return matriz; 
+};
 
 /**
  * Devuelve un array de vertices [x1,y1,z1,x2,y2,z2,...] con puntos que forman un criculo en el plano YZ (repitiendo el ultimo)

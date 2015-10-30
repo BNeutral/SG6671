@@ -25,7 +25,7 @@ heredarPrototype(CamaraOrbital, Camara);
  * Recalcula la view matrix
  * @returns {undefined}
  */
-Camara.prototype.recalcView = function()
+CamaraOrbital.prototype.recalcView = function()
 {
     mat4.identity(this.viewM);
     

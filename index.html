@@ -17,6 +17,8 @@
 <script type="text/javascript" src="src/camara.js"></script>
 <script type="text/javascript" src="src/camaraPrimeraPersona.js"></script>
 <script type="text/javascript" src="src/camaraOrbital.js"></script>
+<script type="text/javascript" src="src/camaraCarrito.js"></script>
+
 
 <script type="text/javascript" src="src/curvas/curva.js"></script>
 <script type="text/javascript" src="src/curvas/bezier.js"></script>
@@ -128,6 +130,7 @@
     var gl;
     var shaderProgram;
     var escena;    
+    var mRusa;
     var renderizarLineas = 0;  // Si se debe renderear como lineas en vez de superficies
     
     
@@ -283,6 +286,10 @@
 	  deltaY=0;
 	}
 	
+	mat=mRusa.obtenerPosicionCarrito();
+
+	escena.camaras[2].multMatriz(mat);
+	
         escena.setVariables(pitch,yaw,xPos,yPos,zPos,deltaX,deltaY);
         escena.update(deltaT);
         escena.dibujar();
@@ -301,7 +308,8 @@
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
         escena.agregarObjeto(cilindro);    
         escena.agregarObjeto(new Carro()); */
-        var mRusa = new MRusa();
+        
+        mRusa = new MRusa();
         mat4.translate(mRusa.matrices, mRusa.matrices, [-10,0,10]);
         escena.agregarObjeto(mRusa);
         var lago = new Lago();
@@ -331,9 +339,11 @@
         
         var camaraPrimera = new CamaraPrimeraPersona(canvas.width, canvas.height);
         var camaraOrbital = new CamaraOrbital(canvas.width, canvas.height);
+        var camaraCarrito = new CamaraCarrito(canvas.width, canvas.height);
 
         escena = new Escena(camaraPrimera);
         escena.agregarCamara(camaraOrbital);
+        escena.agregarCamara(camaraCarrito);
         agregarObjetos();
         
         document.onkeydown = handleKeyDown;
