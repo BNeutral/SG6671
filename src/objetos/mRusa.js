@@ -48,10 +48,6 @@ function MRusa()
     mat4.scale(carro.matrices,carro.matrices,[0.4,0.4,0.4]);
     var recorredor = new SigueCurva(this.curva, 0.03, carro);
     this.hijos.push(recorredor);
-    
-    var ejes = new Ejes();
-    mat4.scale(ejes.matrices,ejes.matrices,[3,3,3]);
-    this.hijos.push(new SigueCurva(this.curva, 0.05, ejes));
 }
 
 heredarPrototype(MRusa, Objeto);

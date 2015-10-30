@@ -64,12 +64,12 @@ Curva.prototype.ternaYUp = function(u)
 {
     var deriv = this.evaluarDerivada(u);
     vec3.normalize(deriv, deriv);
-    var y = vec3.fromValues(0,1,0);
+    var y = vec3.fromValues(0.0,1.0,0.0);
     var bin = vec3.create();
-    vec3.cross(bin, y, deriv)
-    vec3.normalize(bin, bin);
+    vec3.cross(bin, y, deriv);
+    //vec3.normalize(bin, bin);
     vec3.cross(y, deriv, bin);
-    vec3.normalize(y, y);
+    //vec3.normalize(y, y);
     return [deriv, y, bin];
 }
 
@@ -83,13 +83,13 @@ Curva.prototype.matrizLocal = function(u)
     var terna = this.ternaYUp(u);
     var matriz = mat4.create();
     matriz[0] = terna[0][0];
-    matriz[4] = terna[0][1];
-    matriz[8] = terna[0][2];
-    matriz[1] = terna[1][0];
+    matriz[1] = terna[0][1];
+    matriz[2] = terna[0][2];
+    matriz[4] = terna[1][0];
     matriz[5] = terna[1][1];
-    matriz[9] = terna[1][2];
-    matriz[2] = terna[2][0];
-    matriz[6] = terna[2][1];
+    matriz[6] = terna[1][2];
+    matriz[8] = terna[2][0];
+    matriz[9] = terna[2][1];
     matriz[10] = terna[2][2];
     return matriz;
 }
