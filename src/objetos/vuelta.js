@@ -185,7 +185,9 @@ function VuCabinas(numero, circumRadio)
     var angulo = Math.PI/numero;
     for (var i = 0; i < numero/2; ++i)
     {
-        this.hijos.push(new VuCabinaM(angulo*i*4, circumRadio));
+	var cabina= new VuCabina(angulo*i*4, circumRadio);
+
+        this.hijos.push(cabina);
     }
 }
 
@@ -260,16 +262,18 @@ function VuCabinaM(angulo, circumRadio)
     mat4.scale(abajo.matrices, abajo.matrices, [1,0.05,1]); 
     abajo.textura.hueRamp(angulo/(Math.PI*2), 0.2, 0.8);
 
+    this.hijos.push(arriba);
+    this.hijos.push(abajo);
+    
     this.hijos.push(adelante);
     this.hijos.push(izq);
     this.hijos.push(der);
     this.hijos.push(atras);
-    this.hijos.push(arriba);
-    this.hijos.push(abajo);
     
     mat4.rotate(this.matrices ,this.matrices, angulo, [1.0,0.0,0.0]);
     mat4.translate(this.matrices ,this.matrices , [0,0,circumRadio]);
     mat4.rotate(this.matrices ,this.matrices , -angulo, [1.0,0.0,0.0]);
+
     
 }
 heredarPrototype(VuCabinaM, Objeto);
@@ -309,10 +313,12 @@ function LadoCabina(color)
     mat4.translate(arriba.matrices,arriba.matrices, [0,2,0]); 
     mat4.scale(arriba.matrices, arriba.matrices, [1,0.25,0.05]); 
     arriba.textura.hueRamp(color, 0.2, 0.8);
+
     
     this.hijos.push(abajo);
     this.hijos.push(izq);
     this.hijos.push(der);
     this.hijos.push(arriba);
+
 }
 heredarPrototype(LadoCabina, Objeto);
