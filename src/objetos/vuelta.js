@@ -284,7 +284,7 @@ function VuCabinaPartes(color)
     this.hijos.push(der);
     this.hijos.push(atras);
     
-    mat4.translate(this.matrices,this.matrices, [0,-1.8,-0.95]); 
+    mat4.translate(this.matrices,this.matrices, [0,-2,-0.95]); 
     
 }
 heredarPrototype(VuCabinaPartes, Objeto);
