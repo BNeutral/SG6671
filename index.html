@@ -21,8 +21,8 @@
 <script type="text/javascript" src="src/curvas/curva.js"></script>
 <script type="text/javascript" src="src/curvas/bezier.js"></script>
 <script type="text/javascript" src="src/curvas/bezierConcat.js"></script>
-
-
+<script type="text/javascript" src="src/curvas/bspline3.js"></script>
+<script type="text/javascript" src="src/curvas/bspline3Concat.js"></script>
 
 <script type="text/javascript" src="src/objetos/grilla.js"></script>
 <script type="text/javascript" src="src/objetos/piso.js"></script>
@@ -38,8 +38,9 @@
 <script type="text/javascript" src="src/objetos/vuelta.js"></script>
 <script type="text/javascript" src="src/objetos/mRusa.js"></script>
 <script type="text/javascript" src="src/objetos/lago.js"></script>
-<script type="text/javascript" src="src/objetos/objUtil.js"></script>
 <script type="text/javascript" src="src/objetos/sigueCurva.js"></script>
+<script type="text/javascript" src="src/objetos/carro.js"></script>
+<script type="text/javascript" src="src/objetos/objUtil.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
@@ -298,7 +299,8 @@
         escena.agregarObjeto(cubo);
         var cilindro = new Cilindro(8, 2, "texturas/debug.jpg");
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
-        escena.agregarObjeto(cilindro);    */
+        escena.agregarObjeto(cilindro);    
+        escena.agregarObjeto(new Carro()); */
         var mRusa = new MRusa();
         mat4.translate(mRusa.matrices, mRusa.matrices, [-10,0,10]);
         escena.agregarObjeto(mRusa);

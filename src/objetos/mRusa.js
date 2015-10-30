@@ -2,7 +2,7 @@ function MRusa()
 {
     Objeto.call(this,null,null);
     var grado = 3;
-    var puntos = [-9,1,2, -8,1,0, -8,1,-2, -6,1,-3,
+    var puntos = [-9,1,4, -8,1,0, -8,1,-2, -6,1,-3,
                         -4,1,-4,  -2,2,-3,  -2,4,-1,
                         -2,6,1,   0,8,2,   2,7,3,
                         4,6,4,   6,6,3,   8,6,3,
@@ -10,8 +10,8 @@ function MRusa()
                         13,8,-3,   12,8,-5,   10,7,-5,
                         8,6,-5,   6,6,-4,   4,5,-3,
                         2,4,-2,   0,4,-2,  -1,4,0,
-                        -2,4,2,   -2,5,4,  -4,4,4,
-                        -6,3,4,   -10,1,4,  -9,1,2];
+                        -2,4,2,   -2,5,4,  -4,4,5,
+                        -6,3,6,   -10,1,8,  -9,1,4];
     this.curva = new BezierConcat(puntos,grado);
     this.hijos.push(this.curva.objLinea(128, null));
     
@@ -43,10 +43,10 @@ function MRusa()
     this.hijos.push(this.curva.supRepetida(triDer, tid, tuv, tnorm,128));
     this.hijos.push(this.curva.supRepetida(triIzq, tid, tuv, tnorm,128));
     
-    var carrito = new Cubo("texturas/debug.jpg");
-    mat4.translate(carrito.matrices,carrito.matrices,[0,0.8,0]);
-    mat4.scale(carrito.matrices,carrito.matrices,[0.4,0.4,0.4]);
-    var recorredor = new SigueCurva(this.curva, 0.03, carrito);
+    var carro = new Carro();
+    mat4.translate(carro.matrices,carro.matrices,[0,0.4,0]);
+    mat4.scale(carro.matrices,carro.matrices,[0.4,0.4,0.4]);
+    var recorredor = new SigueCurva(this.curva, 0.03, carro);
     this.hijos.push(recorredor);
     
     var ejes = new Ejes();

@@ -99,7 +99,7 @@ Bezier.prototype.calcF = function(puntos, grado, bases)
     return function(u)
     { 
         var result = 0;
-        for (var i = 0; i <= this.grado; ++i)
+        for (var i = 0; i <= n; ++i)
         {
             result += bases[n][i](u)*p[i];
         }
