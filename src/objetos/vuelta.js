@@ -185,7 +185,7 @@ function VuCabinas(numero, circumRadio)
     var angulo = Math.PI/numero;
     for (var i = 0; i < numero/2; ++i)
     {
-	var cabina= new VuCabina(angulo*i*4, circumRadio);
+	var cabina= new VuCabinaM(angulo*i*4, circumRadio);
 
         this.hijos.push(cabina);
     }
@@ -239,10 +239,25 @@ VuCabina.prototype.update = function(deltaT)
 function VuCabinaM(angulo, circumRadio)
 {
     Objeto.call(this, null, null);
-    var adelante=new LadoCabina(angulo/(Math.PI*2));
-    var atras=new LadoCabina(angulo/(Math.PI*2));
-    var izq=new LadoCabina(angulo/(Math.PI*2));
-    var der=new LadoCabina(angulo/(Math.PI*2));
+    var par=new VuCabinaPartes(angulo/(Math.PI*2));
+    
+    this.hijos.push(par);
+    
+    mat4.rotate(this.matrices ,this.matrices, angulo, [1.0,0.0,0.0]);
+    mat4.translate(this.matrices ,this.matrices , [0,0,circumRadio]);	
+    mat4.rotate(this.matrices ,this.matrices , -angulo, [1.0,0.0,0.0]);
+
+
+}
+heredarPrototype(VuCabinaM, Objeto);
+
+function VuCabinaPartes(color)
+{
+    Objeto.call(this, null, null);
+    var adelante=new LadoCabina(color);
+    var atras=new LadoCabina(color);
+    var izq=new LadoCabina(color);
+    var der=new LadoCabina(color);
     
     mat4.rotate(izq.matrices, izq.matrices, Math.PI/2, [0,1,0.0]);
     mat4.translate(izq.matrices,izq.matrices, [-0.95,0,-0.95]); 
@@ -255,28 +270,24 @@ function VuCabinaM(angulo, circumRadio)
     var arriba= new Cubo("texturas/pixel.png");
     mat4.translate(arriba.matrices,arriba.matrices, [0,2.2,0.95]); 
     mat4.scale(arriba.matrices, arriba.matrices, [1,0.05,1]); 
-    arriba.textura.hueRamp(angulo/(Math.PI*2), 0.2, 0.8);
+    arriba.textura.hueRamp(color, 0.2, 0.8);
     
     var abajo= new Cubo("texturas/pixel.png");
     mat4.translate(abajo.matrices,abajo.matrices, [0,0,0.95]); 
     mat4.scale(abajo.matrices, abajo.matrices, [1,0.05,1]); 
-    abajo.textura.hueRamp(angulo/(Math.PI*2), 0.2, 0.8);
+    abajo.textura.hueRamp(color, 0.2, 0.8);
 
     this.hijos.push(arriba);
     this.hijos.push(abajo);
-    
     this.hijos.push(adelante);
     this.hijos.push(izq);
     this.hijos.push(der);
     this.hijos.push(atras);
     
-    mat4.rotate(this.matrices ,this.matrices, angulo, [1.0,0.0,0.0]);
-    mat4.translate(this.matrices ,this.matrices , [0,0,circumRadio]);
-    mat4.rotate(this.matrices ,this.matrices , -angulo, [1.0,0.0,0.0]);
-
+    mat4.translate(this.matrices,this.matrices, [0,-1.8,-0.95]); 
     
 }
-heredarPrototype(VuCabinaM, Objeto);
+heredarPrototype(VuCabinaPartes, Objeto);
 
 /**
  * Antirotacion de las cabinas
