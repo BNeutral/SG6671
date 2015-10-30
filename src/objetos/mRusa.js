@@ -56,7 +56,13 @@ heredarPrototype(MRusa, Objeto);
 MRusa.prototype.obtenerPosicionCarrito = function() 
 {
     var matriz=mat4.create();
-    mat4.multiply(matriz, this.matrices, this.recorredor.obtenerPosicionCarrito()); 
+    
+    //La matriz de posicion tiene que tener en cuenta tanto la posicion del carrito 
+    //Como la de la montaña rusa en la escena
+    mat4.multiply(matriz, this.matrices, this.recorredor.matrices); 
+    
+    //Roto 90 para que mire "hacia adelante"
+    mat4.rotate(matriz,matriz,Math.PI/2,[0,-1,0]);
     return matriz; 
 };
 

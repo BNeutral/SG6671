@@ -4,7 +4,6 @@ function SigueCurva(curva, velocidad, objeto)
     this.curva = curva;
     this.u = 0;
     
-    this.matrizPosicion=mat4.create();
     this.velocidad = velocidad;
     this.hijos.push(objeto);
 }
@@ -21,15 +20,7 @@ SigueCurva.prototype.update = function(deltaT)
     var pos = this.curva.evaluar(this.u);
     mat4.identity(this.matrices);
     mat4.translate(this.matrices, this.matrices, pos);
-    
-    mat4.identity(this.matrizPosicion);
-    mat4.mul(this.matrizPosicion, this.matrices,this.matrizPosicion);
-    
+ 
     mat4.mul(this.matrices, this.matrices, this.curva.matrizLocal(this.u));
     Objeto.prototype.update.call(this,deltaT);
-};
-
-SigueCurva.prototype.obtenerPosicionCarrito = function() 
-{ 
-    return this.matrizPosicion; 
 };
