@@ -62,6 +62,7 @@ MRusa.prototype.obtenerPosicionCarrito = function()
     mat4.multiply(matriz, this.matrices, this.recorredor.matrices); 
     
     //Roto 90 para que mire "hacia adelante"
+    //mat4.translate(matriz,matriz,0.3,[0,1,0]);
     mat4.rotate(matriz,matriz,Math.PI/2,[0,-1,0]);
     return matriz; 
 };
