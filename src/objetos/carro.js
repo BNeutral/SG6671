@@ -14,12 +14,12 @@ function Carro()
 
     var s1 = new Silla(0.1);
     var s2 = new Silla(0.1);
-    mat4.translate(s1.matrices, s1.matrices, [-0.5,0,0]); 
+    mat4.translate(s1.matrices, s1.matrices, [-0.5,1,0]);   
+    mat4.translate(s2.matrices, s2.matrices, [0.25,1,0]);  
     mat4.rotate(s1.matrices, s1.matrices, Math.PI/2, [0,1,0]);
     mat4.rotate(s2.matrices, s2.matrices, Math.PI/2, [0,1,0]);
-    mat4.translate(s2.matrices, s2.matrices, [0,0,0.5]);    
-    mat4.scale(s1.matrices, s1.matrices, [0.8,1,0.25]);
-    mat4.scale(s2.matrices, s2.matrices, [0.8,1,0.25]);
+    mat4.scale(s1.matrices, s1.matrices, [0.95,0.5,0.25]);
+    mat4.scale(s2.matrices, s2.matrices, [0.95,0.5,0.25]);
    
     this.hijos.push(s1);
     this.hijos.push(s2);
