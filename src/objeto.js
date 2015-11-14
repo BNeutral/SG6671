@@ -5,13 +5,12 @@
  * @constructor
  * @abstract
  */
-function Objeto(malla, textura)
+function Objeto(malla, textura, normalData)
 {
-    this.malla;
-    this.textura;
-    
     this.malla = malla;
     this.textura = textura;
+    this.normalData = normalData;
+
     this.hijos = [];
     
     this.matrices = mat4.create();
@@ -35,9 +34,9 @@ Objeto.prototype.setUpGL = function()
 {
     this.webgl_normal_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.textura.vNormals), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normalData.vNormals), gl.STATIC_DRAW);
     this.webgl_normal_buffer.itemSize = 3;
-    this.webgl_normal_buffer.numItems = this.textura.vNormals.length / 3;
+    this.webgl_normal_buffer.numItems = this.normalData.vNormals.length / 3;
 
     this.webgl_texture_coord_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_texture_coord_buffer);

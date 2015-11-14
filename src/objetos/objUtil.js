@@ -1,11 +1,14 @@
 /**
- * Calcula normales "hacia fuera desde el centro" para el 
+ * Calcula normales "hacia fuera desde el centro". Las tangentes se hacen planas en XZ
  * @param {type} vert                       Array de vertices, 3 indices por elemento
- * @returns {Array|normalesRadiales.vNorm}
+ * @returns {NormalData}
  */
-function normalesRadiales(vert)
+function normalDataRadial(vert)
 {
     var vNorm = [];
+    var vTg = [];
+    var rotm = mat4.create();
+    mat4.rotate(rotm, rotm, Math.PI/2, [0,1,0]);
     for (var i = 0; i < vert.length; i+=3)
     {
         var v3 = vec3.fromValues(vert[i],vert[i+1],vert[i+2]);
@@ -13,20 +16,27 @@ function normalesRadiales(vert)
         vNorm.push(v3[0]);
         vNorm.push(v3[1]);
         vNorm.push(v3[2]);
+        
+        v3 = vec3.fromValues(vert[i],0,vert[i+2]);
+        vec3.normalize(v3, v3);
+        vec3.transformMat4(v3, v3, rotm);
+        vTg.push(v3[0]);
+        vTg.push(v3[1]);
+        vTg.push(v3[2]);        
     }
-    return vNorm;
+    return new NormalData(vNorm, vTg);
 }
 
 /**
- * Calcula normales via producto vectorial de restas entre los primeros 3 elementos
+ * Calcula normales via producto vectorial de restas
  * @param {type} vert           Array de vertices
- * @param {type} numPorGrupo    Vertices consecutirvos que tendran la misma normal
- * @returns {Array|normalesAutomaticas.vNorm}
+ * @returns {NormalData}
  */
-function normalesAutomaticas(vert, numPorGrupo)
+function normalesAutomaticas(vert)
 {
     var vNorm = [];
-    for (var i = 0; i < vert.length; i += numPorGrupo*3)
+    var vTg = [];
+    for (var i = 0; i < vert.length; i += 9)
     {
         var norm = vec3.create();
         var va = vec3.create();
@@ -34,18 +44,22 @@ function normalesAutomaticas(vert, numPorGrupo)
         var v1 = vec3.fromValues(vert[i],vert[i+1],vert[i+2]);
         var v2 = vec3.fromValues(vert[i+3],vert[i+4],vert[i+5]);
         var v3 = vec3.fromValues(vert[i+6],vert[i+7],vert[i+8]);
-        vec3.sub(va, v1, v2);
-        vec3.sub(vb, v1, v3);
+        vec3.sub(va, v2, v1);
+        vec3.sub(vb, v3, v1);
         vec3.cross(norm, va, vb);
         vec3.normalize(norm, norm);
-        for (var j = 0; j < numPorGrupo; ++j)
+        vec3.normalize(va, va);
+        for (var j = 0; j < 3; ++j)
         {
             vNorm.push(norm[0]);
             vNorm.push(norm[1]);
             vNorm.push(norm[2]);
+            vTg.push(va[0]);
+            vTg.push(va[1]);
+            vTg.push(va[2]);
         }
     }
-    return vNorm;
+    return new NormalData(vNorm, vTg);
 }
 
 /**

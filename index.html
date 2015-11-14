@@ -11,6 +11,7 @@
 <script type="text/javascript" src="src/herencia.js"></script>
 <script type="text/javascript" src="src/glSetup.js"></script>
 <script type="text/javascript" src="src/malla.js"></script>
+<script type="text/javascript" src="src/normalData.js"></script>
 <script type="text/javascript" src="src/textura.js"></script>
 <script type="text/javascript" src="src/objeto.js"></script>
 <script type="text/javascript" src="src/escena.js"></script>
@@ -286,9 +287,9 @@
 	  deltaY=0;
 	}
 	
-	mat=mRusa.obtenerPosicionCarrito();
+	//mat=mRusa.obtenerPosicionCarrito();
 
-	escena.camaras[2].multMatriz(mat);
+	//escena.camaras[2].multMatriz(mat);
 	
         escena.setVariables(pitch,yaw,xPos,yPos,zPos,deltaX,deltaY);
         escena.update(deltaT);
@@ -299,17 +300,20 @@
     function agregarObjetos() 
     {
         escena.agregarObjeto(new Ejes());
-        /*escena.agregarObjeto(new Objeto(null, null));
-        escena.agregarObjeto(new Grilla(10,10,[1.0,1.0,1.0,1.0],"texturas/debug.jpg",1.0,1.0));
+        escena.agregarObjeto(new Objeto(null, null));
+        escena.agregarObjeto(new Grilla(10,10,"texturas/debug.jpg",1.0,1.0));
         var cubo = new Cubo("texturas/debug.jpg");
         mat4.translate(cubo.matrices, cubo.matrices, [2,1,0]);
         escena.agregarObjeto(cubo);
         var cilindro = new Cilindro(8, 2, "texturas/debug.jpg");
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
-        escena.agregarObjeto(cilindro);    
-        escena.agregarObjeto(new Carro()); */
+        escena.agregarObjeto(cilindro);
+        var disco = new Disco(32, "texturas/debug.jpg");
+        mat4.translate(disco.matrices, disco.matrices, [0,2,0]);
+        escena.agregarObjeto(disco);    
+        /*escena.agregarObjeto(new Carro()); */
 
-        mRusa = new MRusa();
+       /* mRusa = new MRusa();
         mat4.translate(mRusa.matrices, mRusa.matrices, [-10,0,10]);
         escena.agregarObjeto(mRusa);
         var lago = new Lago();
@@ -326,7 +330,7 @@
         var vuelta = new Vuelta(12, 8.0);
         mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);
         mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/4, [0,-1,0]);
-        escena.agregarObjeto(vuelta);
+        escena.agregarObjeto(vuelta);*/
 
         escena.agregarObjeto(new Piso());
     }

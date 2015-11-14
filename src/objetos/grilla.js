@@ -31,13 +31,15 @@ function Grilla(divisionesHorizontales, divisionesVerticales, txPath, uvEscalaX,
     }
     
     var vNorm = vectorRepetitivo(vert.length/3, [0, 0, 1]);
+    var vTg = vectorRepetitivo(vert.length/3, [1, 0, 0]);
+    var vBn = vectorRepetitivo(vert.length/3, [0, 1, 0]);
     
     divisionesVerticales += 1;
     divisionesHorizontales += 1;
     
     var indices = indicesGrilla(divisionesHorizontales, divisionesVerticales);
 
-    Objeto.call(this, new Malla(vert, indices), new Textura(vNorm, uvCoord, txPath));
+    Objeto.call(this, new Malla(vert, indices), new Textura(uvCoord, txPath), new NormalData(vNorm, vTg, vBn));
 }
 
 heredarPrototype(Grilla, Objeto);

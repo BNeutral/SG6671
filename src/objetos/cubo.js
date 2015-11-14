@@ -7,9 +7,8 @@ function CuboMalTexturado(txPath)
 {
     var vert = [-1.0,-1.0,-1.0, -1.0,1.0,-1.0, 1.0,1.0,-1.0, 1.0,-1.0,-1.0, -1.0,-1.0,1.0, -1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,-1.0,1.0];
     var ind = [0,1,3,2,6,1,5,0,4,3,7,6,4,5];   
-    var vNorm = normalesRadiales(vert);
     var uv = [0.0,0.0, 0.0,1.0, 1.0,1.0, 1.0,0.0, 1.0,1.0, 1.0,0.0, 0.0,0.0, 0.0,1.0];
-    Objeto.call(this,new Malla(vert, ind), new Textura(vNorm, uv, txPath));
+    Objeto.call(this,new Malla(vert, ind), new Textura(uv, txPath), normalDataRadial(vert));
 }
 
 heredarPrototype(CuboMalTexturado, Objeto);
@@ -36,10 +35,9 @@ function Cubo(txPath)
                     20, 21, 22,     20, 22, 23    // izquierda
     ];
                         
-    var vNorm = normalesAutomaticas(vert, 4);
     var uv = vectorRepetitivo(6, [0.0,0.0, 1.0,0.0, 1.0,1.0, 0.0,1.0]);
     
-    Objeto.call(this,new Malla(vert, ind), new Textura(vNorm, uv, txPath));
+    Objeto.call(this,new Malla(vert, ind), new Textura(uv, txPath), normalesAutomaticas(vert));
     this.modoRenderizado = gl.TRIANGLES;
 }
 

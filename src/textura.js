@@ -5,33 +5,15 @@
  * @param {type} path           String con el camino hacia la imagen
  * @returns {Textura}
  */
-function Textura(vNormals, uvCoord, path)
+function Textura(uvCoord, path)
 {
-    this.vNormals;
-    this.uvCoord;
+    this.uvCoord = uvCoord;
     this.txImage;
     this.colorAmbiente = vec3.fromValues(0.2,0.2,0.2);
     this.colorIluminado = vec3.fromValues(0.8,0.8,0.8);
-        
-    if (vNormals === null) 
-    {
-        this.vNormals = [0.0,0.0,1.0, 0.0,0.0,1.0, 0.0,0.0,1.0, 0.0,0.0,1.0];
-    }
-    else
-    {
-        this.vNormals = vNormals;
-    }
-    
-    if (uvCoord === null) 
-    {
-        this.uvCoord = [0,0, 0,1, 1,1, 1,0];
-    }
-    else 
-    {
-        this.uvCoord = uvCoord;
-    }
 
-    if (path != null) this.initTexture(path);
+    if (path == null) this.initTexture("texturas/debug");
+    else this.initTexture(path);
 }
 
 Textura.prototype.initTexture = function(path)
@@ -51,14 +33,6 @@ Textura.prototype.handleLoadedTexture = function()
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
     gl.generateMipmap(gl.TEXTURE_2D);
     gl.bindTexture(gl.TEXTURE_2D, null);
-};
-
-Textura.prototype.flipNormales = function()
-{
-    for (var i = 0; i < this.vNormals.length; ++i)
-    {
-        this.vNormals[i] = -this.vNormals[i];
-    }
 };
 
 /**
