@@ -11,9 +11,33 @@ function NormalData(vNormals, vTg, vBinormals)
     this.vTg = vTg;
     this.vBinormals = vBinormals;
         
+    if (!vTg) 
+    {
+        this.malasTangentes();
+    }
+        
     if (!vBinormals) 
     {
         this.autoBinormales();
+    }
+}
+
+/**
+ * Calcula tangentes de escaza calidad para las normales dadas (son ortogonales pero cualquier direccion)
+ * @returns {undefined}
+ */
+NormalData.prototype.malasTangentes = function()
+{
+    this.vTg = [];
+    for (var i = 0; i < this.vNormals.length; i+=3)
+    {
+        var x = 1;
+        var y = 1;
+        var z = (this.vNormals[i]*x+this.vNormals[i+1]*y)/-this.vNormals[i+2];
+        var v = vec3.fromValues(x,y,z);
+        this.vTg.push(v[0]);
+        this.vTg.push(v[1]);
+        this.vTg.push(v[2]);
     }
 }
 

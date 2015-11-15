@@ -7,8 +7,8 @@ function Lago()
                     -2,0,-7,   -5,0,-5,   -4,0,-3,
                     -2,0,-2,  -4,0,1,   -3,0,3];
     var curvaParam = new BezierConcat(cVerts,3);
-    this.hijos.push(LagoTope(curvaParam, 128, 0.5));
-    this.hijos.push(LagoMedio(curvaParam, 128, 0.5));
+    this.hijos.push(LagoTope(curvaParam, 128, 0.1));
+    this.hijos.push(LagoMedio(curvaParam, 128, 0.1));
 }
 
 heredarPrototype(Lago, Objeto);
@@ -21,7 +21,9 @@ function LagoTope(curvaParam, divisiones, separacion)
     obj.malla.vertices.unshift(0);
     for (var i = 0; i < obj.malla.indices.length; ++i) obj.malla.indices[i] += 1;
     obj.malla.indices.unshift(0);
-    obj.textura.vNormals = vectorRepetitivo(divisiones+2, [0,1,0]);
+    obj.normalData.vNormals.unshift(0);
+    obj.normalData.vNormals.unshift(1);
+    obj.normalData.vNormals.unshift(0);
     obj.textura.uvCoord.unshift(0.5);
     obj.textura.uvCoord.unshift(1);
     obj.modoRenderizado = gl.TRIANGLE_FAN;
@@ -40,7 +42,7 @@ function LagoMedio(curvaParam, divisiones, separacion)
         obj.malla.vertices[i*3+1] += separacion;
     }
     obj.malla.indices = indicesGrilla(divisiones+1,2)
-    obj.textura.vNormals = normalesRadiales(obj.malla.vertices);
+    obj.normalData = normalDataRadial(obj.malla.vertices);
     for (var i = 0, count = obj.textura.uvCoord.length/2; i < count; ++i)
     {
         obj.textura.uvCoord.push(obj.textura.uvCoord[i*2]);

@@ -287,9 +287,9 @@
 	  deltaY=0;
 	}
 	
-	//mat=mRusa.obtenerPosicionCarrito();
+	mat=mRusa.obtenerPosicionCarrito();
 
-	//escena.camaras[2].multMatriz(mat);
+	escena.camaras[2].multMatriz(mat);
 	
         escena.setVariables(pitch,yaw,xPos,yPos,zPos,deltaX,deltaY);
         escena.update(deltaT);
@@ -311,9 +311,9 @@
         var disco = new Disco(32, "texturas/debug.jpg");
         mat4.translate(disco.matrices, disco.matrices, [0,2,0]);
         escena.agregarObjeto(disco);    
-        /*escena.agregarObjeto(new Carro()); */
+        //escena.agregarObjeto(new Carro());
 
-       /* mRusa = new MRusa();
+        mRusa = new MRusa();
         mat4.translate(mRusa.matrices, mRusa.matrices, [-10,0,10]);
         escena.agregarObjeto(mRusa);
         var lago = new Lago();
@@ -330,7 +330,7 @@
         var vuelta = new Vuelta(12, 8.0);
         mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);
         mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/4, [0,-1,0]);
-        escena.agregarObjeto(vuelta);*/
+        escena.agregarObjeto(vuelta);
 
         escena.agregarObjeto(new Piso());
     }

@@ -85,11 +85,11 @@ function SuperficieRevolucion(txPath,puntos,divAngulo)
       anguloAnterior=anguloNuevo;
     }
     
-    var vNorm = normalesRadiales(vert);
+    var normalData = normalDataRadial(vert);
     
     this.modoRenderizado = gl.TRIANGLES;
                         
-    Objeto.call(this,new Malla(vert, ind), new Textura(vNorm, uv, txPath));
+    Objeto.call(this,new Malla(vert, ind), new Textura(uv, txPath), normalData);
     
     this.modoRenderizado = gl.TRIANGLES;
     

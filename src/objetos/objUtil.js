@@ -28,11 +28,11 @@ function normalDataRadial(vert)
 }
 
 /**
- * Calcula normales via producto vectorial de restas
+ * Calcula normales via producto vectorial de restas. Asume centro en 0,0,0
  * @param {type} vert           Array de vertices
  * @returns {NormalData}
  */
-function normalesAutomaticas(vert)
+function normalesAutomaticas(vert, indices)
 {
     var vNorm = [];
     var vTg = [];
@@ -41,14 +41,16 @@ function normalesAutomaticas(vert)
         var norm = vec3.create();
         var va = vec3.create();
         var vb = vec3.create();
-        var v1 = vec3.fromValues(vert[i],vert[i+1],vert[i+2]);
-        var v2 = vec3.fromValues(vert[i+3],vert[i+4],vert[i+5]);
-        var v3 = vec3.fromValues(vert[i+6],vert[i+7],vert[i+8]);
+        var v1 = vec3.fromValues(vert[indices[i]*3],vert[indices[i]*3+1],vert[indices[i]*3+2]);
+        var v2 = vec3.fromValues(vert[indices[i+1]*3],vert[indices[i+1]*3+4],vert[indices[i+1]*3+5]);
+        var v3 = vec3.fromValues(vert[indices[i+2]*3+6],vert[indices[i+2]*3+7],vert[indices[i+2]*3+8]);
         vec3.sub(va, v2, v1);
         vec3.sub(vb, v3, v1);
         vec3.cross(norm, va, vb);
         vec3.normalize(norm, norm);
         vec3.normalize(va, va);
+        var out = vec3.dot(norm, norm);
+        if (out < 0) vec3.negate(norm, norm);
         for (var j = 0; j < 3; ++j)
         {
             vNorm.push(norm[0]);

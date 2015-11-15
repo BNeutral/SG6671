@@ -30,18 +30,16 @@ function MRusa()
     var pCirculoMedio = Circulo(8, 0.25, [0,0,0]);
     var pCirculoChico1 = Circulo(8, 0.1, [0,0.3,0.4]);
     var pCirculoChico2 = Circulo(8, 0.1, [0,0.3,-0.4]);
-    var vNorm = normalesRadiales(pCirculoMedio);
-    this.hijos.push(this.curva.supBarrido(pCirculoMedio, 128, vNorm));
-    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 128, vNorm));
-    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 128, vNorm));
+    var normalData = normalDataRadial(pCirculoMedio);
+    this.hijos.push(this.curva.supBarrido(pCirculoMedio, 128, normalData));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 128, normalData));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 128, normalData));
     
-    var triDer = [0,0,0, 0,0.3,0, 0,0.3, 0.4];
-    var triIzq = [0,0,0, 0,0.3,0, 0,0.3, -0.4];
-    var tid = [0,1,2];
-    var tuv = [0,0,0,1,1,1];
-    var tnorm = [1,0,0,1,0,0,1,0,0];
-    this.hijos.push(this.curva.supRepetida(triDer, tid, tuv, tnorm,128));
-    this.hijos.push(this.curva.supRepetida(triIzq, tid, tuv, tnorm,128));
+    var triang = [0,0,0, 0,0.3,0, 0,0.3,0.4, 0,0.3,-0.4];
+    var tid = [0,1,2, 0,1,3];
+    var tuv = [0,0, 0,1, 1,1, 1,1];
+    var tnorm = [1,0,0, 1,0,0, 1,0,0, 1,0,0];
+    this.hijos.push(UneRieles(this.curva));
     
     var carro = new Carro();
     mat4.translate(carro.matrices,carro.matrices,[0,0.4,0]);
@@ -87,4 +85,19 @@ function Circulo(divisiones, radio, offset)
     }
     
     return vertices;
+}
+
+/**
+ * Devuelve el objeto que son los triangulos que unen los tres coso del riel
+ * @param {type} curva
+ * @returns {undefined}
+ */
+function UneRieles(curva)
+{
+    var triang = [0,0,0, 0,0.3,0, 0,0.3,0.4, 0,0.3,-0.4];
+    var tuv = [0,0, 0,1, 0,0, 1,0, 1,1, 0,1]
+    var tid = [0,1,2, 0,1,3];
+    var tuv = [0,0, 0,1, 1,1, 1,1];
+    var tnorm = [0,1,0, 0.6,-0.8,0, -0.6,-0.8,0, 0,0,-1, -0,0,1];
+    return curva.supRepetida(triang, tid, tuv, tnorm, 128);
 }

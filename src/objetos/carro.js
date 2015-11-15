@@ -6,10 +6,9 @@ function Carro()
     var vert = [-1.0,0.0,-1.0, -1.0,1.8,-1.0, 1.0,0.0,-1.0, 1.0,1.8,-1.0, -1.0,0.0,1.0, -1.0,1.8,1.0, 1.0,0.0,1.0, 1.0,1.8,1.0,
                 2.0,0.0,-1.0,  2.0,1.0,-1.0, 2.0,0.0,1.0,  2.0,1.0,1.0 ];
     var ind = [4,0,6,2,10,8,11,9,9,8,10,11,6,7,4,5,0,1,2,3,8,9,9,11,3,7];//[0,1,3,2,6,1,5,0,4,3,7,6,4,5];   
-    var vNorm = normalesRadiales(vert);
     var uv = [0.0,0.0, 0.0,1, 0.5,1, 0.5,0.0, 0.5,1, 0.5,0.0, 0.0,0.0, 0.0,1
                 , 1,0.0, 1,0.5, 1,0.0, 1,0.5];
-    Objeto.call(this,new Malla(vert, ind), new Textura(vNorm, uv, "texturas/pixel.png"));
+    Objeto.call(this,new Malla(vert, ind), new Textura(uv, "texturas/pixel.png"), normalDataRadial(vert));
     this.textura.hueRamp(0, 0.8, 0.2);
 
     var s1 = new Silla(0.1);
@@ -23,7 +22,5 @@ function Carro()
    
     this.hijos.push(s1);
     this.hijos.push(s2);
-    
-    //mat4.rotate(this.matrices, this.matrices, Math.PI/4, [0,1,0]);
 }
 heredarPrototype(Carro, Objeto);

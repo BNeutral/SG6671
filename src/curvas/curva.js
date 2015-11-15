@@ -21,6 +21,7 @@ Curva.prototype.objLinea = function(divisiones, txImage)
     var vert = [];
     var idx = [];
     var vNorm = [];
+    var vTg = [];
     var uv = [];
     for (var i = 0; i <= divisiones; ++i)
     {
@@ -29,14 +30,19 @@ Curva.prototype.objLinea = function(divisiones, txImage)
         vert.push(vertice[1]);
         vert.push(vertice[2]);
         vNorm.push(0);
-        vNorm.push(0);
         vNorm.push(1);
+        vNorm.push(0);
+        var tg = this.evaluarDerivada(i/divisiones);
+        vec3.normalize(tg,tg);
+        vTg.push(tg[0]);
+        vTg.push(tg[1]);
+        vTg.push(tg[2]);
         uv.push(i/divisiones);
         uv.push(0);
         idx.push(i);
     }
     
-    var obj = new Objeto(new Malla(vert, idx), new Textura(vNorm, uv, txImage));
+    var obj = new Objeto(new Malla(vert, idx), new Textura(uv, txImage), new NormalData(vNorm, vTg));
     obj.modoRenderizado = gl.LINE_STRIP;
     return obj;
 }
@@ -100,10 +106,11 @@ Curva.prototype.matrizLocal = function(u)
  * @param {Int} pasos            Numero de segmentos + 1
  * @returns {undefined}
  */
-Curva.prototype.supBarrido = function(puntos, pasos, normales)
+Curva.prototype.supBarrido = function(puntos, pasos, normalData)
 {
     var vert = [];
     var vNorm = [];
+    var vTg = [];
     var vUV = [];
     for (var i = 0; i <= pasos; ++i)
     {
@@ -112,9 +119,11 @@ Curva.prototype.supBarrido = function(puntos, pasos, normales)
         for (var j = 0; j < puntos.length; j+=3)
         {
             var punto = vec4.fromValues(puntos[j], puntos[j+1], puntos[j+2], 1);
-            var vNormal = vec4.fromValues(normales[j], normales[j+1], normales[j+2], 1);
+            var vNormal = vec4.fromValues(normalData.vNormals[j], normalData.vNormals[j+1], normalData.vNormals[j+2], 1);
+            var vTag = vec4.fromValues(normalData.vTg[j], normalData.vTg[j+1], normalData.vTg[j+2], 1);
             vec4.transformMat4(punto, punto, matriz);
             vec4.transformMat4(vNormal, vNormal, matriz);
+            vec4.transformMat4(vTag, vTag, matriz);
             vert.push(punto[0]+puntoCurva[0]);
             vert.push(punto[1]+puntoCurva[1]);
             vert.push(punto[2]+puntoCurva[2]);
@@ -123,20 +132,25 @@ Curva.prototype.supBarrido = function(puntos, pasos, normales)
             vNorm.push(normal[0]);
             vNorm.push(normal[1]);
             vNorm.push(normal[2]);
+            var tg = vec3.fromValues(vTag[0],vTag[1],vTag[2]);
+            vec3.normalize(tg, tg);
+            vTg.push(tg[0]);
+            vTg.push(tg[1]);
+            vTg.push(tg[2]);
             vUV.push(j/puntos.length/3);
             vUV.push(i/pasos);
         }
     }
         
     var indices = indicesGrilla(puntos.length/3, pasos+1);
-    return new Objeto(new Malla(vert, indices), new Textura(vNorm, vUV,"texturas/pixel.png"));
+    return new Objeto(new Malla(vert, indices), new Textura(vUV,"texturas/pixel.png"), new NormalData(vNorm, vTg));
 }
 
 /**
  * Devuelve un objeto resultado de barrer con una serie de puntos por la curva y no conectarlos.
  * Se espera que los puntos sean planos en YZ y se renderizen como TRIANGLES
  * @param {Array} puntos         Array de puntos
- * @param {Int} pasos            Numero de repeticiones
+ * @param {Int} pasos            Numero de repeticiones, >= 1
  * @returns {undefined}
  */
 Curva.prototype.supRepetida = function(puntos, origIdx, origUV, origNorm, pasos)
@@ -161,15 +175,15 @@ Curva.prototype.supRepetida = function(puntos, origIdx, origUV, origNorm, pasos)
     var idxCount = origIdx.length;
     for (var i = 0; i <= pasos; ++i)
     {
-        var count = indices.length+idxCount;
-        for (j = indices.length; j < count; ++j)
+        var offset = (puntos.length/3)*i;
+        for (j = 0; j < idxCount; ++j)
         {
-            indices.push(j);
+            indices.push(offset+origIdx[j]);
         }
         vNorm = vNorm.concat(origNorm);
         vUV = vUV.concat(origUV)
     }    
-    var obj = new Objeto(new Malla(vert, indices), new Textura(vNorm, vUV, "texturas/pixel.png"));
+    var obj = new Objeto(new Malla(vert, indices), new Textura(vUV, "texturas/pixel.png"), new NormalData(vNorm));
     obj.modoRenderizado = gl.TRIANGLES;
     return obj;
 }

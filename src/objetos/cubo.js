@@ -34,10 +34,17 @@ function Cubo(txPath)
                     16, 17, 18,     16, 18, 19,   // derecha
                     20, 21, 22,     20, 22, 23    // izquierda
     ];
+    
+    var normales = [0,0,1, 0,0,1, 0,0,1, 0,0,1,
+                    0,0,-1, 0,0,-1, 0,0,-1, 0,0,-1,
+                    0,1,0, 0,1,0, 0,1,0, 0,1,0,
+                    0,-1,0, 0,-1,0, 0,-1,0, 0,-1,0,
+                    1,0,0, 1,0,0, 1,0,0, 1,0,0,
+                    -1,0,0, -1,0,0, -1,0,0, -1,0,0];
                         
     var uv = vectorRepetitivo(6, [0.0,0.0, 1.0,0.0, 1.0,1.0, 0.0,1.0]);
     
-    Objeto.call(this,new Malla(vert, ind), new Textura(uv, txPath), normalesAutomaticas(vert));
+    Objeto.call(this,new Malla(vert, ind), new Textura(uv, txPath), new NormalData(normales));
     this.modoRenderizado = gl.TRIANGLES;
 }
 
