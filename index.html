@@ -43,6 +43,7 @@
 <script type="text/javascript" src="src/objetos/lago.js"></script>
 <script type="text/javascript" src="src/objetos/sigueCurva.js"></script>
 <script type="text/javascript" src="src/objetos/carro.js"></script>
+<script type="text/javascript" src="src/objetos/skydome.js"></script>
 <script type="text/javascript" src="src/objetos/objUtil.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
@@ -332,6 +333,7 @@
         mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/4, [0,-1,0]);
         escena.agregarObjeto(vuelta);
 
+        escena.agregarObjeto(new SkyDome(32,32,"texturas/sky_sunbeams1.jpg"));
         escena.agregarObjeto(new Piso());
     }
     

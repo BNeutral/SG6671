@@ -1,6 +1,5 @@
 /**
  * Retorna un cilindro sin tapas objeto de 2x2x2
- * La textura en este cilindo se repite en X para que quede bien mapeada
  * @param {type} divisionesRadiales     Numero de divisiones radiales. Minimo 3 para un triangulo
  * @param {type} divisionesVerticales   Numero de divisiones verticales. Minimo 0
  * @param {type} txPath                 Path a textura
