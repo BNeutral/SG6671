@@ -57,8 +57,8 @@ function SkyDome(divisionesRadiales, divisionesVerticales, txPath)
         
     var indices = indicesGrilla(divisionesRadiales,divisionesVerticales); 
     var tex = new Textura(uvCoord, txPath);
-    tex.colorAmbiente = vec3.fromValues(1,1,1);
-    tex.kAmbiente = 1;
+    tex.colorShadeless = vec3.fromValues(1,1,1);
+    tex.kAmbiente = 0;
     tex.kDifuso = 0;
     tex.kEspecular = 0;
     

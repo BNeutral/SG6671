@@ -85,6 +85,7 @@ Objeto.prototype.dibujar = function(matrizPadre)
     {
         
         // Valores especulares difusos etc
+        gl.uniform3f(shaderProgram.shadelessColorUniform, this.textura.colorShadeless[0],this.textura.colorShadeless[1],this.textura.colorShadeless[2] );
         gl.uniform1f(shaderProgram.ambientKUniform, this.textura.kAmbiente );
         gl.uniform3f(shaderProgram.diffuseColorUniform, this.textura.colorDifuso[0], this.textura.colorDifuso[1], this.textura.colorDifuso[2] );
         gl.uniform1f(shaderProgram.diffuseKUniform, this.textura.kDifuso);

@@ -54,7 +54,10 @@
 
     uniform sampler2D uSampler;
     
-    uniform vec3 uColdDifuso;
+    uniform vec3 uColShadeless;
+    uniform vec3 uAmbientColor;
+    uniform float uKAmbiente;
+    uniform vec3 uColDifuso;
     uniform float uKDifuso;
     uniform vec3 uColEspecular;
     uniform float uKEspecular;
@@ -63,7 +66,11 @@
     void main(void) 
     {
         vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-        gl_FragColor = vec4(textureColor.rgb * uColdDifuso, textureColor.a);
+        vec3 componenteShadeless = uColShadeless * textureColor.rgb * uColDifuso;             // luz autoiluminada * colores difusos
+        vec3 componenteAmbiente = uKAmbiente * uAmbientColor * textureColor.rgb * uColDifuso; // k% * luz ambiente * colores difusos
+        vec3 componenteDifusa = uKDifuso * textureColor.rgb * uColDifuso;
+        vec3 componenteEspecular = uKEspecular * uColEspecular;
+        gl_FragColor = vec4(componenteShadeless + componenteAmbiente, textureColor.a);
     }
 </script>
 
@@ -96,8 +103,6 @@
     // uDirectionalColor - Representa el color de la luz puntual
     //
     // uUseLighting - Variable booleana que activa / descativa el cálculo de la iluminación
-    uniform vec3 uAmbientColor;
-    uniform float uKAmbiente;
     uniform vec3 uLightPosition;
     uniform vec3 uDirectionalColor;
     //
@@ -124,7 +129,7 @@
             vec3 light_dir_normalized =  normalize(uLightPosition - vec3( pos_camera_view ) );
             vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
             float directionalLightWeighting = max(dot(transformedNormal, light_dir_normalized), 0.0);
-            vLightWeighting = uAmbientColor * uKAmbiente + uDirectionalColor * directionalLightWeighting;
+            vLightWeighting = uDirectionalColor * directionalLightWeighting;
 		////////////////////////////////////////////
     }
 </script>

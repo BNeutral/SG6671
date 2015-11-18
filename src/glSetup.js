@@ -84,9 +84,9 @@ function initShaders()
     shaderProgram.directionalColorUniform = gl.getUniformLocation(shaderProgram, "uDirectionalColor"); // Color de la luz
     
     //Materiales
-    shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uColAmbiente");
+    shaderProgram.shadelessColorUniform = gl.getUniformLocation(shaderProgram, "uColShadeless");
     shaderProgram.ambientKUniform = gl.getUniformLocation(shaderProgram, "uKAmbiente");
-    shaderProgram.diffuseColorUniform = gl.getUniformLocation(shaderProgram, "uColdDifuso");
+    shaderProgram.diffuseColorUniform = gl.getUniformLocation(shaderProgram, "uColDifuso");
     shaderProgram.diffuseKUniform = gl.getUniformLocation(shaderProgram, "uKDifuso");
     shaderProgram.specularColorUniform = gl.getUniformLocation(shaderProgram, "uColEspecular");
     shaderProgram.specularKUniform = gl.getUniformLocation(shaderProgram, "uKEspecular");
