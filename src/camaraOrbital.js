@@ -5,7 +5,7 @@ var CamaraOrbital = function(ancho, alto)
     this._ancho = ancho;
     this._alto = alto;
     
-    this.pos = new vec3.fromValues(0,30,3);
+    this.pos = new vec3.fromValues(0,30,30);
     this.look = new vec3.fromValues(0,0,-1);
     this.up = new vec3.fromValues(0,1,0);
     this.modo = "persp";

@@ -5,7 +5,7 @@ function Lago()
                     4,0,1,  8,0,0,  8,0,-3,
                     8,0,-6,   4,0,-7,   1,0,-7,
                     -2,0,-7,   -5,0,-5,   -4,0,-3,
-                    -2,0,-2,  -4,0,1,   -3,0,3];
+                    -3,0,-1,  -4,0,1,   -3,0,3];
     var curvaParam = new BezierConcat(cVerts,3);
     this.hijos.push(LagoTope(curvaParam, 128, 0.1));
     this.hijos.push(LagoMedio(curvaParam, 128, 0.1));
@@ -13,9 +13,15 @@ function Lago()
 
 heredarPrototype(Lago, Objeto);
 
+Lago.prototype.update = function(deltaT) 
+{
+    this.hijos[0].textura.offsetUV[1] += deltaT / 10;
+    this.hijos[0].textura.offsetUV[1] %= 1;
+}
+
 function LagoTope(curvaParam, divisiones, separacion)
 {
-    var obj = curvaParam.objLinea(divisiones, "texturas/pixel.png");
+    var obj = curvaParam.objLinea(divisiones, "texturas/debug.jpg");
     obj.malla.vertices.unshift(0);
     obj.malla.vertices.unshift(0);
     obj.malla.vertices.unshift(0);

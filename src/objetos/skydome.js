@@ -58,11 +58,13 @@ function SkyDome(divisionesRadiales, divisionesVerticales, txPath)
     var indices = indicesGrilla(divisionesRadiales,divisionesVerticales); 
     var tex = new Textura(uvCoord, txPath);
     tex.colorAmbiente = vec3.fromValues(1,1,1);
-    tex.colorIluminado = vec3.fromValues(0,0,0);
+    tex.kAmbiente = 1;
+    tex.kDifuso = 0;
+    tex.kEspecular = 0;
     
     Objeto.call(this, new Malla(vert, indices), tex, new NormalData(vNorm, vTg, vBn));
     this.setUpGL();
-    mat4.scale(this.matrices, this.matrices, [50,50,50]);
+    mat4.scale(this.matrices, this.matrices, [5000,5000,5000]);
 }
 
 heredarPrototype(SkyDome, Objeto);

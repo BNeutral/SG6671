@@ -83,9 +83,17 @@ Objeto.prototype.dibujar = function(matrizPadre)
         
     if (this.malla != null)
     {
-        gl.uniform3f(shaderProgram.ambientColorUniform, this.textura.colorAmbiente[0], this.textura.colorAmbiente[1], this.textura.colorAmbiente[2] );
-        gl.uniform3f(shaderProgram.directionalColorUniform, this.textura.colorIluminado[0], this.textura.colorIluminado[1], this.textura.colorIluminado[2]);     
         
+        // Valores especulares difusos etc
+        gl.uniform1f(shaderProgram.ambientKUniform, this.textura.kAmbiente );
+        gl.uniform3f(shaderProgram.diffuseColorUniform, this.textura.colorDifuso[0], this.textura.colorDifuso[1], this.textura.colorDifuso[2] );
+        gl.uniform1f(shaderProgram.diffuseKUniform, this.textura.kDifuso);
+        gl.uniform3f(shaderProgram.specularColorUniform, this.textura.colorEspecular[0], this.textura.colorEspecular[1], this.textura.colorEspecular[2] );
+        gl.uniform1f(shaderProgram.specularKUniform, this.textura.kDifuso);
+        gl.uniform1f(shaderProgram.specularGlossiness, this.textura.glossiness);        
+       
+
+        // Arrays
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
@@ -105,8 +113,11 @@ Objeto.prototype.dibujar = function(matrizPadre)
         gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
 
         gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
+        gl.uniform2f(shaderProgram.uvOffsetUniform, this.textura.offsetUV[0], this.textura.offsetUV[1]);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
+        
+        
 
         if (renderizarLineas === 0) gl.drawElements(this.modoRenderizado, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
         else gl.drawElements(gl.LINE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);

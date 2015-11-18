@@ -52,7 +52,7 @@ Camara.prototype.recalcProj = function()
     mat4.identity(this.projM);
     if (this.modo === "persp")
     {
-       mat4.perspective(this.projM, Math.PI/2, this._ancho/this._alto, 0.1, 10000.0);
+       mat4.perspective(this.projM, Math.PI/4, this._ancho/this._alto, 0.1, 10000.0);
     }
     if (this.modo === "ortog")
     {

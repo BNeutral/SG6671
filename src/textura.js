@@ -9,8 +9,16 @@ function Textura(uvCoord, path)
 {
     this.uvCoord = uvCoord;
     this.txImage;
-    this.colorAmbiente = vec3.fromValues(0.2,0.2,0.2);
-    this.colorIluminado = vec3.fromValues(0.8,0.8,0.8);
+    
+    this.colorAmbiente = vec3.fromValues(1,1,1);
+    this.kAmbiente = 0.2;    
+    this.colorDifuso = vec3.fromValues(1,1,1);
+    this.kDifuso = 1;
+    this.colorEspecular = vec3.fromValues(1,1,1);
+    this.kEspecular = 1;
+    this.glossiness = 20;
+    
+    this.offsetUV = vec2.create();
 
     if (path == null) this.initTexture("texturas/debug");
     else this.initTexture(path);
@@ -73,9 +81,9 @@ Textura.prototype.hueRamp = function(param, pAmbiente, pIluminado)
         color = [1,0,x];
     }
     
+    this.kAmbiente = pAmbiente;
     for (var i = 0; i < 3; ++i)
     {
-        this.colorAmbiente[i] = color[i]*pAmbiente;
-        this.colorIluminado[i] = color[i]*pIluminado;
+        this.colorDifuso[i] = color[i]*pIluminado;
     }
 };

@@ -79,8 +79,18 @@ function initShaders()
     shaderProgram.ModelMatrixUniform = gl.getUniformLocation(shaderProgram, "uModelMatrix");
     shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
     shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
-    shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, "uUseLighting");
     shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
-    shaderProgram.lightingDirectionUniform = gl.getUniformLocation(shaderProgram, "uLightPosition");
-    shaderProgram.directionalColorUniform = gl.getUniformLocation(shaderProgram, "uDirectionalColor");
+    shaderProgram.lightingDirectionUniform = gl.getUniformLocation(shaderProgram, "uLightPosition"); // Posicion de la luz
+    shaderProgram.directionalColorUniform = gl.getUniformLocation(shaderProgram, "uDirectionalColor"); // Color de la luz
+    
+    //Materiales
+    shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uColAmbiente");
+    shaderProgram.ambientKUniform = gl.getUniformLocation(shaderProgram, "uKAmbiente");
+    shaderProgram.diffuseColorUniform = gl.getUniformLocation(shaderProgram, "uColdDifuso");
+    shaderProgram.diffuseKUniform = gl.getUniformLocation(shaderProgram, "uKDifuso");
+    shaderProgram.specularColorUniform = gl.getUniformLocation(shaderProgram, "uColEspecular");
+    shaderProgram.specularKUniform = gl.getUniformLocation(shaderProgram, "uKEspecular");
+    shaderProgram.specularGlossiness = gl.getUniformLocation(shaderProgram, "uGlossiness");    
+    
+    shaderProgram.uvOffsetUniform = gl.getUniformLocation(shaderProgram, "aUVOffset");
 }

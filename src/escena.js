@@ -9,7 +9,9 @@ function Escena(camara)
     this.camaras = [];
     this.camaraActual = 0;
     this.agregarCamara(camara);
-    this.luz = vec3.fromValues(5.0, 5.0, 10.0);
+    this.luz = vec3.fromValues(1000, 1000, 1000);
+    this.colorLuz = vec3.fromValues(1,1,1);
+    this.colorAmbiente = vec3.fromValues(1,1,1);
 
 }
 
@@ -121,13 +123,11 @@ Escena.prototype.dibujar = function()
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Configuración de la luz
-    // Se inicializan las variables asociadas con la Iluminación
-    var lighting;
-    lighting = true;
-    gl.uniform1i(shaderProgram.useLightingUniform, lighting);       
     var lightPosition = vec3.clone(this.luz);
     vec3.transformMat4(lightPosition, lightPosition, this.vMatrix());
-    gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);       	
+    gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);     
+    gl.uniform3f(shaderProgram.directionalColorUniform, this.colorLuz[0], this.colorLuz[1], this.colorLuz[2]);  
+    gl.uniform3f(shaderProgram.ambientColorUniform, this.colorAmbiente[0], this.colorAmbiente[1], this.colorAmbiente[2] );        
 
     this.camaras[this.camaraActual].dibujar();
 

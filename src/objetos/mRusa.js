@@ -98,6 +98,6 @@ function UneRieles(curva)
     var tuv = [0,0, 0,1, 0,0, 1,0, 1,1, 0,1]
     var tid = [0,1,2, 0,1,3];
     var tuv = [0,0, 0,1, 1,1, 1,1];
-    var tnorm = [0,1,0, 0.6,-0.8,0, -0.6,-0.8,0, 0,0,-1, -0,0,1];
+    var tnorm = [1,0,0, 1,0,0, 1,0,0, 1,0,0];
     return curva.supRepetida(triang, tid, tuv, tnorm, 128);
 }
