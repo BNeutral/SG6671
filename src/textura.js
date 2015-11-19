@@ -16,7 +16,7 @@ function Textura(uvCoord, path)
     this.kDifuso = 1;                               // Influencia del color base
     this.colorEspecular = vec3.fromValues(1,1,1);   // Color especular
     this.kEspecular = 1;                            // Influencia del color especular
-    this.glossiness = 20;                           // Glossiness especular
+    this.glossiness = 1;                           // Glossiness especular
     
     this.offsetUV = vec2.create();                  // Para texturas que scrollean
 

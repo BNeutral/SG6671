@@ -43,16 +43,20 @@
 <script type="text/javascript" src="src/objetos/lago.js"></script>
 <script type="text/javascript" src="src/objetos/sigueCurva.js"></script>
 <script type="text/javascript" src="src/objetos/carro.js"></script>
+<script type="text/javascript" src="src/objetos/esfera.js"></script>
 <script type="text/javascript" src="src/objetos/skydome.js"></script>
 <script type="text/javascript" src="src/objetos/objUtil.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
 
-    varying vec2 vTextureCoord;
-    varying vec3 vLightWeighting;
-
     uniform sampler2D uSampler;
+    
+    varying vec2 vTextureCoord;    
+    varying vec3 vEye;
+    varying vec3 vNormal;
+    uniform vec3 uLightDirection;    // Vector direccion de la luz
+    uniform vec3 uDirectionalColor; // Color de la luz direcional
     
     uniform vec3 uColShadeless;
     uniform vec3 uAmbientColor;
@@ -65,12 +69,16 @@
 
     void main(void) 
     {
+        vec3 vLuzLambert = uDirectionalColor * max(dot(vNormal, -uLightDirection), 0.0);
+        vec3 r = reflect(uLightDirection, vNormal);
+        float specular = pow( max(dot(r, vEye), 0.0), uGlossiness);
         vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
         vec3 componenteShadeless = uColShadeless * textureColor.rgb * uColDifuso;             // luz autoiluminada * colores difusos
         vec3 componenteAmbiente = uKAmbiente * uAmbientColor * textureColor.rgb * uColDifuso; // k% * luz ambiente * colores difusos
-        vec3 componenteDifusa = uKDifuso * textureColor.rgb * uColDifuso;
-        vec3 componenteEspecular = uKEspecular * uColEspecular;
-        gl_FragColor = vec4(componenteShadeless + componenteAmbiente, textureColor.a);
+        vec3 componenteDifusa = uKDifuso * textureColor.rgb * uColDifuso * vLuzLambert;
+        vec3 componenteEspecular = uKEspecular * uColEspecular * specular;
+        gl_FragColor = vec4(componenteShadeless + componenteAmbiente + componenteDifusa + componenteEspecular, textureColor.a);
+        //gl_FragColor = vec4(componenteShadeless + componenteAmbiente + componenteDifusa, textureColor.a);
     }
 </script>
 
@@ -84,32 +92,9 @@
     uniform mat4 uPMatrix;
     uniform mat3 uNMatrix;
 
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Variables uniformes involucradas en la iluminación de la escena
-    // 
-    // uAmbientColor - representa una intensidad de luz constante que
-    // ilumina a todos los objetos sin provenir de una dirección o fuente de luz determinada
-    // Es un nivel de intensidad de luz omni-presente
-    //
-    // uLightPosition - Representa la posición en coordenadas de la escena o mundo donde
-    // donde se ubica una luz puntual. Este tipo de luz irradia en todas direcciones.
-    // Las superficies (triángulos) cuya normal apunte a esta posición será las que recibirán
-    // la máxima intensidad y por lo tanto serán las más iluminadas.
-    // A medida que la normal se aparte de esta dirección la intensidad disminuye y en caso que se
-    // ubique de manera ortogonal la intensidad será nula
-    //
-    // uDirectionalColor - Representa el color de la luz puntual
-    //
-    // uUseLighting - Variable booleana que activa / descativa el cálculo de la iluminación
-    uniform vec3 uLightPosition;
-    uniform vec3 uDirectionalColor;
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////
-    
     varying vec2 vTextureCoord;
-    varying vec3 vLightWeighting;
+    varying vec3 vEye;
+    varying vec3 vNormal;
     
     uniform vec2 aUVOffset;
 
@@ -120,17 +105,13 @@
             vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
             // Transformamos al vértice al espacio de la proyección
             gl_Position = uPMatrix * pos_camera_view;
-            // Coordenada de textura sin modifiaciones
+            // Coordenada de textura
             vTextureCoord.x = aTextureCoord.x + aUVOffset.x;
             vTextureCoord.y = aTextureCoord.y + aUVOffset.y;
 
-            ////////////////////////////////////////////
-            // Calculos de la iluminación
-            vec3 light_dir_normalized =  normalize(uLightPosition - vec3( pos_camera_view ) );
-            vec3 transformedNormal = normalize(uNMatrix * aVertexNormal);
-            float directionalLightWeighting = max(dot(transformedNormal, light_dir_normalized), 0.0);
-            vLightWeighting = uDirectionalColor * directionalLightWeighting;
-		////////////////////////////////////////////
+            // Para iluminación
+            vEye = normalize(-vec3(pos_camera_view.xyz));
+            vNormal = normalize(uNMatrix * aVertexNormal);
     }
 </script>
 
@@ -307,7 +288,7 @@
 
     function agregarObjetos() 
     {
-        escena.agregarObjeto(new Ejes());
+        /*escena.agregarObjeto(new Ejes());
         escena.agregarObjeto(new Objeto(null, null));
         escena.agregarObjeto(new Grilla(10,10,"texturas/debug.jpg",1.0,1.0));
         var cubo = new Cubo("texturas/debug.jpg");
@@ -319,7 +300,7 @@
         var disco = new Disco(32, "texturas/debug.jpg");
         mat4.translate(disco.matrices, disco.matrices, [0,2,0]);
         escena.agregarObjeto(disco);    
-        //escena.agregarObjeto(new Carro());
+        escena.agregarObjeto(new Carro());*/
 
         mRusa = new MRusa();
         mat4.translate(mRusa.matrices, mRusa.matrices, [-10,0,10]);
@@ -337,11 +318,19 @@
 
         var vuelta = new Vuelta(12, 8.0);
         mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);
-        mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/4, [0,-1,0]);
+        mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/3, [0,-1,0]);
         escena.agregarObjeto(vuelta);
 
-        escena.agregarObjeto(new SkyDome(32,32,"texturas/sky_sunbeams1.jpg"));
+        escena.agregarObjeto(new SkyDome("texturas/sky_sunbeams1.jpg"));
         escena.agregarObjeto(new Piso());
+        
+        //Para teastear shading
+        var esfera = new Esfera(64,64,"texturas/debug.jpg", Math.PI);
+        esfera.textura.kAmbiente = 0;
+        esfera.textura.kDifuso = 1;
+        //esfera.textura.kEspecular = 1;
+        mat4.translate(esfera.matrices, esfera.matrices, [0,1,0]);
+        escena.agregarObjeto(esfera);
     }
     
     function webGLStart()

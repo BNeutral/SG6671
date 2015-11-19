@@ -9,7 +9,8 @@ function Escena(camara)
     this.camaras = [];
     this.camaraActual = 0;
     this.agregarCamara(camara);
-    this.luz = vec3.fromValues(1000, 1000, 1000);
+    this.luz = vec3.fromValues(1, -1, -1);
+    vec3.normalize(this.luz,this.luz);
     this.colorLuz = vec3.fromValues(1,1,1);
     this.colorAmbiente = vec3.fromValues(1,1,1);
 
@@ -122,10 +123,8 @@ Escena.prototype.dibujar = function()
     // Se habilita el color de borrado para la pantalla (Color Buffer) y otros buffers
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    // Configuración de la luz
-    var lightPosition = vec3.clone(this.luz);
-    vec3.transformMat4(lightPosition, lightPosition, this.vMatrix());
-    gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);     
+    // Luz
+    gl.uniform3fv(shaderProgram.lightingDirectionUniform, this.luz);     
     gl.uniform3f(shaderProgram.directionalColorUniform, this.colorLuz[0], this.colorLuz[1], this.colorLuz[2]);  
     gl.uniform3f(shaderProgram.ambientColorUniform, this.colorAmbiente[0], this.colorAmbiente[1], this.colorAmbiente[2] );        
 

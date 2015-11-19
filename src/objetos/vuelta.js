@@ -35,7 +35,7 @@ function VuParante(circumRadio, rotacion)
     var escala = distSuelo/2 + 0.5;
     var diferencia = escala - distSuelo;
     mat4.rotate(this.matrices,this.matrices, rotacion,[0,1,0]);
-    mat4.translate(this.matrices,this.matrices, [-1.2,diferencia,0]);
+    mat4.translate(this.matrices,this.matrices, [-1.4,diferencia,0]);
     mat4.scale(this.matrices, this.matrices, [0.1,escala,1]); 
     
     // Achicamos los cosos de arriba del cubo

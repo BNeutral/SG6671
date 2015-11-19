@@ -107,19 +107,15 @@ Objeto.prototype.dibujar = function(matrizPadre)
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
         gl.uniform1i(shaderProgram.samplerUniform, 0);
+        gl.uniform2f(shaderProgram.uvOffsetUniform, this.textura.offsetUV[0], this.textura.offsetUV[1]);
 
         gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, matrizModelado);
         var normalMatrix = mat3.create();
         mat3.normalFromMat4(normalMatrix, matrizModelado);
         gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
 
-        gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
-        gl.uniform2f(shaderProgram.uvOffsetUniform, this.textura.offsetUV[0], this.textura.offsetUV[1]);
-
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
         
-        
-
         if (renderizarLineas === 0) gl.drawElements(this.modoRenderizado, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
         else gl.drawElements(gl.LINE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
     }
