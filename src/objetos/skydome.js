@@ -5,7 +5,7 @@
  */
 function SkyDome(txPath)
 {
-    Esfera.call(this, 64, 64, "texturas/sky_sunbeams1.jpg", Math.PI/2);
+    Esfera.call(this, 64, 64, txPath, Math.PI/2);
     
     this.textura.colorShadeless = vec3.fromValues(1,1,1);
     this.textura.kAmbiente = 0;

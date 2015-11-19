@@ -33,7 +33,7 @@ function LagoTope(curvaParam, divisiones, separacion)
     obj.textura.uvCoord.unshift(0.5);
     obj.textura.uvCoord.unshift(1);
     obj.modoRenderizado = gl.TRIANGLE_FAN;
-    obj.textura.hueRamp(0.55,0.8,0.2);
+    obj.textura.hueRamp(0.55,1);
     obj.setUpGL();
     mat4.translate(obj.matrices, obj.matrices, [0,separacion,0]);
     return obj;

@@ -20,7 +20,6 @@ var CamaraOrbital = function(ancho, alto)
 
 heredarPrototype(CamaraOrbital, Camara); 
 
-
 /**
  * Recalcula la view matrix
  * @returns {undefined}

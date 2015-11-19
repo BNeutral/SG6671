@@ -214,7 +214,7 @@ function VuCabina(angulo, circumRadio)
     mat4.translate(this.matrices ,this.matrices , [0,0,circumRadio]);
     mat4.rotate(this.matrices ,this.matrices , -angulo, [1.0,0.0,0.0]);
 
-    this.textura.hueRamp(angulo/(Math.PI*2), 0.2, 0.8);
+    this.textura.hueRamp(angulo/(Math.PI*2), 1.0);
 }
 heredarPrototype(VuCabina, Cubo);
 
@@ -270,12 +270,12 @@ function VuCabinaPartes(color)
     var arriba= new Cubo("texturas/pixel.png");
     mat4.translate(arriba.matrices,arriba.matrices, [0,2.2,0.95]); 
     mat4.scale(arriba.matrices, arriba.matrices, [1,0.05,1]); 
-    arriba.textura.hueRamp(color, 0.2, 0.8);
+    arriba.textura.hueRamp(color, 1);
     
     var abajo= new Cubo("texturas/pixel.png");
     mat4.translate(abajo.matrices,abajo.matrices, [0,0,0.95]); 
     mat4.scale(abajo.matrices, abajo.matrices, [1,0.05,1]); 
-    abajo.textura.hueRamp(color, 0.2, 0.8);
+    abajo.textura.hueRamp(color, 1);
 
     this.hijos.push(arriba);
     this.hijos.push(abajo);
@@ -308,22 +308,22 @@ function LadoCabina(color)
     var abajo= new Cubo("texturas/pixel.png");
     mat4.translate(abajo.matrices,abajo.matrices, [0,0.5,0]); 
     mat4.scale(abajo.matrices, abajo.matrices, [1,0.5,0.05]); 
-    abajo.textura.hueRamp(color, 0.2, 0.8);
+    abajo.textura.hueRamp(color, 1);
 
     var izq= new Cubo("texturas/pixel.png");
     mat4.translate(izq.matrices,izq.matrices, [-0.9,1.1,0]); 
     mat4.scale(izq.matrices, izq.matrices, [0.1,1,0.05]); 
-    izq.textura.hueRamp(color, 0.2, 0.8);
+    izq.textura.hueRamp(color, 1);
     
     var der= new Cubo("texturas/pixel.png");
     mat4.translate(der.matrices,der.matrices, [0.9,1.1,0]); 
     mat4.scale(der.matrices, der.matrices, [0.1,1,0.05]); 
-    der.textura.hueRamp(color, 0.2, 0.8);
+    der.textura.hueRamp(color, 1);
     
     var arriba= new Cubo("texturas/pixel.png");
     mat4.translate(arriba.matrices,arriba.matrices, [0,2,0]); 
     mat4.scale(arriba.matrices, arriba.matrices, [1,0.25,0.05]); 
-    arriba.textura.hueRamp(color, 0.2, 0.8);
+    arriba.textura.hueRamp(color, 1);
 
     
     this.hijos.push(abajo);

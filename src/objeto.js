@@ -90,7 +90,7 @@ Objeto.prototype.dibujar = function(matrizPadre)
         gl.uniform3f(shaderProgram.diffuseColorUniform, this.textura.colorDifuso[0], this.textura.colorDifuso[1], this.textura.colorDifuso[2] );
         gl.uniform1f(shaderProgram.diffuseKUniform, this.textura.kDifuso);
         gl.uniform3f(shaderProgram.specularColorUniform, this.textura.colorEspecular[0], this.textura.colorEspecular[1], this.textura.colorEspecular[2] );
-        gl.uniform1f(shaderProgram.specularKUniform, this.textura.kDifuso);
+        gl.uniform1f(shaderProgram.specularKUniform, this.textura.kEspecular);
         gl.uniform1f(shaderProgram.specularGlossiness, this.textura.glossiness);        
        
 

@@ -20,7 +20,7 @@ function Textura(uvCoord, path)
     
     this.offsetUV = vec2.create();                  // Para texturas que scrollean
 
-    if (path == null) this.initTexture("texturas/debug");
+    if (!path) this.initTexture("texturas/debug");
     else this.initTexture(path);
 }
 
@@ -44,13 +44,12 @@ Textura.prototype.handleLoadedTexture = function()
 };
 
 /**
- * Setea un tono rgb a los colores de ambiente y de iluminación en base a un parametro
+ * Setea un tono rgb al color difuso
  * @param {type} param          Numero entre 0 y 1, recorre tonos
- * @param {type} pAmbiente      Para multiplicar por luz ambiente, entre 0 y 1
- * @param {type} pIluminado     Para multiplicar por luz directa, entre 0 y 1
+ * @param {type} multip         Para oscurecer el tono obtenido, un numero entre 0 y 1
  * @returns {undefined}
  */
-Textura.prototype.hueRamp = function(param, pAmbiente, pIluminado)
+Textura.prototype.hueRamp = function(param, multip)
 { 
     var color = [0,0,0];    
     var x = (1 - Math.abs((param*6)%2 - 1));
@@ -81,9 +80,8 @@ Textura.prototype.hueRamp = function(param, pAmbiente, pIluminado)
         color = [1,0,x];
     }
     
-    this.kAmbiente = pAmbiente;
     for (var i = 0; i < 3; ++i)
     {
-        this.colorDifuso[i] = color[i]*pIluminado;
+        this.colorDifuso[i] = color[i]*multip;
     }
 };

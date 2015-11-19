@@ -18,7 +18,7 @@ function Silla(color)
 
     mat4.scale(asiento.matrices, asiento.matrices, [1,0.1,1]); 
      
-    asiento.textura.hueRamp(color, 0.2, 0.8);
+    asiento.textura.hueRamp(color, 1);
     
     this.hijos.push(respaldo);
     this.hijos.push(asiento);

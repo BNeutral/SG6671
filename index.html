@@ -69,16 +69,18 @@
 
     void main(void) 
     {
-        vec3 vLuzLambert = uDirectionalColor * max(dot(vNormal, -uLightDirection), 0.0);
-        vec3 r = reflect(uLightDirection, vNormal);
-        float specular = pow( max(dot(r, vEye), 0.0), uGlossiness);
+        vec3 normal = normalize(vNormal);
+        float mLambert = max(dot(normal, -uLightDirection), 0.0);
+        vec3 vLuzLambert = uDirectionalColor * mLambert;
+        
+        vec3 r = reflect(uLightDirection, normal);
+        float specular = pow( max(dot(r, normalize(vEye)), 0.0), uGlossiness) * mLambert; // Multiplicamos por lambert para que no quede spec en el lado opuesto
         vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
         vec3 componenteShadeless = uColShadeless * textureColor.rgb * uColDifuso;             // luz autoiluminada * colores difusos
         vec3 componenteAmbiente = uKAmbiente * uAmbientColor * textureColor.rgb * uColDifuso; // k% * luz ambiente * colores difusos
         vec3 componenteDifusa = uKDifuso * textureColor.rgb * uColDifuso * vLuzLambert;
-        vec3 componenteEspecular = uKEspecular * uColEspecular * specular;
+        vec3 componenteEspecular = uKEspecular * specular * uColEspecular ;
         gl_FragColor = vec4(componenteShadeless + componenteAmbiente + componenteDifusa + componenteEspecular, textureColor.a);
-        //gl_FragColor = vec4(componenteShadeless + componenteAmbiente + componenteDifusa, textureColor.a);
     }
 </script>
 
@@ -110,8 +112,8 @@
             vTextureCoord.y = aTextureCoord.y + aUVOffset.y;
 
             // Para iluminación
-            vEye = normalize(-vec3(pos_camera_view.xyz));
-            vNormal = normalize(uNMatrix * aVertexNormal);
+            vEye = -vec3(pos_camera_view.xyz);
+            vNormal = uNMatrix * aVertexNormal;
     }
 </script>
 
@@ -321,15 +323,18 @@
         mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/3, [0,-1,0]);
         escena.agregarObjeto(vuelta);
 
-        escena.agregarObjeto(new SkyDome("texturas/sky_sunbeams1.jpg"));
+        escena.agregarObjeto(new SkyDome("texturas/sky.jpg"));
         escena.agregarObjeto(new Piso());
         
         //Para teastear shading
-        var esfera = new Esfera(64,64,"texturas/debug.jpg", Math.PI);
-        esfera.textura.kAmbiente = 0;
-        esfera.textura.kDifuso = 1;
-        //esfera.textura.kEspecular = 1;
-        mat4.translate(esfera.matrices, esfera.matrices, [0,1,0]);
+        var esfera = new Esfera(64,64,"texturas/pixel.png", Math.PI);
+        esfera.textura.kAmbiente = 0.2;
+        esfera.textura.colorDifuso = vec3.fromValues(0.2,1.0,0.5);
+        esfera.textura.kDifuso = 0.8;
+        esfera.textura.colorEspecular = vec3.fromValues(1,1,1);
+        esfera.textura.kEspecular = 0.5;
+        esfera.textura.glossiness = 10;
+        mat4.translate(esfera.matrices, esfera.matrices, [0,1,-2]);
         escena.agregarObjeto(esfera);
     }
     
