@@ -22,11 +22,8 @@ function Grilla(divisionesHorizontales, divisionesVerticales, txPath, uvEscalaX,
         for (var x = 0; x <= divisionesHorizontales; ++x)
         {
             uvX = x/divisionesHorizontales;
-            uvCoord.push(uvX*uvEscalaX);
-            uvCoord.push(uvY*uvEscalaY);
-            vert.push(-1 + 2*uvX);
-            vert.push(-1 + 2*uvY);
-            vert.push(0);
+            uvCoord.push(uvX*uvEscalaX, uvY*uvEscalaY);
+            vert.push(-1 + 2*uvX, -1 + 2*uvY, 0);
         }
     }
     

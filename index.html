@@ -30,9 +30,9 @@
 <script type="text/javascript" src="src/objetos/grilla.js"></script>
 <script type="text/javascript" src="src/objetos/piso.js"></script>
 <script type="text/javascript" src="src/objetos/cubo.js"></script>
+<script type="text/javascript" src="src/objetos/superficieRevolucion.js"></script>
 <script type="text/javascript" src="src/objetos/disco.js"></script>
 <script type="text/javascript" src="src/objetos/cilindro.js"></script>
-<script type="text/javascript" src="src/objetos/superficieRevolucion.js"></script>
 <script type="text/javascript" src="src/objetos/baseSillitas.js"></script>
 <script type="text/javascript" src="src/objetos/techoSillitas.js"></script>
 <script type="text/javascript" src="src/objetos/sillitas.js"></script>
@@ -70,11 +70,12 @@
     void main(void) 
     {
         vec3 normal = normalize(vNormal);
-        float mLambert = max(dot(normal, -uLightDirection), 0.0);
+        float mLambert = max(dot(normal, uLightDirection), 0.0);
         vec3 vLuzLambert = uDirectionalColor * mLambert;
         
-        vec3 r = reflect(uLightDirection, normal);
-        float specular = pow( max(dot(r, normalize(vEye)), 0.0), uGlossiness) * mLambert; // Multiplicamos por lambert para que no quede spec en el lado opuesto
+        vec3 r = 2.0 * max(dot(normal, uLightDirection), 0.0) * normal - uLightDirection;
+        //vec3 r = reflect(uLightDirection, normal); // <- Da glossines del otro lado también
+        float specular = pow(max(dot(r, normalize(vEye)), 0.0), uGlossiness) ;
         vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
         vec3 componenteShadeless = uColShadeless * textureColor.rgb * uColDifuso;             // luz autoiluminada * colores difusos
         vec3 componenteAmbiente = uKAmbiente * uAmbientColor * textureColor.rgb * uColDifuso; // k% * luz ambiente * colores difusos
@@ -290,19 +291,20 @@
 
     function agregarObjetos() 
     {
-        /*escena.agregarObjeto(new Ejes());
-        escena.agregarObjeto(new Objeto(null, null));
+        escena.agregarObjeto(new Ejes());
+        /*escena.agregarObjeto(new Objeto(null, null));
         escena.agregarObjeto(new Grilla(10,10,"texturas/debug.jpg",1.0,1.0));
         var cubo = new Cubo("texturas/debug.jpg");
         mat4.translate(cubo.matrices, cubo.matrices, [2,1,0]);
         escena.agregarObjeto(cubo);
-        var cilindro = new Cilindro(8, 2, "texturas/debug.jpg");
+        var cilindro = new Cilindro(8, 0, "texturas/debug.jpg");
         mat4.translate(cilindro.matrices, cilindro.matrices, [-2,1,0]);
         escena.agregarObjeto(cilindro);
         var disco = new Disco(32, "texturas/debug.jpg");
         mat4.translate(disco.matrices, disco.matrices, [0,2,0]);
         escena.agregarObjeto(disco);    
         escena.agregarObjeto(new Carro());*/
+        escena.agregarObjeto(new SistemaSillaSoga(0));
 
         mRusa = new MRusa();
         mat4.translate(mRusa.matrices, mRusa.matrices, [-10,0,10]);
@@ -314,11 +316,11 @@
         //el primer parametro es el numero de sillas
         // Si se ponen demasiadas, se va a amontonar...
         //el segundo es la velocidad
-	var sillitas= new Sillitas(8,2);
+	var sillitas= new Sillitas(16,2);
 	mat4.translate(sillitas.matrices, sillitas.matrices, [12,0,0]);
-        escena.agregarObjeto(sillitas); 
+        escena.agregarObjeto(sillitas);
 
-        var vuelta = new Vuelta(12, 8.0);
+        var vuelta = new Vuelta(18, 10.0);
         mat4.translate(vuelta.matrices, vuelta.matrices, [-5,0,-10]);
         mat4.rotate(vuelta.matrices, vuelta.matrices, Math.PI/3, [0,-1,0]);
         escena.agregarObjeto(vuelta);
@@ -327,7 +329,7 @@
         escena.agregarObjeto(new Piso());
         
         //Para teastear shading
-        var esfera = new Esfera(64,64,"texturas/pixel.png", Math.PI);
+        /*var esfera = new Esfera(64,64,"texturas/pixel.png", Math.PI);
         esfera.textura.kAmbiente = 0.2;
         esfera.textura.colorDifuso = vec3.fromValues(0.2,1.0,0.5);
         esfera.textura.kDifuso = 0.8;
@@ -335,7 +337,7 @@
         esfera.textura.kEspecular = 0.5;
         esfera.textura.glossiness = 10;
         mat4.translate(esfera.matrices, esfera.matrices, [0,1,-2]);
-        escena.agregarObjeto(esfera);
+        escena.agregarObjeto(esfera);*/
     }
     
     function webGLStart()

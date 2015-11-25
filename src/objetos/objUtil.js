@@ -66,16 +66,72 @@ function normalesAutomaticas(vert, indices)
 
 /**
  * Crea un array del largo pedido repetiendo esa cantidad de instancias del array repeticion
- * @param {type} largo                      Cantidad de veces que se repetira la repeticion
- * @param {type} repeticion                 Array a repetir
+ * @param {type} numeroRepeticiones             Cantidad de veces que se repetira la repeticion
+ * @param {type} array                          Array a repetir
  * @returns {vectorRepetitivo.vNorm|Array}
  */
-function vectorRepetitivo(largo, repeticion)
+function vectorRepetitivo(numeroRepeticiones, array)
 {
     var rep = [];
-    for (var i = 0, count = largo*repeticion.length; i < count; ++i)
+    for (var i = 0, count = numeroRepeticiones*array.length; i < count; ++i)
     {
-        rep.push(repeticion[i%repeticion.length]);
+        rep.push(array[i%array.length]);
     }
     return rep;
+}
+
+/**
+ * Dado un array de vertices [x1,y1,z1,x2,...] de origen, uno de destino y una matriz 4x4
+ * Aplica la transformacion al vertice y pone el nuevo vertice en el array de destino
+ * @param {type} origArray      Array de origen de vertices
+ * @param {type} destArray      Array al cual se le agregara el elemento al final
+ * @param {type} indice            Indice para obtener el vertice del array origne
+ * @param {type} matriz         Matriz
+ * @returns {undefined}
+ */
+function vertTransformPush(origArray, destArray, indice, matriz)
+{
+    var v3 = arrayV3(origArray,indice);
+    vec3.transformMat4(v3, v3, matriz);
+    v3toArray(v3, destArray);
+}
+
+/**
+ * Pone un v3 al final de un array de vertices estilo [x1,y1,z1,x2,y2,z2,..etc]
+ * @param {type} v3         Vec3
+ * @param {type} destArray  Array de destino
+ * @returns {undefined}
+ */
+function v3toArray(v3, destArray)
+{
+    destArray.push(v3[0]);
+    destArray.push(v3[1]);
+    destArray.push(v3[2]);
+}
+    
+    
+/**
+ * Dado dos arrays de vertices [x1,y1,z1,x2,...] y 2 indices, calcula la distancia entre vectores
+ * @param {type} array1     Array donde se usara el indice 1
+ * @param {type} indice1
+ * @param {type} array2     Array donde se usara el indice 2
+ * @param {type} indice2
+ * @returns {Number}        Distancia euclidea
+ */
+function arrayDist(array1, indice1, array2, indice2)
+{
+    var v1 = arrayV3(array1,indice1);
+    var v2 = arrayV3(array2,indice2);
+    return vec3.distance(v1,v2);
+}
+
+/**
+ * Dado un array de vertices [x1,y1,z1,x2,...] y 1 indices, devuelve el vec3 asociado al indice
+ * @param {type} array      Array de vertices
+ * @param {type} indice     Indice
+ * @returns {vec3}
+ */
+function arrayV3(array, indice)
+{
+    return vec3.fromValues(array[indice], array[indice+1], array[indice+2]);
 }

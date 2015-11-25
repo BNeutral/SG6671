@@ -5,7 +5,7 @@
  * @param {type} txPath                 Path a textura
  * @returns {undefined}
  */
-function CilindroSinTapa(divisionesRadiales, divisionesVerticales, txPath)
+/*function CilindroSinTapa(divisionesRadiales, divisionesVerticales, txPath)
 {
     divisionesVerticales += 2;   
     divisionesRadiales += 1;
@@ -58,7 +58,36 @@ function CilindroSinTapa(divisionesRadiales, divisionesVerticales, txPath)
     this.setUpGL();
 }
 
-heredarPrototype(CilindroSinTapa, Objeto);
+heredarPrototype(CilindroSinTapa, Objeto);*/
+
+/**
+ * Retorna un cilindro sin tapas objeto de 2x2x2 recto en direccion Y
+ * @param {type} divisionesRadiales     Numero de divisiones radiales. Minimo 3 para un triangulo
+ * @param {type} divisionesVerticales   Numero de divisiones verticales. Minimo 0
+ * @param {type} txPath                 Path a textura
+ * @returns {undefined}
+ */
+function CilindroSinTapa(divisionesRadiales, divisionesVerticales, txPath)
+{
+    var vertices = [];
+    var vNorm = [];
+    var vTg = [];
+    var vBn = [];
+    ++divisionesVerticales;
+    
+    var step = 2/divisionesVerticales;
+    for (var i = 0; i <= divisionesVerticales; ++i)
+    {
+        vertices.push(0, -1 + step*i, 1);
+        vNorm.push(0,0,1);
+        vTg.push(1,0,0);
+        vBn.push(0,1,0);
+    }
+    
+    SuperficieRevolucion.call(this, vertices, vNorm, vTg, vBn, divisionesRadiales, txPath);
+}
+
+heredarPrototype(CilindroSinTapa, SuperficieRevolucion);
 
 /**
  * Crea un cilindo que es un cilindro sin tapa más dos tapas. Ver la documentacion de las otras funciones para entender
@@ -72,11 +101,12 @@ function Cilindro(divisionesRadiales, divisionesVerticales, txPath)
     Objeto.call(this, null, null);
     
     this.hijos.push(new Disco(divisionesRadiales, txPath));
+    mat4.rotate(this.hijos[0].matrices, this.hijos[0].matrices, Math.PI/2, [1,0,0]);
     mat4.translate(this.hijos[0].matrices, this.hijos[0].matrices, [0,0,1]);
     
     this.hijos.push(new Disco(divisionesRadiales, txPath));
-    mat4.translate(this.hijos[1].matrices, this.hijos[1].matrices, [0,0,-1]);  
-    this.hijos[1].normalData.flipNormales();
+    mat4.rotate(this.hijos[1].matrices, this.hijos[1].matrices, Math.PI/2*3, [1,0,0]);
+    mat4.translate(this.hijos[1].matrices, this.hijos[1].matrices, [0,0,1]);  
     this.hijos[1].setUpGL();
     
     this.hijos.push(new CilindroSinTapa(divisionesRadiales, divisionesVerticales, txPath));

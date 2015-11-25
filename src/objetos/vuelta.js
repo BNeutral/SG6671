@@ -115,13 +115,13 @@ function VuUniones(divisiones, circumRadio)
         this.hijos.push(new CilindroSinTapa(6, 0, "texturas/pixel.png"));
         mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, angulo*i*4, [1.0,0.0,0.0]);
         mat4.translate(this.hijos[i].matrices,this.hijos[i].matrices, [0,0,circumRadio]);
-        mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, Math.PI/2, [0.0,1.0,0.0]);
-        mat4.scale(this.hijos[i].matrices, this.hijos[i].matrices, [0.05,0.05,largo]); 
+        mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, Math.PI/2, [0,0,1]);
+        mat4.scale(this.hijos[i].matrices, this.hijos[i].matrices, [0.05,largo, 0.05]); 
     }
     
     var eje = new Cilindro(12, 0, "texturas/pixel.png" );
-    mat4.rotate(eje.matrices, eje.matrices, Math.PI/2, [0.0,1.0,0.0]);
-    mat4.scale(eje.matrices, eje.matrices, [0.25,0.25,largo*1.4]); 
+    mat4.rotate(eje.matrices, eje.matrices, Math.PI/2, [0,0,1]);
+    mat4.scale(eje.matrices, eje.matrices, [0.25,largo*1.6, 0.25]); 
     this.hijos.push(eje);
 }
 heredarPrototype(VuUniones, Objeto);
@@ -144,7 +144,7 @@ function VuEstrella(divisiones, circumRadio)
     {
         this.hijos.push(new CilindroSinTapa(6, 0, "texturas/pixel.png"));
         mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, angulo*i, [1.0,0.0,0.0]);
-        mat4.scale(this.hijos[i].matrices, this.hijos[i].matrices, [0.05,0.05,largo]); 
+        mat4.scale(this.hijos[i].matrices, this.hijos[i].matrices, [0.05,largo,0.05]); 
     }
 }
 heredarPrototype(VuEstrella, Objeto);
@@ -165,9 +165,11 @@ function VuCirculo(divisiones, apotema)
     for (var i = 0; i < divisiones; ++i)
     {
         this.hijos.push(new CilindroSinTapa(8, 0, "texturas/pixel.png"));
-        mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, angulo*i+angulo/2*esPar, [1.0,0.0,0.0])
+        mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, angulo*i+angulo/2*esPar, [1.0,0.0,0.0]);
         mat4.translate(this.hijos[i].matrices,this.hijos[i].matrices, [0,apotema,0]);
-        mat4.scale(this.hijos[i].matrices, this.hijos[i].matrices, [0.05,0.05,largo]); 
+        mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, Math.PI/2, [1,0,0]);
+        mat4.scale(this.hijos[i].matrices, this.hijos[i].matrices, [0.05,largo,0.05]); 
+       
     }
 }
 heredarPrototype(VuCirculo, Objeto);

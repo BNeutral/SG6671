@@ -21,11 +21,8 @@ function Disco(divisionesRadiales, txPath)
         var angulo = 2*Math.PI*(w/divisionesRadiales)
         uvX = 0.5 * Math.cos(angulo) + 0.5;
         uvY = 0.5 * Math.sin(angulo) + 0.5;
-        uvCoord.push(uvX);
-        uvCoord.push(uvY);
-        vert.push((uvX-0.5)*2);
-        vert.push((uvY-0.5)*2);
-        vert.push(0);
+        uvCoord.push(uvX, uvY);
+        vert.push((uvX-0.5)*2, (uvY-0.5)*2, 0);
         
         var v3 = vec3.fromValues(vert[w*3],vert[w*3+1],0);
         vec3.normalize(v3, v3);

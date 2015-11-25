@@ -27,7 +27,7 @@ function Esfera(divisionesRadiales, divisionesVerticales, txPath, rangoAnguloVer
     {
         var anguloY = anguloVertical*(y/(divisionesVerticales - 1));
         uvY = 1 - (anguloY / anguloVertical) * (anguloVertical / Math.PI);
-        if (uvY > 0.99) uvY = 0.99; // Error de redondeo
+        if (uvY > 0.99) uvY = 0.99; // Error de sampleo en el polo
         var siny = Math.sin(anguloY);
         var cosy = Math.cos(anguloY);
         for (var x = 0; x < divisionesRadiales; ++x)
@@ -39,23 +39,13 @@ function Esfera(divisionesRadiales, divisionesVerticales, txPath, rangoAnguloVer
             var cosx = Math.cos(angulo);
             var sinx = Math.sin(angulo);
             var v3 = vec3.fromValues(cosx*siny, cosy, sinx*siny);
-            vert.push(v3[0]);
-            vert.push(v3[1]);
-            vert.push(v3[2]);
+            v3toArray(v3, vert);
             vec3.normalize(v3, v3);
-            vNorm.push(v3[0]);
-            vNorm.push(v3[1]);
-            vNorm.push(v3[2]);
+            v3toArray(vec3.normalize(v3, v3), vNorm);
             v3 = vec3.fromValues(-sinx*siny, 0, cosx*siny); // Derivada en angulo
-            vec3.normalize(v3, v3);
-            vTg.push(v3[0]);
-            vTg.push(v3[1]);
-            vTg.push(v3[2]);
+            v3toArray(vec3.normalize(v3, v3), vTg);
             v3 = vec3.fromValues(cosx*cosy, -siny, sinx*cosy); // Derivada en anguloY
-            vec3.normalize(v3, v3);
-            vBn.push(v3[0]);
-            vBn.push(v3[1]);
-            vBn.push(v3[2]);
+            v3toArray(vec3.normalize(v3, v3), vBn);
         }
     }
             

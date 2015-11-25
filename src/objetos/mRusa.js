@@ -17,13 +17,12 @@ function MRusa()
     
     for (var i = 0; i < puntos.length; i += 3*grado) // Parantes
     {
-        var cil = new Cilindro(32, 0, "texturas/pixel.png");
+        var cil = new CilindroSinTapa(32, 0, "texturas/pixel.png");
         mat4.translate(cil.matrices, cil.matrices, [puntos[i], puntos[i+1]/2, puntos[i+2]]);
-        mat4.rotate(cil.matrices, cil.matrices, Math.PI/2, [1,0,0]);
-        mat4.scale(cil.matrices, cil.matrices, [0.12,0.12,puntos[i+1]/2]);
-        cil.hijos[0].textura.hueRamp(0.4,0.8,0.2);
-        cil.hijos[1].textura.hueRamp(0.4,0.8,0.2);
-        cil.hijos[2].textura.hueRamp(0.4,0.8,0.2);
+        mat4.scale(cil.matrices, cil.matrices, [0.12,puntos[i+1]/2,0.12]);
+        cil.textura.hueRamp(0.4,0.8,0.2);
+        cil.textura.kEspecular = 0.6;
+        cil.textura.glossiness = 8;
         this.hijos.push(cil);
     }
     

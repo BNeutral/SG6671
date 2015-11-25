@@ -22,16 +22,11 @@ Lago.prototype.update = function(deltaT)
 function LagoTope(curvaParam, divisiones, separacion)
 {
     var obj = curvaParam.objLinea(divisiones, "texturas/debug.jpg");
-    obj.malla.vertices.unshift(0);
-    obj.malla.vertices.unshift(0);
-    obj.malla.vertices.unshift(0);
+    obj.malla.vertices.unshift(0,0,0);
     for (var i = 0; i < obj.malla.indices.length; ++i) obj.malla.indices[i] += 1;
     obj.malla.indices.unshift(0);
-    obj.normalData.vNormals.unshift(0);
-    obj.normalData.vNormals.unshift(1);
-    obj.normalData.vNormals.unshift(0);
-    obj.textura.uvCoord.unshift(0.5);
-    obj.textura.uvCoord.unshift(1);
+    obj.normalData.vNormals.unshift(0, 1, 0);
+    obj.textura.uvCoord.unshift(0.5, 1);
     obj.modoRenderizado = gl.TRIANGLE_FAN;
     obj.textura.hueRamp(0.55,1);
     obj.setUpGL();
@@ -51,8 +46,7 @@ function LagoMedio(curvaParam, divisiones, separacion)
     obj.normalData = normalDataRadial(obj.malla.vertices);
     for (var i = 0, count = obj.textura.uvCoord.length/2; i < count; ++i)
     {
-        obj.textura.uvCoord.push(obj.textura.uvCoord[i*2]);
-        obj.textura.uvCoord.push(1);
+        obj.textura.uvCoord.push(obj.textura.uvCoord[i*2], 1);
     }
     obj.modoRenderizado = gl.TRIANGLE_STRIP;
     

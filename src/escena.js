@@ -9,8 +9,8 @@ function Escena(camara)
     this.camaras = [];
     this.camaraActual = 0;
     this.agregarCamara(camara);
-    this.luz = vec3.fromValues(1, -1, -1);
-    vec3.normalize(this.luz,this.luz);
+    var num = 1/Math.sqrt(3);
+    this.luz = vec3.fromValues(-num, num, num); // Direccion opuesta
     this.colorLuz = vec3.fromValues(1,1,1);
     this.colorAmbiente = vec3.fromValues(1,1,1);
 
