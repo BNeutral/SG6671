@@ -13,7 +13,6 @@ function MRusa()
                         -2,4,2,   -2,5,4,  -4,4,5,
                         -6,3,6,   -10,1,8,  -9,1,4];
     this.curva = new BezierConcat(puntos,grado);
-    this.hijos.push(this.curva.objLinea(128, null));
     
     for (var i = 0; i < puntos.length; i += 3*grado) // Parantes
     {
@@ -82,6 +81,7 @@ function Circulo(divisiones, radio, offset)
         vertices.push(radio*Math.cos(angulo)+offset[1]);
         vertices.push(radio*Math.sin(angulo)+offset[2]);           
     }
+    console.log(vertices);
     
     return vertices;
 }

@@ -32,7 +32,9 @@ CamaraCarrito.prototype.recalcView = function()
   //Lo subo un poco para que no este en el piso del carrito
   mat4.translate(inversa,inversa,[0,1.5,0]);
   mat4.rotate(inversa,inversa,degToRad(pitch),[1,0,0]);
-  mat4.rotate(inversa,inversa,degToRad(yaw),[0,1,0]);
+  mat4.rotate(inversa,inversa,-degToRad(yaw),[0,1,0]);
+  mat4.scale(inversa,inversa,[-1,-1,-1]);
+  mat4.rotate(inversa,inversa, Math.PI,[1,0,0]);
   
   mat4.invert(inversa,inversa);
   mat4.identity(this.viewM);

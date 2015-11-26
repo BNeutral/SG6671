@@ -8,7 +8,9 @@
 function Textura(uvCoord, path)
 {
     this.uvCoord = uvCoord;
+    
     this.txImage;
+    this.normalMapImage;
     
     this.colorShadeless = vec3.fromValues(0,0,0);   // Para objetos auto iluminados
     this.kAmbiente = 0.2;                           // Influencia de luz global
@@ -16,7 +18,10 @@ function Textura(uvCoord, path)
     this.kDifuso = 1;                               // Influencia del color base
     this.colorEspecular = vec3.fromValues(1,1,1);   // Color especular
     this.kEspecular = 1;                            // Influencia del color especular
-    this.glossiness = 1;                           // Glossiness especular
+    this.glossiness = 1;                            // Glossiness especular
+    this.alpha = 1;                                 // Transparencia
+    this.porcentajeEspejo = 0;                      // Reflexion
+    this.colorEspejo = vec3.fromValues(1,1,1);      // Tinte de reflexion
     
     this.offsetUV = vec2.create();                  // Para texturas que scrollean
 

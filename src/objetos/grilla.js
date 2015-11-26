@@ -47,15 +47,18 @@ function indicesGrilla(divisionesHorizontales, divisionesVerticales)
     var agregar = 1;
     var i = 0;
     var long = (divisionesHorizontales*2*(divisionesVerticales-1))/2;
+    indices.push(0); // Facing
     for (var contador = 0; contador < long; ++contador)
     {
         if ((contador != 0) && (contador % divisionesHorizontales == 0))
         {
             i += divisionesHorizontales - agregar;
+            indices.push(i);
             agregar = -agregar;
         }
         indices.push(i);
         indices.push(i+divisionesHorizontales);
+        
         i += agregar;
     }
     return indices;

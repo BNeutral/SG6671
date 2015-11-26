@@ -26,17 +26,11 @@ Curva.prototype.objLinea = function(divisiones, txImage)
     for (var i = 0; i <= divisiones; ++i)
     {
         var vertice = this.evaluar(i/divisiones);
-        vert.push(vertice[0]);
-        vert.push(vertice[1]);
-        vert.push(vertice[2]);
-        vNorm.push(0);
-        vNorm.push(1);
-        vNorm.push(0);
+        vert.push(vertice[0], vertice[1], vertice[2]);
+        vNorm.push(0, 1, 0);
         var tg = this.evaluarDerivada(i/divisiones);
         vec3.normalize(tg,tg);
-        vTg.push(tg[0]);
-        vTg.push(tg[1]);
-        vTg.push(tg[2]);
+        vTg.push(tg[0], tg[1], tg[2]);
         uv.push(i/divisiones);
         uv.push(0);
         idx.push(i);
@@ -114,8 +108,8 @@ Curva.prototype.supBarrido = function(puntos, pasos, normalData)
     var vUV = [];
     for (var i = 0; i <= pasos; ++i)
     {
-        var puntoCurva = this.evaluar(i/pasos);
-        var matriz = this.matrizLocal(i/pasos);
+        var puntoCurva = this.evaluar(1-i/pasos);
+        var matriz = this.matrizLocal(1-i/pasos);
         for (var j = 0; j < puntos.length; j+=3)
         {
             var punto = vec4.fromValues(puntos[j], puntos[j+1], puntos[j+2], 1);
@@ -124,19 +118,13 @@ Curva.prototype.supBarrido = function(puntos, pasos, normalData)
             vec4.transformMat4(punto, punto, matriz);
             vec4.transformMat4(vNormal, vNormal, matriz);
             vec4.transformMat4(vTag, vTag, matriz);
-            vert.push(punto[0]+puntoCurva[0]);
-            vert.push(punto[1]+puntoCurva[1]);
-            vert.push(punto[2]+puntoCurva[2]);
+            vert.push(punto[0]+puntoCurva[0], punto[1]+puntoCurva[1], punto[2]+puntoCurva[2]);
             var normal = vec3.fromValues(vNormal[0],vNormal[1],vNormal[2]);
             vec3.normalize(normal, normal);
-            vNorm.push(normal[0]);
-            vNorm.push(normal[1]);
-            vNorm.push(normal[2]);
+            vNorm.push(normal[0], normal[1], normal[2]);
             var tg = vec3.fromValues(vTag[0],vTag[1],vTag[2]);
             vec3.normalize(tg, tg);
-            vTg.push(tg[0]);
-            vTg.push(tg[1]);
-            vTg.push(tg[2]);
+            vTg.push(tg[0], tg[1], tg[2]);
             vUV.push(j/puntos.length/3);
             vUV.push(i/pasos);
         }
@@ -167,9 +155,7 @@ Curva.prototype.supRepetida = function(puntos, origIdx, origUV, origNorm, pasos)
         {
             var punto = vec4.fromValues(puntos[j], puntos[j+1], puntos[j+2], 1);
             vec4.transformMat4(punto, punto, matriz);
-            vert.push(punto[0]+puntoCurva[0]);
-            vert.push(punto[1]+puntoCurva[1]);
-            vert.push(punto[2]+puntoCurva[2]);
+            vert.push(punto[0]+puntoCurva[0], punto[1]+puntoCurva[1], punto[2]+puntoCurva[2]);
         }
     }
     var idxCount = origIdx.length;

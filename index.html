@@ -51,6 +51,7 @@
     precision mediump float;
 
     uniform sampler2D uSampler;
+    uniform sampler2D uNSampler;
     
     varying vec2 vTextureCoord;    
     varying vec3 vEye;
@@ -66,6 +67,9 @@
     uniform vec3 uColEspecular;
     uniform float uKEspecular;
     uniform float uGlossiness;
+    uniform float uAlpha;
+    uniform float uMirrorPercent;
+    uniform vec3 uMirrorColor;
 
     void main(void) 
     {
@@ -81,7 +85,7 @@
         vec3 componenteAmbiente = uKAmbiente * uAmbientColor * textureColor.rgb * uColDifuso; // k% * luz ambiente * colores difusos
         vec3 componenteDifusa = uKDifuso * textureColor.rgb * uColDifuso * vLuzLambert;
         vec3 componenteEspecular = uKEspecular * specular * uColEspecular ;
-        gl_FragColor = vec4(componenteShadeless + componenteAmbiente + componenteDifusa + componenteEspecular, textureColor.a);
+        gl_FragColor = vec4(componenteShadeless + componenteAmbiente + componenteDifusa + componenteEspecular, textureColor.a * uAlpha);
     }
 </script>
 
@@ -303,8 +307,8 @@
         var disco = new Disco(32, "texturas/debug.jpg");
         mat4.translate(disco.matrices, disco.matrices, [0,2,0]);
         escena.agregarObjeto(disco);    
-        escena.agregarObjeto(new Carro());*/
-        escena.agregarObjeto(new SistemaSillaSoga(0));
+        escena.agregarObjeto(new Carro());
+        escena.agregarObjeto(new SistemaSillaSoga(0));*/
 
         mRusa = new MRusa();
         mat4.translate(mRusa.matrices, mRusa.matrices, [-10,0,10]);
@@ -329,15 +333,16 @@
         escena.agregarObjeto(new Piso());
         
         //Para teastear shading
-        /*var esfera = new Esfera(64,64,"texturas/pixel.png", Math.PI);
+        var esfera = new Esfera(64,64,"texturas/debug.jpg", Math.PI);
         esfera.textura.kAmbiente = 0.2;
         esfera.textura.colorDifuso = vec3.fromValues(0.2,1.0,0.5);
         esfera.textura.kDifuso = 0.8;
-        esfera.textura.colorEspecular = vec3.fromValues(1,1,1);
-        esfera.textura.kEspecular = 0.5;
-        esfera.textura.glossiness = 10;
+        esfera.textura.colorEspecular = vec3.fromValues(1,1,0);
+        esfera.textura.kEspecular = 0.8;
+        esfera.textura.glossiness = 50;
+        //esfera.textura.alpha = 0.8;
         mat4.translate(esfera.matrices, esfera.matrices, [0,1,-2]);
-        escena.agregarObjeto(esfera);*/
+        escena.agregarObjeto(esfera);
     }
     
     function webGLStart()

@@ -64,6 +64,14 @@ function initShaders()
     }
 
     gl.useProgram(shaderProgram);
+    
+    // Alpha blending
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    
+    //Backface culling
+    //gl.enable(gl.CULL_FACE);
+    //gl.cullFace(gl.BACK);
 
     shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
     gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
@@ -79,6 +87,7 @@ function initShaders()
     shaderProgram.ModelMatrixUniform = gl.getUniformLocation(shaderProgram, "uModelMatrix");
     shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
     shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+    shaderProgram.normalMapSamplerUniform = gl.getUniformLocation(shaderProgram, "uNSampler");
     
     shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor"); // Color ambiente
     shaderProgram.lightingDirectionUniform = gl.getUniformLocation(shaderProgram, "uLightDirection"); // Direccion de la luz
@@ -91,7 +100,10 @@ function initShaders()
     shaderProgram.diffuseKUniform = gl.getUniformLocation(shaderProgram, "uKDifuso");
     shaderProgram.specularColorUniform = gl.getUniformLocation(shaderProgram, "uColEspecular");
     shaderProgram.specularKUniform = gl.getUniformLocation(shaderProgram, "uKEspecular");
-    shaderProgram.specularGlossiness = gl.getUniformLocation(shaderProgram, "uGlossiness");    
+    shaderProgram.specularGlossinessUniform = gl.getUniformLocation(shaderProgram, "uGlossiness");    
+    shaderProgram.alphaUniform = gl.getUniformLocation(shaderProgram, "uAlpha");    
+    shaderProgram.mirrorPercentUniform = gl.getUniformLocation(shaderProgram, "uMirrorPercent");    
+    shaderProgram.mirrorColorUniform = gl.getUniformLocation(shaderProgram, "uMirrorColor");    
     
     shaderProgram.uvOffsetUniform = gl.getUniformLocation(shaderProgram, "aUVOffset");
 }

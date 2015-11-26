@@ -28,3 +28,8 @@ function Malla(vertices, indices)
         this.indices = indices;
     }
 }
+
+Malla.prototype.flipCarasStrip = function()
+{
+    this.indices.unshift(this.indices[0]);
+}
