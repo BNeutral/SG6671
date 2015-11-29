@@ -1,4 +1,8 @@
-﻿function MRusa()
+﻿/**
+ * 
+ * @returns {MRusa}
+ */
+function MRusa()
 {
     Objeto.call(this,null,null);
     var grado = 3;

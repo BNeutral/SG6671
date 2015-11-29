@@ -225,17 +225,17 @@
         initGL(canvas);
         initShaders();
         
-        var camaraPrimera = new CamaraPrimeraPersona(canvas.width, canvas.height);
-        var camaraOrbital = new CamaraOrbital(canvas.width, canvas.height);
-        var camaraCarrito = new CamaraCarrito(canvas.width, canvas.height);
 
         escena = new Escena();
         agregarObjetos();
         
+        var camaraPrimera = new CamaraPrimeraPersona(canvas.width, canvas.height);
+        var camaraOrbital = new CamaraOrbital(canvas.width, canvas.height);
+        var camaraCarrito = new CamaraCarrito(canvas.width, canvas.height, mRusa.recorredor, mRusa.matrices);
+        
         escena.agregarCamara(camaraPrimera);
         escena.agregarCamara(camaraOrbital);
-        escena.agregarCamara(camaraCarrito);
-        
+        escena.agregarCamara(camaraCarrito);        
         
         document.onkeydown = handleKeyDown;
         document.onkeyup = handleKeyUp;

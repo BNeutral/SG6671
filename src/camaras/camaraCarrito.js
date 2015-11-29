@@ -1,38 +1,48 @@
 /**
- * Camara que se posiciona en el mismo lugar que un objeto mas un offset
+ * 
  * @param {type} ancho
  * @param {type} alto
  * @param {type} objetoASeguir
- * @param {type} offset
+ * @param {type} matrizOffset
  * @returns {CamaraCarrito}
  */
-var CamaraCarrito = function(ancho, alto, objetoASeguir, offset) 
+var CamaraCarrito = function(ancho, alto, objetoASeguir, matrizOffset) 
 {
-    Camara.call(this, ancho, alto);
     this.objetoASeguir = objetoASeguir;
-    this.offset = offset;
+    this.matrizOffset = matrizOffset;
+    this.vectorDir = vec3.create();
+    Camara.call(this, ancho, alto);    
+    
+    this.mRot = mat4.create();
+    this.mAux = mat4.create();
+    this.offset = vec3.fromValues(0,1.5,0);
+    this.viewDir = vec3.fromValues(1,1.5,0);
 };
 
 heredarPrototype(CamaraCarrito, Camara); 
 
-CamaraCarrito.prototype.multMatriz = function(matr)
+CamaraCarrito.prototype.update = function(deltaT) 
 {
-  this.matrizFuente = matr;
-  this.recalcView();
-}
+    if (!this.activa) return;
+    
+    this.pitch = pitch;
+    this.yaw = -yaw;
+    
+    this.mAux = mat4.create();
+    mat4.mul(this.mAux, this.matrizOffset, this.objetoASeguir.matrices);
+
+    vec3.transformMat4(this.pos, this.offset, this.mAux);
+    
+    mat4.rotate(this.mRot, mIdentidad, this.pitch, [0, 0, 1]);
+    mat4.rotate(this.mRot, this.mRot, this.yaw, [0, 1, 0]);
+    
+    vec3.transformMat4(this.vectorDir, this.viewDir, this.mRot);
+    vec3.transformMat4(this.vectorDir, this.vectorDir, this.mAux); 
+    
+    Camara.prototype.update.call(this,deltaT);
+};
 
 CamaraCarrito.prototype.recalcView = function()
 {
-    vec3.transformMat4(this.objetoASeguir.matrices);
-  /*var inversa = mat4.clone(this.matrizFuente);
-  //Lo subo un poco para que no este en el piso del carrito
-  mat4.translate(inversa,inversa,[0,1.5,0]);
-  mat4.rotate(inversa,inversa,degToRad(pitch),[1,0,0]);
-  mat4.rotate(inversa,inversa,-degToRad(yaw),[0,1,0]);
-  mat4.scale(inversa,inversa,[-1,-1,-1]);
-  mat4.rotate(inversa,inversa, Math.PI,[1,0,0]);
-  
-  mat4.invert(inversa,inversa);
-  mat4.identity(this.viewM);
-  mat4.mul(this.viewM,inversa,this.viewM);  */
+    mat4.lookAt(this.viewM, this.pos, this.vectorDir, yUp);
 };
