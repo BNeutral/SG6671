@@ -1,8 +1,8 @@
 var CamaraOrbital = function(ancho, alto) 
 {
     Camara.call(this, ancho, alto);
-    this.radio = 30;
-    this.initPos = new vec3.fromValues(0,0,30);
+    this.radio = 50;
+    this.initPos = new vec3.fromValues(0,0,this.radio);
     this.rotMat = mat4.create();
     
     this.limiteInfPitch = 0.01;
@@ -21,7 +21,7 @@ CamaraOrbital.prototype.update = function(deltaT)
     if (pitch < this.limiteInfPitch) pitch = this.limiteInfPitch;
     if (pitch > this.limiteSupPitch) pitch = this.limiteSupPitch;
     
-    this.pitch = -pitch;
+    this.pitch = pitch;
     this.yaw = yaw;    
     
     this.pos[0] = this.radio * Math.cos(this.yaw) * Math.sin(-this.pitch);
