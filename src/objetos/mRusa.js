@@ -1,4 +1,4 @@
-function MRusa()
+﻿function MRusa()
 {
     Objeto.call(this,null,null);
     var grado = 3;
@@ -81,8 +81,6 @@ function Circulo(divisiones, radio, offset)
         vertices.push(radio*Math.cos(angulo)+offset[1]);
         vertices.push(radio*Math.sin(angulo)+offset[2]);           
     }
-    console.log(vertices);
-    
     return vertices;
 }
 

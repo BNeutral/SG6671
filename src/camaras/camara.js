@@ -1,3 +1,8 @@
+var zero = vec3.fromValues(0,0,0);
+var yUp = vec3.fromValues(0,1,0);
+var zAdelante = vec3.fromValues(0,0,-1);
+var mIdentidad = mat4.create();
+
 /**
  * Representa una camara
  * @param {type} ancho      Ancho del display
@@ -16,22 +21,15 @@ function Camara(ancho, alto)
     this.activa = false;
     
     this.pitch = 0;
-    this.yaw = 0;
-    this.deltaX = 0;
-    this.deltaY = 0;
+    this.yaw = 0;    
+    this.pos = vec3.fromValues(0,0,0);
+    this.menosPos = vec3.create();
+    //this.viewDir = vec3.fromValues(0,0,-1);
+    
+    this.modo = "persp";
 
+    this.setUp();
 }
-
-Camara.prototype.setVariables = function(p,y,x,y,z,dX,dY) 
-{
-    this.pitch = p;
-    this.yaw = y;
-    this.xPos = x;
-    this.yPos = y;
-    this.zPos = z;
-    this.deltaX = dX;
-    this.deltaY = dY;
-};
 
 /**
  * Prepara cosas de webgl con las matrices
@@ -68,13 +66,15 @@ Camara.prototype.dibujar = function()
 {
     gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, this.projM);
     gl.uniformMatrix4fv(shaderProgram.ViewMatrixUniform, false, this.viewM); 
+    gl.uniform3f(shaderProgram.posCamara, this.pos[0], this.pos[1], this.pos[2]); 
 };
 
 /**
- * Metodo para heredar y agregarle comportamiento a distintos tipos de camara
+ * Actualiza la matriz de vista y la posicion inversa
  * @returns {undefined}
  */
 Camara.prototype.update = function(deltaT) 
 {
-	this.setUp();
+    vec3.negate(this.menosPos, this.pos);
+    this.recalcView();
 };

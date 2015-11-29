@@ -82,6 +82,8 @@ function initShaders()
     shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
     gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 
+    shaderProgram.posCamara = gl.getUniformLocation(shaderProgram, "uWorldCamPos");
+
     shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
     shaderProgram.ViewMatrixUniform = gl.getUniformLocation(shaderProgram, "uViewMatrix");
     shaderProgram.ModelMatrixUniform = gl.getUniformLocation(shaderProgram, "uModelMatrix");
@@ -106,4 +108,6 @@ function initShaders()
     shaderProgram.mirrorColorUniform = gl.getUniformLocation(shaderProgram, "uMirrorColor");    
     
     shaderProgram.uvOffsetUniform = gl.getUniformLocation(shaderProgram, "aUVOffset");
+    
+    shaderProgram.cubeMap = gl.getUniformLocation(shaderProgram, "cubeMapSampler");
 }

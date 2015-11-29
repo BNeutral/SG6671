@@ -94,7 +94,7 @@ Objeto.prototype.dibujar = function(matrizPadre)
         gl.uniform1f(shaderProgram.specularGlossinessUniform, this.textura.glossiness);        
         gl.uniform1f(shaderProgram.alphaUniform, this.textura.alpha);        
         gl.uniform1f(shaderProgram.mirrorPercentUniform, this.textura.porcentajeEspejo);        
-        gl.uniform1f(shaderProgram.mirrorColorUniform, this.textura.colorEspejo);       
+        gl.uniform3f(shaderProgram.mirrorColorUniform, this.textura.colorEspejo[0], this.textura.colorEspejo[1], this.textura.colorEspejo[2]);       
        
 
         // Arrays
