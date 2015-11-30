@@ -5,7 +5,7 @@
  */
 function SkyDome(txPath)
 {
-    Esfera.call(this, 32, 16, txPath, Math.PI/2);
+    Esfera.call(this, 32, 16, Math.PI/2, txPath);
     
     this.malla.flipCarasStrip();
     this.normalData.flipNormales();

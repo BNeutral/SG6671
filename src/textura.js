@@ -1,16 +1,18 @@
+var dictTexturas = {}; // Cargar cada textura una sola vez
+
 /**
- * Crea un objeto con toda la informacion requerida para texturar.
- * @param {type} vNormals       Normales correspondientes a cada vertice de la malla
+ * Crea un objeto con toda la informacion requerida para el shading.
  * @param {type} uvCoord        Coordenadas uv correspondientes a cada vertice de la malla
- * @param {type} path           String con el camino hacia la imagen
+ * @param {type} txPath         Path a la textura difusa
+ * @param {type} normalTxPath   Path a la textura normal
  * @returns {Textura}
  */
-function Textura(uvCoord, path)
+function Textura(uvCoord, txDifusePath, txNormalPath)
 {
     this.uvCoord = uvCoord;
     
-    this.txImage;
-    this.normalMapImage;
+    this.texturaDifusa;                             // Textura difusa
+    this.normalMap;                                 // Textura para normal map
     
     this.colorShadeless = vec3.fromValues(0,0,0);   // Para objetos auto iluminados
     this.kAmbiente = 0.2;                           // Influencia de luz global
@@ -25,27 +27,48 @@ function Textura(uvCoord, path)
     
     this.offsetUV = vec2.create();                  // Para texturas que scrollean
 
-    if (!path) this.initTexture("texturas/debug");
-    else this.initTexture(path);
+    this.chequearYCargar("texturaDifusa", txDifusePath, "texturas/debug.jpg");
+    this.chequearYCargar("normalMap", txNormalPath, "texturas/pixel.png");
 }
 
-Textura.prototype.initTexture = function(path)
+/**
+ * Dado un
+ * @param {type} atrib          Nombre del atributo donde se cargara la textura
+ * @param {type} path           Path a la textura
+ * @param {type} defaultPath    Path por defecto si no se provee un path
+ * @returns {undefined}
+ */
+Textura.prototype.chequearYCargar = function(atrib, path, defaultPath)
 {
-    this.txImage = gl.createTexture();
-    this.txImage.image = new Image();
-    this.txImage.image.onload = (function(esto) { return function () { esto.handleLoadedTexture() }})(this);
-    this.txImage.image.src = path;
-};
+    if (!path) path = defaultPath;
+    if (dictTexturas[path]) this[atrib] = dictTexturas[path];
+    else this[atrib] = cargarTextura(path);
+}
 
-Textura.prototype.handleLoadedTexture = function()
+/**
+ * Carga una textura y la devuelve
+ * @param {type} path       Path relativo desde el index.html hacia la textura
+ * @returns {textura de webgl}
+ */
+function cargarTextura (path)
 {
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.bindTexture(gl.TEXTURE_2D, this.txImage);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.txImage.image);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    //gl.bindTexture(gl.TEXTURE_2D, null);
+    var textura = gl.createTexture();
+    dictTexturas[path] = textura;
+    var imagen = new Image();
+    imagen.onload = function(textura, imagen) 
+    { 
+        return function() 
+        { 
+            gl.bindTexture(gl.TEXTURE_2D, textura);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);          
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imagen);
+            gl.generateMipmap(gl.TEXTURE_2D);
+        }
+    }(textura, imagen);
+    imagen.src = path;
+    return textura;
 };
 
 /**

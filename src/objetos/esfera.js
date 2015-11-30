@@ -2,11 +2,12 @@
  * Retorna media esfera de 2x2x2
  * @param {type} divisionesRadiales     Numero de divisiones radiales. Minimo 3 para un triangulo
  * @param {type} divisionesVerticales   Numero de divisiones verticales. Minimo 0
- * @param {type} txPath                 Path a textura
  * @param {type} rangoAnguloVertical    Por si se quiere media esfera o similar. Valor entre 0 y PI
+ * @param {type} txPath                 Path a textura
+ * @param {type} txPathNormalMap        Path a textura del normalmap si lo hubiera
  * @returns {undefined}
  */
-function Esfera(divisionesRadiales, divisionesVerticales, txPath, rangoAnguloVertical)
+function Esfera(divisionesRadiales, divisionesVerticales, rangoAnguloVertical, txPath, txPathNormalMap)
 {
     divisionesVerticales += 2;   
     divisionesRadiales += 1;
@@ -50,8 +51,7 @@ function Esfera(divisionesRadiales, divisionesVerticales, txPath, rangoAnguloVer
     }
             
     var indices = indicesGrilla(divisionesRadiales,divisionesVerticales); 
-    var tex = new Textura(uvCoord, txPath);    
-    Objeto.call(this, new Malla(vert, indices), tex, new NormalData(vNorm,vTg,vBn));
+    Objeto.call(this, new Malla(vert, indices), new Textura(uvCoord, txPath, txPathNormalMap) , new NormalData(vNorm,vTg,vBn));
     this.setUpGL();
 }
 

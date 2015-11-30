@@ -107,9 +107,12 @@ Objeto.prototype.dibujar = function(matrizPadre)
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
         gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, this.textura.txImage);
-        gl.uniform1i(shaderProgram.samplerUniform, 0);
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, this.textura.texturaDifusa);
+        gl.uniform1i(shaderProgram.samplerUniform, 1);
+        gl.activeTexture(gl.TEXTURE2);
+        gl.bindTexture(gl.TEXTURE_2D, this.textura.normalMap);
+        gl.uniform1i(shaderProgram.normalMapSamplerUniform, 2);
         gl.uniform2f(shaderProgram.uvOffsetUniform, this.textura.offsetUV[0], this.textura.offsetUV[1]);
 
         gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, matrizModelado);

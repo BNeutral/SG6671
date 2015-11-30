@@ -16,6 +16,7 @@
 <script type="text/javascript" src="src/normalData.js"></script>
 <script type="text/javascript" src="src/textura.js"></script>
 <script type="text/javascript" src="src/objeto.js"></script>
+<script type="text/javascript" src="src/envBox.js"></script>
 <script type="text/javascript" src="src/escena.js"></script>
 <script type="text/javascript" src="src/camaras/camara.js"></script>
 <script type="text/javascript" src="src/camaras/camaraPrimeraPersona.js"></script>
@@ -78,6 +79,8 @@
 
     void main(void) 
     {
+        vec4 normalColor = texture2D(uNSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        
         vec3 normal = normalize(vNormal);
         vec3 camara = normalize(vEye);
         float mLambert = max(dot(normal, uLightDirection), 0.0);
@@ -201,7 +204,7 @@
         escena.agregarObjeto(new Piso());
         
         //Para teastear shading
-        var esfera = new Esfera(64,64,"texturas/debug.jpg", Math.PI);
+        var esfera = new Esfera(64,64, Math.PI, "texturas/debug.jpg", "texturas/debug_bump.jpg");
         esfera.textura.kAmbiente = 0.2;
         esfera.textura.colorDifuso = vec3.fromValues(0.2,1.0,0.5);
         esfera.textura.kDifuso = 0.8;
@@ -209,7 +212,7 @@
         esfera.textura.kEspecular = 0.8;
         esfera.textura.glossiness = 50;
         //esfera.textura.alpha = 0.8;
-        esfera.textura.porcentajeEspejo = .5;
+        //esfera.textura.porcentajeEspejo = .5;
         mat4.translate(esfera.matrices, esfera.matrices, [0,1,-2]);
         escena.agregarObjeto(esfera);
         
