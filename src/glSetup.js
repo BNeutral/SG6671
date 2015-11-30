@@ -81,6 +81,12 @@ function initShaders()
 
     shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
     gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+    
+    shaderProgram.vertexTangentAttribute = gl.getAttribLocation(shaderProgram, "aVertexTangent");
+    gl.enableVertexAttribArray(shaderProgram.vertexTangentAttribute);
+    
+    shaderProgram.vertexBinormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexBinormal");
+    gl.enableVertexAttribArray(shaderProgram.vertexBinormalAttribute);
 
     shaderProgram.posCamara = gl.getUniformLocation(shaderProgram, "uWorldCamPos");
 

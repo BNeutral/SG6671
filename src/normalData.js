@@ -1,8 +1,8 @@
 /**
  * Objeto con la data de normales, tangentes, etc
  * @param {type} vNormals       Normales. Array que definen una cada 3
- * @param {type} vTg            Tangentes. Array que definen una cada 3
- * @param {type} vBinormals     Si es null se calculan automaticamente
+ * @param {type} vTg            Tangentes. Array que definen una cada 3. Si es null/undefined se calculan pobremente
+ * @param {type} vBinormals     Binormales. Si es null/undefined se calculan automaticamente
  * @returns {NormalData}
  */
 function NormalData(vNormals, vTg, vBinormals)
@@ -35,9 +35,8 @@ NormalData.prototype.malasTangentes = function()
         var y = 1;
         var z = (this.vNormals[i]*x+this.vNormals[i+1]*y)/-this.vNormals[i+2];
         var v = vec3.fromValues(x,y,z);
-        this.vTg.push(v[0]);
-        this.vTg.push(v[1]);
-        this.vTg.push(v[2]);
+        vec3.normalize(v,v);
+        this.vTg.push(v[0], v[1],v[2]);
     }
 }
 
@@ -53,9 +52,8 @@ NormalData.prototype.autoBinormales = function()
         var v1 = vec3.fromValues(this.vNormals[i],this.vNormals[i+1],this.vNormals[i+2]);
         var v2 = vec3.fromValues(this.vTg[i],this.vTg[i+1],this.vTg[i+2]);
         vec3.cross(v1,v1,v2);
-        this.vBinormals.push(v1[0]);
-        this.vBinormals.push(v1[1]);
-        this.vBinormals.push(v1[2]);
+        vec3.normalize(v1,v1);
+        this.vBinormals.push(v1[0], v1[1], v1[2]);
     }
 }
 

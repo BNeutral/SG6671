@@ -13,7 +13,7 @@ var BaseSillitas = function()
     SuperficieRevolucion.call(this,vertices,vNorm,vTg,vBn,32, "texturas/sillas.png");
 
     this.textura.kEspecular = 1;
-    this.textura.glossiness = 16;
+    this.textura.glossiness = 40;
 };
 
 /*var BaseSillitas = function() 
