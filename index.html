@@ -91,9 +91,9 @@
         float mLambert = max(dot(normal, uLightDirection), 0.0);
         vec3 vLuzLambert = uDirectionalColor * mLambert;
         
-        vec3 r = 2.0 * max(dot(normal, uLightDirection), 0.0) * normal - uLightDirection;
-        //vec3 r = reflect(uLightDirection, normal); // <- Da glossines del otro lado también
-        float specular = pow(max(dot(r, normalize(-vWorldCamPos)), 0.0), uGlossiness) ;
+        //vec3 r = 2.0 * max(dot(normal, uLightDirection), 0.0) * normal - uLightDirection;
+        vec3 r = reflect(uLightDirection, normal);
+        float specular = pow(max(dot(r, camara), 0.0), uGlossiness) ;
         vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
         vec3 componenteShadeless = uColShadeless * textureColor.rgb * uColDifuso;             // luz autoiluminada * colores difusos
         vec3 componenteAmbiente = uKAmbiente * uAmbientColor * textureColor.rgb * uColDifuso; // k% * luz ambiente * colores difusos
@@ -219,7 +219,7 @@
         esfera.textura.kAmbiente = 0.2;
         esfera.textura.colorDifuso = vec3.fromValues(0.2,1.0,0.5);
         esfera.textura.kDifuso = 0.8;
-        esfera.textura.colorEspecular = vec3.fromValues(1,1,0);
+        esfera.textura.colorEspecular = vec3.fromValues(0.8,0.2,1);
         esfera.textura.kEspecular = 0.8;
         esfera.textura.glossiness = 5;
         //esfera.textura.alpha = 0.8;

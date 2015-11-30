@@ -4,7 +4,19 @@
  */
 function EnvBox()
 {
-    this.textura = loadCubeMap();
+    this.buffers = [];
+    this.objetos = [];
+    this.textura = loadCubeMap();    
+}
+
+EnvBox.prototype.agregarObjeto = function(objeto) 
+{
+    this.objetos.push(objeto);
+}
+
+EnvBox.prototype.actualizarBuffers = function() 
+{
+    
 }
 
 EnvBox.prototype.dibujar = function() 

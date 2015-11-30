@@ -66,8 +66,8 @@ function initShaders()
     gl.useProgram(shaderProgram);
     
     // Alpha blending
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    //gl.enable(gl.BLEND);
+    //gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     
     //Backface culling
     //gl.enable(gl.CULL_FACE);

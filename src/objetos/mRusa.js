@@ -38,7 +38,7 @@ function MRusa()
     this.hijos.push(this.curva.supBarrido(pCirculoChico2, 128, normalData));
     for (var i = this.hijos.length-3; i < this.hijos.length; ++i)
     {
-        this.hijos[i].textura.glossiness = 500;
+        this.hijos[i].textura.glossiness = 100;
     }
     
     var triang = [0,0,0, 0,0.3,0, 0,0.3,0.4, 0,0.3,-0.4];

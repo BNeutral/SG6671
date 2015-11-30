@@ -26,6 +26,8 @@ function LagoTope(curvaParam, divisiones, separacion)
     for (var i = 0; i < obj.malla.indices.length; ++i) obj.malla.indices[i] += 1;
     obj.malla.indices.unshift(0);
     obj.normalData.vNormals.unshift(0, 1, 0);
+    obj.normalData.vTg.unshift(1, 0, 0);
+    obj.normalData.vBinormals.unshift(0, 0, 1);
     obj.textura.uvCoord.unshift(0.5, 1);
     obj.modoRenderizado = gl.TRIANGLE_FAN;
     obj.textura.hueRamp(0.55,1);
