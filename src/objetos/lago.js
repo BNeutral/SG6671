@@ -13,6 +13,7 @@ function Lago()
     this.hijos[0].textura.glossiness = 50;
     this.hijos[0].textura.colorEspecular = vec3.fromValues(0.6,0.8,1);
     this.hijos[0].textura.porcentajeEspejo = 0.4;
+    this.hijos[0].textura.kNormalMap = 0.1;
 }
 
 heredarPrototype(Lago, Objeto);
@@ -21,7 +22,6 @@ Lago.prototype.update = function(deltaT)
 {
     this.contador += deltaT;
     this.hijos[0].textura.offsetUV[1] = this.contador / 50;
-    this.hijos[0].textura.kNormalMap = 0.75+Math.sin(this.contador)/4;
 }
 
 function LagoTope(curvaParam, divisiones, separacion)

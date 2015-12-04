@@ -33,18 +33,14 @@ function MRusa()
     var pCirculoChico1 = Circulo(8, 0.1, [0,0.3,0.4]);
     var pCirculoChico2 = Circulo(8, 0.1, [0,0.3,-0.4]);
     var normalData = normalDataRadial(pCirculoMedio);
-    this.hijos.push(this.curva.supBarrido(pCirculoMedio, 128, normalData));
-    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 128, normalData));
-    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 128, normalData));
+    this.hijos.push(this.curva.supBarrido(pCirculoMedio, 256, normalData));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 256, normalData));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 256, normalData));
     for (var i = this.hijos.length-3; i < this.hijos.length; ++i)
     {
-        this.hijos[i].textura.glossiness = 100;
+        this.hijos[i].textura.setMetalGris();
     }
-    
-    var triang = [0,0,0, 0,0.3,0, 0,0.3,0.4, 0,0.3,-0.4];
-    var tid = [0,1,2, 0,1,3];
-    var tuv = [0,0, 0,1, 1,1, 1,1];
-    var tnorm = [1,0,0, 1,0,0, 1,0,0, 1,0,0];
+
     this.hijos.push(UneRieles(this.curva));
     
     var carro = new Carro();
@@ -99,10 +95,24 @@ function Circulo(divisiones, radio, offset)
  */
 function UneRieles(curva)
 {
-    var triang = [0,0,0, 0,0.3,0, 0,0.3,0.4, 0,0.3,-0.4];
-    var tuv = [0,0, 0,1, 0,0, 1,0, 1,1, 0,1]
-    var tid = [0,1,2, 0,1,3];
-    var tuv = [0,0, 0,1, 1,1, 1,1];
-    var tnorm = [1,0,0, 1,0,0, 1,0,0, 1,0,0];
-    return curva.supRepetida(triang, tid, tuv, tnorm, 128);
+    var triang = [0,0,0,            0,0.3,0.4,      0,0.3,-0.4,
+                  0.05,0,0,         0.05,0.3,0.4,   0.05,0.3,-0.4,
+                  0,0,0,            0,0.3,-0.4,     0.05,0,0,          0.05,0.3,-0.4, 
+                  0,0,0,            0,0.3,0.4,      0.05,0,0,          0.05,0.3,0.4, 
+                  0,0.3,0.4,        0.05,0.3,0.4,   0,0.3,-0.4,        0.05,0.3,-0.4];
+    var tuv = [ 0.5,0, 1,1, 0,1,
+                0.5,0, 1,1, 0,1,
+                0,0,0,1,1,1,1,0,
+                0,0,0,1,1,1,1,0,
+                0,0,0,1,1,1,1,0];
+    var tid = [0,1,2,   3,4,5,      6,7,8,7,8,9,     10,11,12,11,12,13,  14,15,16,15,16,17];
+    var tnorm = [   1,0,0,          1,0,0,          1,0,0, 
+                    -1,0,0,         -1,0,0,         -1,0,0, 
+                    0,-0.4,0.3,     0,-0.4,0.3,     0,-0.4,0.3,     0,-0.4,0.3,
+                    0,-0.4,-0.3,    0,-0.4,-0.3,   0,-0.4,-0.3,     0,-0.4,-0.3,
+                    0,1,0,          0,1,0,          0,1,0,          0,1,0
+                    ];
+    var obj = curva.supRepetida(triang, tid, tuv, tnorm, 128);
+    obj.textura.colorDifuso = vec3.fromValues(0.5,0.5,0.5);
+    return obj;
 }

@@ -78,6 +78,7 @@
     uniform float uAlpha;
     uniform float uMirrorPercent;
     uniform vec3 uMirrorColor;
+    uniform float uMirrorDesat;
     
     uniform float uKNormalMap;
 
@@ -100,12 +101,15 @@
         vec3 componenteShadeless = uColShadeless * textureColor.rgb * uColDifuso;             // luz autoiluminada * colores difusos
         vec3 componenteAmbiente = uKAmbiente * uAmbientColor * textureColor.rgb * uColDifuso; // k% * luz ambiente * colores difusos
         vec3 componenteDifusa = uKDifuso * textureColor.rgb * uColDifuso * vLuzLambert;
-        vec3 componenteEspecular = uKEspecular * specular * uColEspecular ;
+        vec3 componenteEspecular = uKEspecular * specular * uColEspecular * uDirectionalColor;
         vec3 totalPhong = componenteShadeless + componenteAmbiente + componenteDifusa + componenteEspecular;
         
         vec3 rRefleccion = reflect(camara, normal);
         vec4 cubeMapColor = textureCube(cubeMapSampler, rRefleccion);
-        vec3 mCol = cubeMapColor.rgb * uMirrorColor;
+        float mVal = cubeMapColor.r * 0.21 + cubeMapColor.g * 0.72 + cubeMapColor.b * 0.07;
+        vec3 mValCol = vec3(mVal, mVal, mVal);
+        vec3 mCol = cubeMapColor.rgb * uMirrorColor * (1.0 - uMirrorDesat) + mVal * uMirrorColor * uMirrorDesat;
+        
         gl_FragColor = vec4(totalPhong * (1.0 - uMirrorPercent) + mCol * uMirrorPercent, textureColor.a * uAlpha);
     }
 </script>
@@ -179,7 +183,7 @@
 
     function agregarObjetos() 
     {
-        escena.agregarObjeto(new Ejes());
+        //escena.agregarObjeto(new Ejes());
         /*escena.agregarObjeto(new Objeto(null, null));
         escena.agregarObjeto(new Grilla(10,10,"texturas/debug.jpg",1.0,1.0));
         var cubo = new Cubo("texturas/debug.jpg");
@@ -217,7 +221,7 @@
         escena.agregarObjetoEnv(new Piso());
         
         //Para teastear shading
-        var esfera = new Esfera(64,64, Math.PI, "texturas/debug.jpg", "texturas/debug_bump.jpg");
+        /*var esfera = new Esfera(64,64, Math.PI, "texturas/debug.jpg", "texturas/debug_bump.jpg");
         esfera.textura.kAmbiente = 0.2;
         esfera.textura.colorDifuso = vec3.fromValues(0.2,1.0,0.5);
         esfera.textura.kDifuso = 0.8;
@@ -237,7 +241,7 @@
         var cubo = new Cubo("texturas/debug.jpg");
         mat4.translate(cubo.matrices, esf2.matrices, [-4,0,0]);
         cubo.textura.porcentajeEspejo = 0.8;
-        escena.agregarObjeto(cubo);
+        escena.agregarObjeto(cubo);*/
     }
     
     function webGLStart()

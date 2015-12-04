@@ -107,10 +107,10 @@ Objeto.prototype.dibujar = function(matrizPadre)
         gl.uniform1f(shaderProgram.specularKUniform, this.textura.kEspecular);
         gl.uniform1f(shaderProgram.specularGlossinessUniform, this.textura.glossiness);        
         gl.uniform1f(shaderProgram.alphaUniform, this.textura.alpha);        
-        gl.uniform1f(shaderProgram.mirrorPercentUniform, this.textura.porcentajeEspejo);        
+        gl.uniform1f(shaderProgram.mirrorPercentUniform, this.textura.porcentajeEspejo);  
+        gl.uniform1f(shaderProgram.mirrorDesatUniform, this.textura.desatEspejo);       
         gl.uniform3fv(shaderProgram.mirrorColorUniform, this.textura.colorEspejo);       
-        gl.uniform1f(shaderProgram.normalMapKUniform, this.textura.kNormalMap);       
-       
+        gl.uniform1f(shaderProgram.normalMapKUniform, this.textura.kNormalMap);          
 
         // Arrays
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);

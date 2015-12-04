@@ -24,6 +24,7 @@ function Textura(uvCoord, txDifusePath, txNormalPath)
     this.alpha = 1;                                 // Transparencia
     this.porcentajeEspejo = 0;                      // Reflexion
     this.colorEspejo = vec3.fromValues(1,1,1);      // Tinte de reflexion
+    this.desatEspejo = 0;      // Porcentaje de la reflexion a convertir en blanco y negro antes de teñir
     
     this.kNormalMap = 0;                          // Influencia del normal map
     if (txNormalPath) this.kNormalMap = 1; 
@@ -31,6 +32,13 @@ function Textura(uvCoord, txDifusePath, txNormalPath)
 
     this.chequearYCargar("texturaDifusa", txDifusePath, "texturas/debug.jpg");
     this.chequearYCargar("normalMap", txNormalPath, "texturas/pixel_azul.png");
+}
+
+Textura.prototype.setMetalGris = function()
+{
+    this.porcentajeEspejo = 0.5;                     
+    this.desatEspejo = 1;
+    this.glossiness = 100;
 }
 
 /**

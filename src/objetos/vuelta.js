@@ -44,8 +44,8 @@ function VuParante(circumRadio, rotacion)
         if (this.malla.vertices[i+1] < 0 && this.malla.vertices[i] < 0) this.malla.vertices[i] *= 5;
         if (this.malla.vertices[i+1] > 0) this.malla.vertices[i+2] *= 0.33;
     }
-    
     this.setUpGL();
+    this.textura.setMetalGris();
 }
 heredarPrototype(VuParante, Cubo);
 
@@ -112,7 +112,9 @@ function VuUniones(divisiones, circumRadio)
     var angulo = Math.PI/divisiones;
     for (var i = 0; i < divisiones/2; ++i)
     {
-        this.hijos.push(new CilindroSinTapa(6, 0, "texturas/pixel.png"));
+        var cil = new CilindroSinTapa(6, 0, "texturas/pixel.png");
+        cil.textura.setMetalGris();
+        this.hijos.push(cil);
         mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, angulo*i*4, [1.0,0.0,0.0]);
         mat4.translate(this.hijos[i].matrices,this.hijos[i].matrices, [0,0,circumRadio]);
         mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, Math.PI/2, [0,0,1]);
@@ -120,6 +122,9 @@ function VuUniones(divisiones, circumRadio)
     }
     
     var eje = new Cilindro(12, 0, "texturas/pixel.png" );
+    eje.hijos[0].textura.setMetalGris();
+    eje.hijos[1].textura.setMetalGris();
+    eje.hijos[2].textura.setMetalGris();
     mat4.rotate(eje.matrices, eje.matrices, Math.PI/2, [0,0,1]);
     mat4.scale(eje.matrices, eje.matrices, [0.25,largo*1.6, 0.25]); 
     this.hijos.push(eje);
@@ -142,7 +147,9 @@ function VuEstrella(divisiones, circumRadio)
     var angulo = Math.PI/divisiones;
     for (var i = 0; i < divisiones; ++i)
     {
-        this.hijos.push(new CilindroSinTapa(6, 0, "texturas/pixel.png"));
+        var cil = new CilindroSinTapa(6, 0, "texturas/pixel.png");
+        cil.textura.setMetalGris();
+        this.hijos.push(cil);
         mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, angulo*i, [1.0,0.0,0.0]);
         mat4.scale(this.hijos[i].matrices, this.hijos[i].matrices, [0.05,largo,0.05]); 
     }
@@ -164,7 +171,9 @@ function VuCirculo(divisiones, apotema)
     var angulo = Math.PI*2/divisiones;
     for (var i = 0; i < divisiones; ++i)
     {
-        this.hijos.push(new CilindroSinTapa(8, 0, "texturas/pixel.png"));
+        var cil = new CilindroSinTapa(8, 0, "texturas/pixel.png");
+        cil.textura.setMetalGris();
+        this.hijos.push(cil);
         mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, angulo*i+angulo/2*esPar, [1.0,0.0,0.0]);
         mat4.translate(this.hijos[i].matrices,this.hijos[i].matrices, [0,apotema,0]);
         mat4.rotate(this.hijos[i].matrices, this.hijos[i].matrices, Math.PI/2, [1,0,0]);

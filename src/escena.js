@@ -11,8 +11,8 @@ function Escena(camara)
     if (camara) this.agregarCamara(camara);
     var num = 1/Math.sqrt(3);
     this.luz = vec3.fromValues(-num, num, num); // Direccion opuesta
-    this.colorLuz = vec3.fromValues(1,1,1);
-    this.colorAmbiente = vec3.fromValues(1,1,1);
+    this.colorLuz = vec3.fromValues(1,1,0.75);
+    this.colorAmbiente = vec3.fromValues(0.75,0.75,1);
     
     this.envBox = new EnvBox(this.luz, this.colorLuz, this.colorAmbiente);
 
