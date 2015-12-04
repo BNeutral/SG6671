@@ -66,7 +66,7 @@ Camara.prototype.dibujar = function()
 {
     gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, this.projM);
     gl.uniformMatrix4fv(shaderProgram.ViewMatrixUniform, false, this.viewM); 
-    gl.uniform3f(shaderProgram.posCamara, this.pos[0], this.pos[1], this.pos[2]); 
+    gl.uniform3fv(shaderProgram.posCamara, this.pos); 
 };
 
 /**

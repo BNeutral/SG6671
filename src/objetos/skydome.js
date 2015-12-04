@@ -20,3 +20,9 @@ function SkyDome(txPath)
 }
 
 heredarPrototype(SkyDome, Esfera);
+
+
+SkyDome.prototype.update = function(deltaT) 
+{
+    this.textura.offsetUV[0] += deltaT / 50;
+}

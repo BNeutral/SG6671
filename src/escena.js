@@ -29,6 +29,17 @@ Escena.prototype.agregarObjeto = function(objeto)
 };
 
 /**
+ * Agrega un objeto a la lista para dibujar/actualizar y ademas al render para reflexiones
+ * @param {type} objeto
+ * @returns {undefined}
+ */
+Escena.prototype.agregarObjetoEnv = function(objeto)
+{
+    this.hijos.push(objeto);
+    this.envBox.agregarObjeto(objeto);
+};
+
+/**
  * Agrega una camara a la lista de camaras
  * @param {type} camara
  * @returns {undefined}

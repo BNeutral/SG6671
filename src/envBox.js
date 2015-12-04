@@ -4,35 +4,57 @@
  */
 function EnvBox(luz, colorLuz, colorAmbiente)
 {
-    /*this.caras = [  gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-                gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z];
-    this.frameBuffer = gl.createFramebuffer();
-    this.fBTexture = gl.createFramebuffer();
-    gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);
-    this.frameBuffer.width = 1024;
-    this.frameBuffer.height = 1024;
+    this.origW = gl.viewportWidth;
+    this.origH = gl.viewportHeight;
     
+    this.luz = luz;
+    this.colorLuz = colorLuz;
+    this.colorAmbiente = colorAmbiente;
+    
+    this.caras = [  gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+                    gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z];
+            
+    // Camaras
+    var camVects = [   vec3.fromValues(1,0,0),      vec3.fromValues(-1,0,0),     vec3.fromValues(0,1,0),
+                        vec3.fromValues(0,-1,0),      vec3.fromValues(0,0,1),      vec3.fromValues(0,0,-1)]       
+    var camUp = [   vec3.fromValues(0,-1,0),      vec3.fromValues(0,-1,0),     vec3.fromValues(0,0,1),
+                        vec3.fromValues(0,0,-1),      vec3.fromValues(0,-1,0),      vec3.fromValues(0,-1,0)]               
+    this.camPos = vec3.fromValues(0,1,0);
+    this.viewMatrices = [mat4.create(),mat4.create(),mat4.create(),mat4.create(),mat4.create(),mat4.create()]
+    for (var i = 0; i < this.viewMatrices.length; ++i)
+    {
+        vec3.add(camVects[i],camVects[i],this.camPos);
+        mat4.lookAt(this.viewMatrices[i], this.camPos, camVects[i], camUp[i]);   
+    }
+            
+    this.frameBuffer = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);
+    this.frameBuffer.width = 512;
+    this.frameBuffer.height = 512;
+
     this.fBTexture = gl.createTexture();    
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.fBTexture);
     gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texImage2D(this.caras[i], 0, gl.RGBA, this.frameBuffer.width, this.frameBuffer.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    for (var i = 0; i < this.caras.length; ++i)
+        gl.texImage2D(this.caras[i], 0, gl.RGBA, this.frameBuffer.width, this.frameBuffer.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
     
-    this.renderbuffer = gl.createRenderbuffer();
-    gl.bindRenderbuffer(gl.RENDERBUFFER, this.renderbuffer );
-    gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.frameBuffer.width, this.frameBuffer.height);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, this.caras[i], this.fBTexture, 0);
-    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this.renderbuffer);
-    
-    gl.bindTexture(this.caras[i], null);
+    for (var i = 0; i < this.caras.length; ++i)
+    {
+        var renderbuffer = gl.createRenderbuffer();
+        gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
+        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.frameBuffer.width, this.frameBuffer.height);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, this.caras[i], this.fBTexture, 0);
+        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+    }
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
     gl.bindRenderbuffer(gl.RENDERBUFFER, null);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     
-    this.objetos = [new Cubo("texturas/debug.jpg")];*/
-    this.textura = loadCubeMap();    
-
+    this.objetos = [];
+    //this.textura = loadCubeMap();    
 }
 
 EnvBox.prototype.agregarObjeto = function(objeto) 
@@ -42,33 +64,42 @@ EnvBox.prototype.agregarObjeto = function(objeto)
 
 EnvBox.prototype.actualizarBuffers = function() 
 {
+    gl.viewport(0, 0, this.frameBuffer.width, this.frameBuffer.width);
+    
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);  
-    /*gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+    
     // Luz
     gl.uniform3fv(shaderProgram.lightingDirectionUniform, this.luz);     
-    gl.uniform3f(shaderProgram.directionalColorUniform, this.colorLuz[0], this.colorLuz[1], this.colorLuz[2]);  
-    gl.uniform3f(shaderProgram.ambientColorUniform, this.colorAmbiente[0], this.colorAmbiente[1], this.colorAmbiente[2] );        
-
-
-    this.camaras[this.camaraActual].dibujar();
-
-    for (var i = 0, count = this.hijos.length; i < count; ++i)
-    {
-        this.hijos[i].dibujar(null);
-    }
+    gl.uniform3fv(shaderProgram.directionalColorUniform, this.colorLuz);  
+    gl.uniform3fv(shaderProgram.ambientColorUniform, this.colorAmbiente);        
     
-    for (var i = 0; i < this.caras.length; ++i)
+    var projM = mat4.create();
+    var viewM = mat4.create();
+    
+    mat4.perspective(projM, Math.PI/2, 1, 0.1, 10000.0);
+    gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, projM);
+    gl.uniform3fv(shaderProgram.posCamara, this.camPos); 
+
+    for (var j = 0; j < this.caras.length; ++j)
     {
-        
-    }*/
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, this.caras[j], this.fBTexture, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.uniformMatrix4fv(shaderProgram.ViewMatrixUniform, false, this.viewMatrices[j]); 
+        for (var i = 0, count = this.objetos.length; i < count; ++i)
+        {
+            this.objetos[i].dibujar(null);
+        }
+    }
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    
+    gl.viewport(0, 0, this.origW, this.origH);
 }
 
 EnvBox.prototype.dibujar = function() 
 {
     gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.textura);
+    //gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.textura); // Skybox estatico
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.fBTexture); // Skybox dinamico
     gl.uniform1i(shaderProgram.cubeMap, 0);
 }
 
@@ -102,74 +133,3 @@ function loadCubeMap()
     }
     return texture;
 }
-
-/*function SkyBox()
-{
-    this.t1;
-    this.t2;
-    this.t3;
-    this.t4;
-    this.t5;
-    this.t6;
-    this.targets = [this.t1, this.t2, this.t3, this.t4, this.t5, this.t6];
-    this.setupSkyboxGL();
-}
-
-function SkyBox()
-{
-    this.t1;
-    this.t2;
-    this.t3;
-    this.t4;
-    this.t5;
-    this.t6;
-    this.targets = [this.t1, this.t2, this.t3, this.t4, this.t5, this.t6];
-    this.setupSkyboxGL();
-}
-
-SkyBox.prototype.setupSkyboxGL = function() 
-{
-    
-    var archivos = [    "texturas/cubo/+x.png","texturas/cubo/-x.png",
-                        "texturas/cubo/+y.png","texturas/cubo/-y.png",
-                         "texturas/cubo/+z.png","texturas/cubo/-z.png"];
-    var modos = [gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-                gl.TEXTURE_CUBE_MAP_POSITIVE_Y, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-                gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z];
-            
-    for (var i = 0; i < 6; ++i)
-    {
-        var target = this.targets[i];
-        var modo = modos[i];
-        target = gl.createTexture();
-        target.image = new Image();
-        target.image.onload = new TexOnLoad(this.target, modo).onLoadCube;
-        target.image.src = archivos[i];
-    }
-}
-
-SkyBox.prototype.dibujar = function() 
-{
-    gl.activeTexture(gl.TEXTURE4);
-    for (var i = 0; i < 6; ++i)
-        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.targets[i]);
-    gl.uniform1i(shaderProgram.cubeMap, 4);
-}
-
-function TexOnLoad(target, modo)
-{
-    this.target = target;
-    this.modo = modo;
-}
-
-TexOnLoad.prototype.onLoadCube = function()
-{
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.target);
-    gl.texImage2D(this.modo, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.target.image);
-    gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameterf(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
-}*/
