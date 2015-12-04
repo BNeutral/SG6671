@@ -25,6 +25,8 @@ function Textura(uvCoord, txDifusePath, txNormalPath)
     this.porcentajeEspejo = 0;                      // Reflexion
     this.colorEspejo = vec3.fromValues(1,1,1);      // Tinte de reflexion
     
+    this.kNormalMap = 0;                          // Influencia del normal map
+    if (txNormalPath) this.kNormalMap = 1; 
     this.offsetUV = vec2.create();                  // Para texturas que scrollean
 
     this.chequearYCargar("texturaDifusa", txDifusePath, "texturas/debug.jpg");
@@ -65,6 +67,7 @@ function cargarTextura (path)
             gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);          
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imagen);
             gl.generateMipmap(gl.TEXTURE_2D);
+            gl.bindTexture(gl.TEXTURE_2D, null);
         }
     }(textura, imagen);
     imagen.src = path;

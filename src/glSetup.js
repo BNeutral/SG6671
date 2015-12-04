@@ -113,7 +113,8 @@ function initShaders()
     shaderProgram.mirrorPercentUniform = gl.getUniformLocation(shaderProgram, "uMirrorPercent");    
     shaderProgram.mirrorColorUniform = gl.getUniformLocation(shaderProgram, "uMirrorColor");    
     
-    shaderProgram.uvOffsetUniform = gl.getUniformLocation(shaderProgram, "aUVOffset");
+    shaderProgram.uvOffsetUniform = gl.getUniformLocation(shaderProgram, "uUVOffset");
+    shaderProgram.normalMapKUniform = gl.getUniformLocation(shaderProgram, "uKNormalMap");
     
     shaderProgram.cubeMap = gl.getUniformLocation(shaderProgram, "cubeMapSampler");
 }

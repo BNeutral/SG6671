@@ -14,7 +14,7 @@ function Escena(camara)
     this.colorLuz = vec3.fromValues(1,1,1);
     this.colorAmbiente = vec3.fromValues(1,1,1);
     
-    this.envBox = new EnvBox();
+    this.envBox = new EnvBox(this.luz, this.colorLuz, this.colorAmbiente);
 
 }
 
@@ -112,6 +112,8 @@ Escena.prototype.vMatrix = function()
  */
 Escena.prototype.dibujar = function() 
 {   
+    this.envBox.actualizarBuffers();
+    
     // Se configura el vierport dentro de área ¨canvas¨. en este caso se utiliza toda el área disponible
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
 

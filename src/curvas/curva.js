@@ -15,7 +15,7 @@ function Curva(puntos, grado)
  * @param {string} txImage      Path a la imagen si usa textura
  * @returns {Objeto|Curva.prototype.objLinea.obj}
  */
-Curva.prototype.objLinea = function(divisiones, txImage)
+Curva.prototype.objLinea = function(divisiones, txImage, txNormal)
 {
     if (divisiones < 2) throw(new Error("Minimo esperado de 2 divisiones"));
     var vert = [];
@@ -36,7 +36,7 @@ Curva.prototype.objLinea = function(divisiones, txImage)
         idx.push(i);
     }
     
-    var obj = new Objeto(new Malla(vert, idx), new Textura(uv, txImage), new NormalData(vNorm, vTg));
+    var obj = new Objeto(new Malla(vert, idx), new Textura(uv, txImage, txNormal), new NormalData(vNorm, vTg));
     obj.modoRenderizado = gl.LINE_STRIP;
     return obj;
 }

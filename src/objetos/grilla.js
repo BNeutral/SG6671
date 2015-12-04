@@ -3,11 +3,12 @@
  * @param {type} divisionesHorizontales         Entero. 0 Divisiones = Cuadrado, 1 Division = |_|_|
  * @param {type} divisionesVerticales           Entero. Idem arriba
  * @param {type} txPath                         String con el path a una textura
+ * @param {type} txNormalPath                   String con el path a una para el normal map
  * @param {type} uvEscalaX                      Para multiplicar por las coord UV para crear tiling
  * @param {type} uvEscalaY                      Para multiplicar por las coord UV para crear tiling
  * @returns {undefined}
  */
-function Grilla(divisionesHorizontales, divisionesVerticales, txPath, uvEscalaX, uvEscalaY)
+function Grilla(divisionesHorizontales, divisionesVerticales, txPath, txNormalPath, uvEscalaX, uvEscalaY)
 {
     var vert = [];
     var uvCoord = [];
@@ -36,7 +37,7 @@ function Grilla(divisionesHorizontales, divisionesVerticales, txPath, uvEscalaX,
     
     var indices = indicesGrilla(divisionesHorizontales, divisionesVerticales);
 
-    Objeto.call(this, new Malla(vert, indices), new Textura(uvCoord, txPath), new NormalData(vNorm, vTg, vBn));
+    Objeto.call(this, new Malla(vert, indices), new Textura(uvCoord, txPath, txNormalPath), new NormalData(vNorm, vTg, vBn));
 }
 
 heredarPrototype(Grilla, Objeto);

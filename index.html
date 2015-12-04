@@ -78,13 +78,15 @@
     uniform float uAlpha;
     uniform float uMirrorPercent;
     uniform vec3 uMirrorColor;
+    
+    uniform float uKNormalMap;
 
     void main(void) 
     {
         vec4 normalColor = texture2D(uNSampler, vec2(vTextureCoord.s, vTextureCoord.t));
         float nBlue = normalColor.b * 2.0 - 1.0;
-        float nRed = (normalColor.r * 2.0 - 1.0) * normalColor.a;   // Ponderamos por el alfa en caso de no querer normal mapping
-        float nGreen = (normalColor.g * 2.0 - 1.0) * normalColor.a; // Ponderamos por el alfa en caso de no querer normal mapping
+        float nRed = (normalColor.r * 2.0 - 1.0) * uKNormalMap;
+        float nGreen = (normalColor.g * 2.0 - 1.0) * uKNormalMap;
         
         vec3 normal = normalize(vNormal * nBlue + vTg * nRed + vBn * nGreen);
         vec3 camara = normalize(vWorldCamPos);
@@ -130,7 +132,7 @@
     
     uniform vec3 uWorldCamPos;
     
-    uniform vec2 aUVOffset;
+    uniform vec2 uUVOffset;
 
     void main(void) 
     {
@@ -141,8 +143,8 @@
             // Transformamos al vértice al espacio de la proyección
             gl_Position = uPMatrix * pos_camera_view;
             // Coordenada de textura
-            vTextureCoord.x = aTextureCoord.x + aUVOffset.x;
-            vTextureCoord.y = aTextureCoord.y + aUVOffset.y;
+            vTextureCoord.x = aTextureCoord.x + uUVOffset.x;
+            vTextureCoord.y = aTextureCoord.y + uUVOffset.y;
 
             // Para iluminación
             //vEye = -vec3(pos_camera_view.xyz);
@@ -237,8 +239,7 @@
     {
         var canvas = document.getElementById("TP1-SistemasGraficos");
         initGL(canvas);
-        initShaders();
-        
+        initShaders();        
 
         escena = new Escena();
         agregarObjetos();

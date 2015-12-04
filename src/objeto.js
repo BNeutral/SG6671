@@ -99,16 +99,17 @@ Objeto.prototype.dibujar = function(matrizPadre)
     {
         
         // Valores especulares difusos etc
-        gl.uniform3f(shaderProgram.shadelessColorUniform, this.textura.colorShadeless[0],this.textura.colorShadeless[1],this.textura.colorShadeless[2] );
+        gl.uniform3fv(shaderProgram.shadelessColorUniform, this.textura.colorShadeless );
         gl.uniform1f(shaderProgram.ambientKUniform, this.textura.kAmbiente );
-        gl.uniform3f(shaderProgram.diffuseColorUniform, this.textura.colorDifuso[0], this.textura.colorDifuso[1], this.textura.colorDifuso[2] );
+        gl.uniform3fv(shaderProgram.diffuseColorUniform, this.textura.colorDifuso);
         gl.uniform1f(shaderProgram.diffuseKUniform, this.textura.kDifuso);
-        gl.uniform3f(shaderProgram.specularColorUniform, this.textura.colorEspecular[0], this.textura.colorEspecular[1], this.textura.colorEspecular[2] );
+        gl.uniform3fv(shaderProgram.specularColorUniform, this.textura.colorEspecular);
         gl.uniform1f(shaderProgram.specularKUniform, this.textura.kEspecular);
         gl.uniform1f(shaderProgram.specularGlossinessUniform, this.textura.glossiness);        
         gl.uniform1f(shaderProgram.alphaUniform, this.textura.alpha);        
         gl.uniform1f(shaderProgram.mirrorPercentUniform, this.textura.porcentajeEspejo);        
-        gl.uniform3f(shaderProgram.mirrorColorUniform, this.textura.colorEspejo[0], this.textura.colorEspejo[1], this.textura.colorEspejo[2]);       
+        gl.uniform3fv(shaderProgram.mirrorColorUniform, this.textura.colorEspejo);       
+        gl.uniform1f(shaderProgram.normalMapKUniform, this.textura.kNormalMap);       
        
 
         // Arrays
@@ -134,7 +135,7 @@ Objeto.prototype.dibujar = function(matrizPadre)
         gl.activeTexture(gl.TEXTURE2);
         gl.bindTexture(gl.TEXTURE_2D, this.textura.normalMap);
         gl.uniform1i(shaderProgram.normalMapSamplerUniform, 2);
-        gl.uniform2f(shaderProgram.uvOffsetUniform, this.textura.offsetUV[0], this.textura.offsetUV[1]);
+        gl.uniform2fv(shaderProgram.uvOffsetUniform, this.textura.offsetUV);
 
         gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, matrizModelado);
         var normalMatrix = mat3.create();
