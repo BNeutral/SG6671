@@ -83,6 +83,21 @@ function cargarTextura (path)
 };
 
 /**
+ * Escala los valores de las coordenadas UV uniformemente
+ * @param {type} escalaX        Float, escala a aplicar en X
+ * @param {type} escalaY        Float, escala a aplicar en Y
+ * @returns {unresolved}
+ */
+Textura.prototype.escalarUV = function(escalaX, escalaY)
+{
+    for (var i = 0; i < this.uvCoord.length; i += 2)
+    {
+        this.uvCoord[i] = this.uvCoord[i] * escalaX;
+        this.uvCoord[i+1] = this.uvCoord[i+1] * escalaY;
+    }
+}
+
+/**
  * Setea un tono rgb al color difuso
  * @param {type} param          Numero entre 0 y 1, recorre tonos
  * @param {type} multip         Para oscurecer el tono obtenido, un numero entre 0 y 1

@@ -27,7 +27,7 @@ function Esfera(divisionesRadiales, divisionesVerticales, rangoAnguloVertical, t
     for (var y = 0; y < divisionesVerticales; ++y)  
     {
         var anguloY = anguloVertical*(y/(divisionesVerticales - 1));
-        uvY = 1 - (anguloY / anguloVertical) * (anguloVertical / Math.PI);
+        uvY = 1 - 2 * (anguloY / Math.PI);
         if (uvY > 0.99) uvY = 0.99; // Error de sampleo en el polo
         var siny = Math.sin(anguloY);
         var cosy = Math.cos(anguloY);

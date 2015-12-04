@@ -104,9 +104,7 @@ function vertTransformPush(origArray, destArray, indice, matriz)
  */
 function v3toArray(v3, destArray)
 {
-    destArray.push(v3[0]);
-    destArray.push(v3[1]);
-    destArray.push(v3[2]);
+    destArray.push(v3[0], v3[1], v3[2]);
 }
     
     
@@ -134,4 +132,21 @@ function arrayDist(array1, indice1, array2, indice2)
 function arrayV3(array, indice)
 {
     return vec3.fromValues(array[indice], array[indice+1], array[indice+2]);
+}
+
+
+/**
+ * Dado un array de coordenadas uv [u1,v1,u2,v2,...] escala los valores
+ * @param {type} array
+ * @param {type} escalaX
+ * @param {type} escalaY
+ * @returns {unresolved}
+ */
+function escalarUV(array, escalaX, escalaY)
+{
+    for (var i = 0; i < array.length; i += 2)
+    {
+        array[i] = array[i] * escalaX;
+        array[i+1] = array[i+1] * escalaY;
+    }
 }

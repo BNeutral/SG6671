@@ -6,14 +6,16 @@
  * @param {type} binormales             Idem binormales
  * @param {type} divisionesRadiales     Numero de divisiones radiales, minimo 2
  * @param {type} txPath                 Path a la textura
+ * @param {type} normalTxPath           Path a la textura normal
  * @returns {undefined}
  */
-function SuperficieRevolucion(vertices, normales, tangentes, binormales, divisionesRadiales, txPath)
+function SuperficieRevolucion(vertices, normales, tangentes, binormales, divisionesRadiales, txPath, normalTxPath)
 {
     var vert = [];
     var vNorm = [];
     var vTg = [];
     var vBn = [];
+    if (!binormales) vBn = null;
     var uv = [];
     
     var anguloDivision = Math.PI*2/divisionesRadiales;  
@@ -41,15 +43,15 @@ function SuperficieRevolucion(vertices, normales, tangentes, binormales, divisio
             vertTransformPush(vertices, vert, 3*j, rotMat);
             vertTransformPush(normales, vNorm, 3*j, rotMat);
             vertTransformPush(tangentes, vTg, 3*j, rotMat);
-            vertTransformPush(binormales, vBn, 3*j, rotMat);
+            if (binormales) vertTransformPush(binormales, vBn, 3*j, rotMat);
             uv.push(i / divisionesRadiales);
             uv.push(ponderacionUV[j]);                  
         }
     }
     
-    var normalData = new NormalData(vNorm);
+    var normalData = new NormalData(vNorm, vTg);
     var indices = indicesGrilla(divisionesRadiales+1, vertices.length/3);
-    Objeto.call(this, new Malla(vert, indices), new Textura(uv, txPath), normalData);
+    Objeto.call(this, new Malla(vert, indices), new Textura(uv, txPath, normalTxPath), normalData);
 }
 
 /**

@@ -29,13 +29,14 @@ function MRusa()
         this.hijos.push(cil);
     }
     
-    var pCirculoMedio = Circulo(8, 0.25, [0,0,0]);
+    var pCirculoMedio = Circulo(16, 0.25, [0,0,0]);
     var pCirculoChico1 = Circulo(8, 0.1, [0,0.3,0.4]);
     var pCirculoChico2 = Circulo(8, 0.1, [0,0.3,-0.4]);
     var normalData = normalDataRadial(pCirculoMedio);
+    var normalData2 = normalDataRadial(Circulo(8, 1, [0,0,0]));
     this.hijos.push(this.curva.supBarrido(pCirculoMedio, 256, normalData));
-    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 256, normalData));
-    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 256, normalData));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico1, 256, normalData2));
+    this.hijos.push(this.curva.supBarrido(pCirculoChico2, 256, normalData2));
     for (var i = this.hijos.length-3; i < this.hijos.length; ++i)
     {
         this.hijos[i].textura.setMetalGris();
@@ -108,8 +109,8 @@ function UneRieles(curva)
     var tid = [0,1,2,   3,4,5,      6,7,8,7,8,9,     10,11,12,11,12,13,  14,15,16,15,16,17];
     var tnorm = [   1,0,0,          1,0,0,          1,0,0, 
                     -1,0,0,         -1,0,0,         -1,0,0, 
-                    0,-0.4,0.3,     0,-0.4,0.3,     0,-0.4,0.3,     0,-0.4,0.3,
-                    0,-0.4,-0.3,    0,-0.4,-0.3,   0,-0.4,-0.3,     0,-0.4,-0.3,
+                    0,-0.8,0.6,     0,-0.8,0.6,     0,-0.8,0.6,     0,-0.8,0.6,
+                    0,-0.8,-0.6,    0,-0.8,-0.6,   0,-0.8,-0.6,     0,-0.8,-0.6,
                     0,1,0,          0,1,0,          0,1,0,          0,1,0
                     ];
     var obj = curva.supRepetida(triang, tid, tuv, tnorm, 128);

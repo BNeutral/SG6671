@@ -10,10 +10,9 @@ var BaseSillitas = function()
     var vTg = vectorRepetitivo(6, [1,0,0]);
     var vBn = vectorRepetitivo(6, [0,1,0]);
 
-    SuperficieRevolucion.call(this,vertices,vNorm,vTg,vBn,32, "texturas/sillas.png");
+    SuperficieRevolucion.call(this,vertices,vNorm,vTg,vBn,32, "texturas/sillas.png", "texturas/sillas_normal.png");
 
-    this.textura.kEspecular = 1;
-    this.textura.glossiness = 40;
+    this.textura.glossiness = 50;
 };
 
 /*var BaseSillitas = function() 

@@ -2,11 +2,11 @@ var TechoSillitas = function()
 {  
     // Se repiten vertices para hacer el shadring "cortado" en vez de redondeado
     var vert =[0,0,0,   0,1,5,  0,1,5, 0,2,5, 0,2,5, 0,2,0];
-    var norm =[0,-1,0,  0,-1,0, 0,0,1,  0,0,1,  0,1,0, 0,1,0];
+    var norm =[0,-1, 0,  0,-0.196116, 0.980581, 0,0,1,  0,0,1,  0,1,0, 0,1,0];
     var tgs =[1,0,0,   1,0,0, 1,0,0, 1,0,0, 1,0,0, 1,0,0];
-    var bn =[0,1,0, 0,1,0, 0,1,0, 0,1,0, 0,1,0, 0,1,0,];
 
-    SuperficieRevolucion.call(this,vert,norm,tgs,bn,32, "texturas/debug.jpg");
+    SuperficieRevolucion.call(this,vert,norm,tgs,null,64, "texturas/sillastope.png", "texturas/sillastope_normal.png");
+    this.textura.glossiness = 500;
     
 };
 
