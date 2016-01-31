@@ -30,7 +30,7 @@ var TechoSillitasCompleto = function(numsillas)
       var angulo=(2*(Math.PI)/(parseFloat(numSillitas)))*j;
       var posicion=[Math.cos(angulo),Math.sin(angulo)];
       var soga = new SistemaSillaSoga(angulo/(2*Math.PI));
-      mat4.translate(soga.matrices, soga.matrices, [8*posicion[0],1,8*posicion[1]]);
+      mat4.translate(soga.matrices, soga.matrices, [8*posicion[0],1.5,8*posicion[1]]);
       mat4.rotate(soga.matrices, soga.matrices, Math.PI/2, [1,0,0]);
       mat4.rotate(soga.matrices, soga.matrices, anguloRot, [-posicion[1],posicion[0],0]);
       mat4.rotate(soga.matrices, soga.matrices, angulo, [0,0,1]);

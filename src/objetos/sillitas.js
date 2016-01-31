@@ -33,7 +33,7 @@ Sillitas.prototype.update = function(deltaT)
 
     mat4.rotate(this.matrices, this.matrices, -velocidadAngular*deltaT/4, [0.0,1.0,0.0]);
     mat4.rotate(this.hijos[0].matrices, this.hijos[0].matrices, velocidadAngular*deltaT/4, [0.0,1.0,0.0]);
-    mat4.rotate(this.hijos[1].matrices, this.hijos[1].matrices, velocidadAngular*deltaT, [0.0,-1.0,0.0]);
+    mat4.rotate(this.hijos[1].matrices, this.hijos[1].matrices, velocidadAngular*deltaT/8, [0.0,-1.0,0.0]);
  
     Objeto.prototype.update.call(this,deltaT);
 };

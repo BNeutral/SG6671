@@ -41,10 +41,17 @@ function Cubo(txPath)
                     0,-1,0, 0,-1,0, 0,-1,0, 0,-1,0,
                     1,0,0, 1,0,0, 1,0,0, 1,0,0,
                     -1,0,0, -1,0,0, -1,0,0, -1,0,0];
-                        
+     
+    var tangentes = [0,1,0, 0,1,0, 0,1,0, 0,1,0,
+                    0,-1,0, 0,-1,0, 0,-1,0, 0,-1,0,
+                    0,0,-1, 0,0,-1, 0,0,-1, 0,0,-1,
+                    0,0,1, 0,0,1, 0,0,1, 0,0,1,
+                    0,1,0, 0,1,0, 0,1,0, 0,1,0,
+                    0,-1,0, 0,-1,0, 0,-1,0, 0,-1,0];
+                      
     var uv = vectorRepetitivo(6, [0.0,0.0, 1.0,0.0, 1.0,1.0, 0.0,1.0]);
     
-    Objeto.call(this,new Malla(vert, ind), new Textura(uv, txPath), new NormalData(normales));
+    Objeto.call(this,new Malla(vert, ind), new Textura(uv, txPath), new NormalData(normales, tangentes));
     this.modoRenderizado = gl.TRIANGLES;
 }
 

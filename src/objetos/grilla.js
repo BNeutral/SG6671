@@ -8,7 +8,7 @@
  * @param {type} uvEscalaY                      Para multiplicar por las coord UV para crear tiling
  * @returns {undefined}
  */
-function Grilla(divisionesHorizontales, divisionesVerticales, txPath, txNormalPath, uvEscalaX, uvEscalaY)
+function Grilla(divisionesHorizontales, divisionesVerticales, txPath, txNormalPath, uvEscalaX = 1, uvEscalaY = 1)
 {
     var vert = [];
     var uvCoord = [];
