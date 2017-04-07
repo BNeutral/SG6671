@@ -24,7 +24,7 @@ function Textura(uvCoord, txDifusePath, txNormalPath)
     this.alpha = 1;                                 // Transparencia
     this.porcentajeEspejo = 0;                      // Reflexion
     this.colorEspejo = vec3.fromValues(1,1,1);      // Tinte de reflexion
-    this.desatEspejo = 0;      // Porcentaje de la reflexion a convertir en blanco y negro antes de teñir
+    this.desatEspejo = 0;      // Porcentaje de la reflexion a convertir en blanco y negro antes de teÃ±ir
     
     this.kNormalMap = 0;                          // Influencia del normal map
     if (txNormalPath) this.kNormalMap = 1; 
@@ -65,6 +65,7 @@ function cargarTextura (path)
     var textura = gl.createTexture();
     dictTexturas[path] = textura;
     var imagen = new Image();
+    imagen.crossOrigin = "anonymous";
     imagen.onload = function(textura, imagen) 
     { 
         return function() 
